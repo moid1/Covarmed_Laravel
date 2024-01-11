@@ -69,29 +69,19 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Email</th>
                                         </tr>
 
                                     </thead>
                                     <tbody>
+                                        @foreach ($preventionalAdvisors as $preventionalAdvisor)
+                                            
                                         <tr>
-                                            <td>Customer name</td>
-                                            <td>Customer Email</td>
-                                            <td>Customer Email</td>
+                                            <td>{{$preventionalAdvisor->name}}</td>
+                                            <td>{{$preventionalAdvisor->user->email}}</td>
                                         </tr>
+                                        @endforeach
 
-                                        <tr>
-                                            <td>Customer name</td>
-                                            <td>Customer Email</td>
-                                            <td>Customer Email</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Customer name</td>
-                                            <td>Customer Email</td>
-                                            <td>Customer Email</td>
-                                        </tr>
-
+                                       
                                     </tbody>
                                 </table>
                             </div>

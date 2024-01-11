@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PreventionAdvisor;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,6 +29,8 @@ class HomeController extends Controller
             'labels' => ['January', 'February', 'March', 'April', 'May'],
             'data' => [65, 59, 80, 81, 56],
         ];
-        return view('home', compact('data'));
+
+        $preventionalAdvisors = PreventionAdvisor::latest()->limit(5)->get();
+        return view('home', compact('data', 'preventionalAdvisors'));
     }
 }

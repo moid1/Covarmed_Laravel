@@ -111,4 +111,14 @@ class KitsController extends Controller
 
         return $code;
     }
+
+    public function downloadQR($id){
+        $kit = Kits::find($id);
+        if($kit){
+            $qrPath = env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image;
+            return response()->download($qrPath);
+
+
+        }
+    }
 }

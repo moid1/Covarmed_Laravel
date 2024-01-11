@@ -73,9 +73,10 @@ class PreventionAdvisorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PreventionAdvisor $preventionAdvisor)
+    public function show($id)
     {
-        //
+        $preventionalAdvisor = PreventionAdvisor::find($id)->with('kits')->first();
+        return view('prevention_advisor.show', compact('preventionalAdvisor'));
     }
 
     /**
@@ -89,9 +90,29 @@ class PreventionAdvisorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PreventionAdvisor $preventionAdvisor)
+    public function update(Request $request, $id)
     {
-        //
+        $preventionAdvisor = PreventionAdvisor::find($id);
+        if ($preventionAdvisor) {
+            $preventionAdvisor->update($request->except(['logo', 'email']));
+
+            if ($request->file('logo')) {
+                $file =  $request->file('logo');
+                $fileName = (string) Str::uuid();
+                $folder = env('DO_FOLDER');
+                $isUploaded = Storage::disk('do')->put(
+                    "{$folder}/{$fileName}",
+                    file_get_contents($file),
+                    'public'
+                );
+
+                if ($isUploaded) {
+                    $preventionAdvisor->logo = $folder . '/' . $fileName;
+                    $preventionAdvisor->update();
+                }
+            }
+            return back()->with('success', 'Data has been updated successfully');
+        }
     }
 
     /**
@@ -101,4 +122,5 @@ class PreventionAdvisorController extends Controller
     {
         //
     }
+
 }

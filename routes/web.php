@@ -25,9 +25,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/prevention-advisor', [PreventionAdvisorController::class, 'index'])->name('prevention.advisor.index');
 Route::get('/add-prevention-advisor', [PreventionAdvisorController::class, 'create'])->name('prevention.advisor.create');
+Route::get('/prevention-advisor/{id}', [PreventionAdvisorController::class, 'show'])->name('prevention.advisor.show');
 Route::post('/prevention-advisor', [PreventionAdvisorController::class, 'store'])->name('prevention.advisor.store');
+Route::put('/prevention-advisor/{id}', [PreventionAdvisorController::class, 'update'])->name('prevention.advisor.update');
 
 //kits
 Route::get('/kits', [KitsController::class, 'index'])->name('kits.index');
 Route::get('/add-kit', [KitsController::class, 'create'])->name('kits.create');
 Route::post('/kit', [KitsController::class, 'store'])->name('kits.store');
+// Route::get('/download-qr/{id}', [KitsController::class, 'downloadQR'])->name('kits.download.qr');
