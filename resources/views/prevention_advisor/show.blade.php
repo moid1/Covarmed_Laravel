@@ -79,6 +79,22 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Company Name</label>
+                                                <input id="company_name" type="text"
+                                                    class="form-control @error('company_name') is-invalid @enderror" name="company_name"
+                                                    value="{{ $preventionalAdvisor->company_name }}">
+
+                                                @error('company_name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+
+                                            </div>
+                                        </div>
+
                                         <div class="col-lg-6">
                                             <div class="">
                                                 <label>Logo</label>

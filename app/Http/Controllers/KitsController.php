@@ -31,10 +31,11 @@ class KitsController extends Controller
         $fileName = (string) Str::uuid();
         $folder = 'qrcodes';
         $qrCodeFilePath = "{$folder}/{$fileName}";
+        $absoluteUrl = url('incident-kit/'.$unique_code);
 
         Storage::disk('do')->put(
             "{$folder}/{$fileName}",
-            (QrCode::format('svg')->size(200)->generate($unique_code)),
+            (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
             'public'
         );
 

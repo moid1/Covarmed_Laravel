@@ -11,7 +11,7 @@
                     <div class="mini-stat clearfix bg-primary">
                         <span class="mini-stat-icon"><i class="mdi mdi-account"></i></span>
                         <div class="mini-stat-info text-right text-white">
-                            <span class="counter">20</span>
+                            <span class="counter">{{$dashboardStats['totalPreventionalAdvisors']}}</span>
                             Total Prevention Advisors
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                     <div class="mini-stat clearfix bg-primary">
                         <span class="mini-stat-icon"><i class="mdi mdi-hospital"></i></span>
                         <div class="mini-stat-info text-right text-white">
-                            <span class="counter">20</span>
+                            <span class="counter">{{$dashboardStats['totalKits']}}</span>
                             Total Kits
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="mini-stat clearfix bg-primary">
                         <span class="mini-stat-icon"><i class="mdi mdi-file"></i></span>
                         <div class="mini-stat-info text-right text-white">
-                            <span class="counter">20</span>
+                            <span class="counter">{{$dashboardStats['totalIncidents']}}</span>
                             Total Incidents
                         </div>
                     </div>
@@ -128,9 +128,9 @@
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: @json($data['labels']),
+                labels: @json($pieChartData['labels']),
                 datasets: [{
-                    data: @json($data['data']),
+                    data: @json($pieChartData['data']),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',

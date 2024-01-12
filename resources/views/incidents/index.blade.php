@@ -28,29 +28,28 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">All Prevention Advisors</h4>
+                        <h4 class="mt-0 header-title">All Incidents</h4>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
                             <thead>
                                 <tr>
 
-                                    <th>Name</th>
-                                    <th>Company Name</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Prevention Advisor</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
 
 
                             <tbody>
-                                @foreach ($preventionAdvisors as $preventionAdvisor)
+                                @foreach ($incidents as $incident)
                                 <tr>
-                                    <td>{{ $preventionAdvisor->name }}</td>
-                                    <td>{{ $preventionAdvisor->company_name ?? 'N/A' }}</td>
-                                    <td><span class="badge badge-primary">Active</span></td>
-                                    <td><a href="{{route('prevention.advisor.show', $preventionAdvisor->id)}}"> <i class="mdi mdi-eye"></i> </a> / <a href="{{route('prevention.advisor.delete', $preventionAdvisor->id)}}" class="text-red"
-                                            style="text-decoration: none;color:red"> <i class="fa fa-trash "></i></a>
-                                    </td>
+                                    <td>{{ $incident->id }}</td>
+                                    <td>{{ $incident->employee_name }}</td>
+                                    <td>{{ $incident->preventionAdvisor->name }}</td>
+                                    <td><a href=""><i class="mdi mdi-download text-primary"></i></a> / <a href=""><i
+                                                class="mdi mdi-eye"></i></a></td>
                                 </tr>
                                 @endforeach
 

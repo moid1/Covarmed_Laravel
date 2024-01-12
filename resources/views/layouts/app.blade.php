@@ -67,10 +67,10 @@
                     </div> --}}
                         <div class="user-info">
                             <h4 class="font-16">Hello {{ Auth::user()->name }}</h4>
-                            @if (Auth::user()->type == 1)
+                            @if (Auth::user()->user_type == 1)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
                                     Prevention Advisor</span>
-                            @elseif(Auth::user()->type == 0)
+                            @elseif(Auth::user()->user_type == 0)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
                                     Admin</span>
                             @endif
@@ -88,7 +88,7 @@
                             </li>
 
 
-                            @if (Auth::user()->type == 0)
+                            @if (Auth::user()->user_type == 0)
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
@@ -109,7 +109,16 @@
                                         <li><a href="{{ route('kits.index') }}">All Kits</a></li>
                                     </ul>
                                 </li>
+
+                                
                             @endif
+
+                            <li>
+                                <a href="{{ route('incident.index') }}" class="waves-effect">
+                                    <i class="mdi mdi-file"></i>
+                                    <span> Incidents </span>
+                                </a>
+                            </li>
 
                         </ul>
                     </div>

@@ -40,6 +40,7 @@ class PreventionAdvisorController extends Controller
             'location' => ['required'],
             'phone' => ['required'],
             'logo' => ['required'],
+            'company_name' => ['required'],
         ]);
 
         $file =  $request->file('logo');
@@ -75,7 +76,7 @@ class PreventionAdvisorController extends Controller
      */
     public function show($id)
     {
-        $preventionalAdvisor = PreventionAdvisor::find($id)->with('kits')->first();
+        $preventionalAdvisor = PreventionAdvisor::whereId($id)->with('kits')->first();
         return view('prevention_advisor.show', compact('preventionalAdvisor'));
     }
 
@@ -118,9 +119,10 @@ class PreventionAdvisorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PreventionAdvisor $preventionAdvisor)
+    public function destroy($id)
     {
-        //
+        PreventionAdvisor::whereId($id)->delete();
+        return back()->with('success', 'Preventional Advisor is deleted');
     }
 
 }
