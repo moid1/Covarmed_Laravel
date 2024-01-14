@@ -33,6 +33,7 @@ Route::get('/company/{id}', [CompanyController::class, 'show'])->name('company.s
 Route::get('/companies', [CompanyController::class, 'index'])->name('company.index');
 Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
 Route::post('/update-company', [CompanyController::class, 'update'])->name('company.update');
+Route::get('/update-company-status/{id}', [CompanyController::class, 'updateCompanyStatus'])->name('company.update.status');
 
 //Preventinal Advisors
 Route::get('/prevention-advisor', [PreventionAdvisorController::class, 'index'])->name('prevention.advisor.index');

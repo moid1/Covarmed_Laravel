@@ -52,10 +52,11 @@
                                             @if ($company->is_active)
                                                 <td> <span class="badge badge-primary">Active</span></td>
                                             @else
-                                                <td> <span class="badge badge-primary">Deactive</span></td>
+                                                <td> <span class="badge badge-warning">Deactive</span></td>
                                             @endif
 
                                                 <td><a href="{{route('company.show', $company->id)}}"> <i class="mdi mdi-eye"></i></a>
+                                                    / <a style="text-decoration: none;color:blue" href="{{route('company.update.status', $company->id)}}" title="Change Company Status"> <i class="mdi mdi-note"></i></a>
                                                     
                                                 </td>
                                         </tr>

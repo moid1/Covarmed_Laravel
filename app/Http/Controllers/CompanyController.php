@@ -109,4 +109,13 @@ class CompanyController extends Controller
     {
         //
     }
+
+    public function updateCompanyStatus($id){
+        $company = Company::find($id);
+        if($company){
+            $company->is_active = !$company->is_active;
+            $company->update();
+            return back()->with('success', 'Company Status changed successfully');
+        }
+    }
 }
