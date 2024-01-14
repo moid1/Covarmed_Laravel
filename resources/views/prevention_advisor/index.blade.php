@@ -45,8 +45,8 @@
                             <tbody>
                                 @foreach ($preventionAdvisors as $preventionAdvisor)
                                 <tr>
-                                    <td>{{ $preventionAdvisor->name }}</td>
-                                    <td>{{ $preventionAdvisor->company_name ?? 'N/A' }}</td>
+                                    <td>{{ $preventionAdvisor->user->name }}</td>
+                                    <td>{{ $preventionAdvisor->company->name ?? 'N/A' }}</td>
                                     <td><span class="badge badge-primary">Active</span></td>
                                     <td><a href="{{route('prevention.advisor.show', $preventionAdvisor->id)}}"> <i class="mdi mdi-eye"></i> </a> / <a href="{{route('prevention.advisor.delete', $preventionAdvisor->id)}}" class="text-red"
                                             style="text-decoration: none;color:red"> <i class="fa fa-trash "></i></a>

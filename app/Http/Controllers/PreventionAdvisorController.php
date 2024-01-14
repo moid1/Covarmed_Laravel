@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegisterPreventionalAdvisor;
+use App\Models\Company;
 use App\Models\PreventionAdvisor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -16,7 +19,7 @@ class PreventionAdvisorController extends Controller
      */
     public function index()
     {
-        $preventionAdvisors = PreventionAdvisor::with('user')->get();
+        $preventionAdvisors = PreventionAdvisor::with(['user','company'])->get();
         return view('prevention_advisor.index', compact('preventionAdvisors'));
     }
 
@@ -25,7 +28,8 @@ class PreventionAdvisorController extends Controller
      */
     public function create()
     {
-        return view('prevention_advisor.create');
+        $companies = Company::where('is_active', true)->get();
+        return view('prevention_advisor.create', compact('companies'));
     }
 
     /**
@@ -35,26 +39,12 @@ class PreventionAdvisorController extends Controller
     {
 
         $this->validate($request, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'location' => ['required'],
-            'phone' => ['required'],
-            'logo' => ['required'],
-            'company_name' => ['required'],
         ]);
 
-        $file =  $request->file('logo');
-        $fileName = (string) Str::uuid();
-        $folder = env('DO_FOLDER');
-
-        Storage::disk('do')->put(
-            "{$folder}/{$fileName}",
-            file_get_contents($file),
-            'public'
-        );
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => 'Not Defined',
             'email' => $request->email,
             'password' => Hash::make('12345678'),
         ]);
@@ -65,9 +55,15 @@ class PreventionAdvisorController extends Controller
             ]);
 
             $preventionAdvisor = PreventionAdvisor::create($request->except(['logo', 'email']));
-            $preventionAdvisor->logo = $folder . '/' . $fileName;
-            $preventionAdvisor->update();
-            return back()->with('success', 'Prevention Advisor Created Successfully');
+
+            // Need to send email to preventionalAdvisor
+            $link = route('prevention.advisor.showregisterformviamail', $preventionAdvisor->id);
+            $details = [
+                'link' =>$link
+            ];
+            Mail::to($request->email)->send(new RegisterPreventionalAdvisor($details));
+
+            return back()->with('success', 'Verification link send to preventional advisor');
         }
     }
 
@@ -76,7 +72,7 @@ class PreventionAdvisorController extends Controller
      */
     public function show($id)
     {
-        $preventionalAdvisor = PreventionAdvisor::whereId($id)->with('kits')->first();
+        $preventionalAdvisor = PreventionAdvisor::whereId($id)->with(['kits','user','company'])->first();
         return view('prevention_advisor.show', compact('preventionalAdvisor'));
     }
 
@@ -95,22 +91,10 @@ class PreventionAdvisorController extends Controller
     {
         $preventionAdvisor = PreventionAdvisor::find($id);
         if ($preventionAdvisor) {
-            $preventionAdvisor->update($request->except(['logo', 'email']));
-
-            if ($request->file('logo')) {
-                $file =  $request->file('logo');
-                $fileName = (string) Str::uuid();
-                $folder = env('DO_FOLDER');
-                $isUploaded = Storage::disk('do')->put(
-                    "{$folder}/{$fileName}",
-                    file_get_contents($file),
-                    'public'
-                );
-
-                if ($isUploaded) {
-                    $preventionAdvisor->logo = $folder . '/' . $fileName;
-                    $preventionAdvisor->update();
-                }
+            $preventionAdvisor->update($request->only(['phone']));
+            $user = User::find($preventionAdvisor->user_id);
+            if ($user) {
+                $user->update(['name' => $request->name]);
             }
             return back()->with('success', 'Data has been updated successfully');
         }
@@ -125,4 +109,38 @@ class PreventionAdvisorController extends Controller
         return back()->with('success', 'Preventional Advisor is deleted');
     }
 
+    public function showRegisterFormViaMail($preventionalId)
+    {
+        $preventionAdvisor = PreventionAdvisor::where('id', $preventionalId)->with('user')->first();
+        if ($preventionAdvisor) {
+            return view('prevention_advisor.register_form_mail', compact('preventionAdvisor'));
+        } else {
+            dd('Something bad happend');
+        }
+    }
+
+    public function updateViaEmail(Request $request)
+    {
+        $this->validate($request, [
+            'password' => ['required', 'string', 'min:8'],
+            'prevention_advisor_id' => ['required', 'exists:prevention_advisors,id'],
+        ]);
+
+        $preventionAdvisor = PreventionAdvisor::find($request->prevention_advisor_id);
+        if ($preventionAdvisor) {
+            $preventionAdvisor->update([
+                'phone' => $request->phone,
+                'is_verified' => true,
+            ]);
+            $user = User::find($preventionAdvisor->user_id);
+            if ($user) {
+                $user->update([
+                    'name' => $request->name,
+                    'password' => Hash::make($request->password),
+                ]);
+            }
+
+            return redirect('/login');
+        }
+    }
 }

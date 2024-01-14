@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\IncidentsController;
 use App\Http\Controllers\KitsController;
 use App\Http\Controllers\PreventionAdvisorController;
@@ -24,12 +25,25 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Companies
+
+Route::get('/company', [CompanyController::class, 'create'])->name('company.create');
+Route::get('/company/{id}', [CompanyController::class, 'show'])->name('company.show');
+Route::get('/companies', [CompanyController::class, 'index'])->name('company.index');
+Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
+Route::post('/update-company', [CompanyController::class, 'update'])->name('company.update');
+
+//Preventinal Advisors
 Route::get('/prevention-advisor', [PreventionAdvisorController::class, 'index'])->name('prevention.advisor.index');
 Route::get('/add-prevention-advisor', [PreventionAdvisorController::class, 'create'])->name('prevention.advisor.create');
 Route::get('/prevention-advisor/{id}', [PreventionAdvisorController::class, 'show'])->name('prevention.advisor.show');
 Route::post('/prevention-advisor', [PreventionAdvisorController::class, 'store'])->name('prevention.advisor.store');
 Route::put('/prevention-advisor/{id}', [PreventionAdvisorController::class, 'update'])->name('prevention.advisor.update');
 Route::get('/delete-preventional-advisor/{id}', [PreventionAdvisorController::class, 'destroy'])->name('prevention.advisor.delete');
+
+Route::get('register-preventional-advisor/{id}', [PreventionAdvisorController::class, 'showRegisterFormViaMail'])->name('prevention.advisor.showregisterformviamail');
+Route::post('register-preventional-advisor', [PreventionAdvisorController::class, 'updateViaEmail'])->name('prevention.advisor.updateviamail');
 //kits
 Route::get('/kits', [KitsController::class, 'index'])->name('kits.index');
 Route::get('/add-kit', [KitsController::class, 'create'])->name('kits.create');

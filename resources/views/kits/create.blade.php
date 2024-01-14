@@ -42,7 +42,7 @@
                                                     </option>
                                                     @foreach ($preventionAdvisors as $preventionAdvisor)
                                                         <option value="{{ $preventionAdvisor->id }}">
-                                                            {{ ucfirst($preventionAdvisor->name) }}</option>
+                                                            {{ ucfirst($preventionAdvisor->user->name) }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

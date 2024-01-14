@@ -25,7 +25,7 @@ class KitsController extends Controller
      */
     public function create()
     {
-        $preventionAdvisors = PreventionAdvisor::all();
+        $preventionAdvisors = PreventionAdvisor::with('user')->get();
         $unique_code = $this->generateUniqueCode();
 
         $fileName = (string) Str::uuid();

@@ -89,6 +89,16 @@
 
 
                             @if (Auth::user()->user_type == 0)
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                    <span>
+                                        Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
+                                    <li><a href="{{ route('kits.index') }}">All Kits</a></li>
+                                </ul>
+                            </li>
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
@@ -99,14 +109,16 @@
                                         <li><a href="{{ route('prevention.advisor.index') }}">All Advisors</a></li>
                                     </ul>
                                 </li>
+                                
+
                                 <li class="has_sub">
-                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
                                         <span>
-                                            Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            Companies </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
-                                        <li><a href="{{ route('kits.index') }}">All Kits</a></li>
+                                        <li><a href="{{ route('company.create') }}">Add Company</a></li>
+                                        <li><a href="{{ route('company.index') }}">All Companies</a></li>
                                     </ul>
                                 </li>
 
@@ -233,7 +245,7 @@
             </div> <!-- content -->
 
             <footer class="footer">
-                © 2023 - By BM SOLUTIONS.
+                ©️ 2024 Covarmed BV - Co-authored by studiofives.
             </footer>
 
         </div>

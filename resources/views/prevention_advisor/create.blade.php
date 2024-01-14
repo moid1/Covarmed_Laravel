@@ -18,17 +18,19 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
+                                       
+
+                                        
+
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Name</label>
-                                                <input id="name" type="text"
-                                                    class="form-control @error('name') is-invalid @enderror" name="name"
-                                                    value="{{ old('name') }}" autofocus>
-                                                @error('name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                                <label>Company Name</label>
+                                                <select name="company_id" id="company" class="form-control">
+                                                    @foreach ($companies as $company)
+                                                        <option data-logo="{{ env('DO_CDN_ENDPOINT')."/".$company->logo }}"
+                                                            value="{{ $company->id }}">{{ $company->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
@@ -46,74 +48,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Location</label>
-                                                <input id="location" type="text"
-                                                    class="form-control @error('location') is-invalid @enderror"
-                                                    name="location" value="{{ old('location') }}">
-                                                @error('location')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
+                                        @if(!empty($companies))
+                                        <div class="col-lg-3 ">
+                                            <img class="img-fluid" style="float: right"
+                                                src="{{ env('DO_CDN_ENDPOINT')."/".$companies[0]->logo }}" alt=""
+                                                id="imagePlacement">
                                         </div>
-
-
-
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Phone #</label>
-                                                <input id="phone" type="text"
-                                                    class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                                    value="{{ old('phone') }}">
-
-                                                @error('phone')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Company Name</label>
-                                                <input id="company_name" type="text"
-                                                    class="form-control @error('company_name') is-invalid @enderror" name="company_name"
-                                                    value="{{ old('company_name') }}">
-
-                                                @error('company_name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="">
-                                                <label>Logo</label>
-                                                <input id="logo" type="file" onchange="readURL(this);"
-                                                    class=" @error('logo') is-invalid @enderror" name="logo">
-
-                                                @error('logo')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <img style="float: right" src="" alt="" id="imagePlacement">
-
-                                        </div>
+                                        @endif
 
 
 
@@ -145,16 +86,11 @@
 
 @section('pageSpecificJs')
     <script>
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        $('#company').on('change', function() {
+            var selectedOption = $(this).find(":selected");
+            var logo = selectedOption.data("logo");
+            $('#imagePlacement').attr('src', logo);
 
-                reader.onload = function(e) {
-                    $('#imagePlacement').attr('src', e.target.result).width(150).height(200);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+        })
     </script>
 @endsection

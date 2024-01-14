@@ -18,4 +18,8 @@ class PreventionAdvisor extends Model
     public function kits(){
         return $this->hasMany(Kits::class);
     }
+
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 }

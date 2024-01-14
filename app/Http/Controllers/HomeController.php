@@ -58,21 +58,27 @@ class HomeController extends Controller
     public function getIncidentsReportedByMonthPreventionAdvisor()
     {
         $preventionAdvisor = PreventionAdvisor::whereUserId(Auth::id())->first();
-
-        $monthlyIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->selectRaw('CONCAT(YEAR(created_at), "-", DATE_FORMAT(created_at, "%M")) as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->get();
-        return [
-            'labels' => $monthlyIncidents->pluck('month')->toArray(),
-            'data' => $monthlyIncidents->pluck('total')->toArray(),
-        ];
+        if ($preventionAdvisor) {
+            $monthlyIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->selectRaw('CONCAT(YEAR(created_at), "-", DATE_FORMAT(created_at, "%M")) as month, COUNT(*) as total')
+                ->groupBy('month')
+                ->orderBy('month', 'asc')
+                ->get();
+            return [
+                'labels' => $monthlyIncidents->pluck('month')->toArray(),
+                'data' => $monthlyIncidents->pluck('total')->toArray(),
+            ];
+        } else {
+            return [
+                'labels' => [],
+                'data' => [],
+            ];
+        }
     }
 
     public function getCompaniesNamesForIncidentsReported()
     {
         $companyIncidents = Incidents::join('prevention_advisors', 'incidents.prevention_advisor_id', '=', 'prevention_advisors.id')
-            ->select('prevention_advisors.company_name as company', DB::raw('COUNT(*) as total'))
+            ->select('prevention_advisors.company_id as company', DB::raw('COUNT(*) as total'))
             ->groupBy('company')
             ->get();
         return [
@@ -96,26 +102,39 @@ class HomeController extends Controller
     public function getDashboardStatsForPreventionAdvisors()
     {
         $preventionAdvisor = PreventionAdvisor::whereUserId(Auth::id())->get()->first();
-        $totalKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->count();
-        $totalIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->count();
-        return [
-            'totalKits' => $totalKits,
-            'totalIncidents' => $totalIncidents
-        ];
+        if ($preventionAdvisor) {
+            $totalKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->count();
+            $totalIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->count();
+            return [
+                'totalKits' => $totalKits,
+                'totalIncidents' => $totalIncidents
+            ];
+        } else {
+            return [
+                'totalKits' => 0,
+                'totalIncidents' => 0
+            ];
+        }
     }
 
     public function getTotalKitsByMonth()
     {
         $preventionAdvisor = PreventionAdvisor::whereUserId(Auth::id())->get()->first();
+        if ($preventionAdvisor) {
+            $monthlyKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->selectRaw('DATE_FORMAT(created_at, "%M") as month, COUNT(*) as total')
+                ->groupBy('month')
+                ->orderBy('month', 'asc')
+                ->get();
 
-        $monthlyKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->selectRaw('DATE_FORMAT(created_at, "%M") as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->get();
-
-        return [
-            'labels' => $monthlyKits->pluck('month')->toArray(),
-            'data' => $monthlyKits->pluck('total')->toArray(),
-        ];
+            return [
+                'labels' => $monthlyKits->pluck('month')->toArray(),
+                'data' => $monthlyKits->pluck('total')->toArray(),
+            ];
+        }else{
+            return [
+                'labels' => [],
+                'data' => [],
+            ];
+        }
     }
 }
