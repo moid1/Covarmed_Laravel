@@ -89,16 +89,16 @@
 
 
                             @if (Auth::user()->user_type == 0)
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
-                                    <span>
-                                        Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
-                                </a>
-                                <ul class="list-unstyled">
-                                    <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
-                                    <li><a href="{{ route('kits.index') }}">All Kits</a></li>
-                                </ul>
-                            </li>
+                                <li class="has_sub">
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                        <span>
+                                            Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
+                                        <li><a href="{{ route('kits.index') }}">All Kits</a></li>
+                                    </ul>
+                                </li>
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
@@ -109,7 +109,7 @@
                                         <li><a href="{{ route('prevention.advisor.index') }}">All Advisors</a></li>
                                     </ul>
                                 </li>
-                                
+
 
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
@@ -121,8 +121,6 @@
                                         <li><a href="{{ route('company.index') }}">All Companies</a></li>
                                     </ul>
                                 </li>
-
-                                
                             @endif
 
                             <li>
@@ -199,7 +197,7 @@
                                 <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user"
                                     data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
-                                    Setting
+                                    My Account
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                     <a class="dropdown-item" href=""><i
