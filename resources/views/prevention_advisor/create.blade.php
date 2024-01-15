@@ -48,12 +48,12 @@
                                             </div>
                                         </div>
 
-                                        @if(!empty($companies))
-                                        <div class="col-lg-3 ">
-                                            <img class="img-fluid" style="float: right"
-                                                src="{{ env('DO_CDN_ENDPOINT')."/".$companies[0]->logo }}" alt=""
-                                                id="imagePlacement">
-                                        </div>
+                                        @if(!empty($companies) && count($companies))
+                                            <div class="col-lg-3 ">
+                                                <img class="img-fluid" style="float: right"
+                                                    src="{{ env('DO_CDN_ENDPOINT')."/".$companies[0]->logo }}" alt=""
+                                                    id="imagePlacement">
+                                            </div>
                                         @endif
 
 

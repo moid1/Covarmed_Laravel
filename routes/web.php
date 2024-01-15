@@ -47,6 +47,8 @@ Route::get('register-preventional-advisor/{id}', [PreventionAdvisorController::c
 Route::post('register-preventional-advisor', [PreventionAdvisorController::class, 'updateViaEmail'])->name('prevention.advisor.updateviamail');
 //kits
 Route::get('/kits', [KitsController::class, 'index'])->name('kits.index');
+Route::get('/kit/{id}', [KitsController::class, 'show'])->name('kits.show');
+Route::put('/kit', [KitsController::class, 'update'])->name('kits.update');
 Route::get('/add-kit', [KitsController::class, 'create'])->name('kits.create');
 Route::post('/kit', [KitsController::class, 'store'])->name('kits.store');
 // Route::get('/download-qr/{id}', [KitsController::class, 'downloadQR'])->name('kits.download.qr');

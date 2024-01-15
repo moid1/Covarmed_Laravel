@@ -76,7 +76,7 @@
                                         @foreach ($preventionalAdvisors as $preventionalAdvisor)
                                             
                                         <tr>
-                                            <td>{{$preventionalAdvisor->name}}</td>
+                                            <td>{{$preventionalAdvisor->user->name}}</td>
                                             <td>{{$preventionalAdvisor->user->email}}</td>
                                         </tr>
                                         @endforeach

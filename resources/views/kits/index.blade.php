@@ -48,9 +48,9 @@
                                         <tr>
                                             <td>{{ $kit->id }}</td>
                                             <td>{{ $kit->unique_code }}</td>
-                                            <td>{{ $kit->preventionAdvisor->name }}</td>
+                                            <td>{{ $kit->preventionAdvisor->user->name }}</td>
                                             <td><span class="badge badge-primary">Active</span></td>
-                                            <td><i class="mdi mdi-eye"></i> /
+                                            <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
                                                 <a href="{{ env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image }}" target="_blank"
                                                     download>
                                                     <i class="fa fa-qrcode"></i>

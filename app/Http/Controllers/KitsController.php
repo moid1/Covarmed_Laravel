@@ -31,7 +31,7 @@ class KitsController extends Controller
         $fileName = (string) Str::uuid();
         $folder = 'qrcodes';
         $qrCodeFilePath = "{$folder}/{$fileName}";
-        $absoluteUrl = url('incident-kit/'.$unique_code);
+        $absoluteUrl = url('incident-kit/' . $unique_code);
 
         Storage::disk('do')->put(
             "{$folder}/{$fileName}",
@@ -51,23 +51,44 @@ class KitsController extends Controller
             'unique_code' => ['required', 'string', 'max:255'],
             'prevention_advisor_id' => ['required'],
             'qr_image' => ['required'],
+            'name' => ['required'],
+            'address_1' => ['required'],
+            'city' => ['required'],
+            'postal_code' => ['required'],
+            'country' => ['required'],
+
         ]);
 
-        $kit = Kits::create([
-            'prevention_advisor_id' => $request->prevention_advisor_id,
-            'unique_code' => $request->unique_code,
-            'qr_image' => $request->qr_image
-        ]);
+        try {
+            $kit = Kits::create([
+                'prevention_advisor_id' => $request->prevention_advisor_id,
+                'unique_code' => $request->unique_code,
+                'qr_image' => $request->qr_image,
+                'name' => $request->name ?? 'N/A',
+                'address_1' => $request->address_1 ?? 'N/A',
+                'city' => $request->city ?? 'N/A',
+                'postal_code' => $request->postal_code ?? 'N/A',
+                'country' => $request->country ?? 'N/A'
 
-        return back()->with('success', 'Kit is created successfully');
+
+            ]);
+
+            return back()->with('success', 'Kit is created successfully');
+        } catch (\Throwable $th) {
+           dd($th);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Kits $kits)
+    public function show($id)
     {
-        //
+        $kit = Kits::find($id);
+        if($kit){
+            $preventionAdvisors = PreventionAdvisor::where('is_verified', true)->get();
+            return view('kits.show', compact('kit', 'preventionAdvisors'));
+        }
     }
 
     /**
@@ -81,9 +102,13 @@ class KitsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kits $kits)
+    public function update(Request $request)
     {
-        //
+        $kit = Kits::find($request->kit_id);
+        if($kit){
+            $kit->update($request->except(['unique_code', 'kit_id']));
+            return back()->with('success', 'Kit is updated successfully');
+        }
     }
 
     /**
@@ -113,13 +138,12 @@ class KitsController extends Controller
         return $code;
     }
 
-    public function downloadQR($id){
+    public function downloadQR($id)
+    {
         $kit = Kits::find($id);
-        if($kit){
+        if ($kit) {
             $qrPath = env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image;
             return response()->download($qrPath);
-
-
         }
     }
 }
