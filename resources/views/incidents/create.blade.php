@@ -55,13 +55,14 @@
                                 {{ Session::get('success') }}
                             </div>
                         @endif
-                        <img class="img-fluid" src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->logo}" }}"
+                        <img class="img-fluid" src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->company->logo}" }}"
                         alt="">
                         <h3 class="text-center mt-3">{{$kit->preventionAdvisor->company_name}}</h3>
                         <p class="text-center text-grey">Please enter the incident details</p>
                         <form action="{{route('incident.submit')}}" method="post">
                             @csrf
                             <input type="hidden" name="prevention_advisor_id" id="" value="{{$kit->preventionAdvisor->id}}">
+                            <input type="hidden" name="kit_id" id="" value="{{$kit->id}}">
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" name="employee_name" class="form-control" placeholder="Name" required/>

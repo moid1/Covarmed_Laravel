@@ -121,6 +121,17 @@
                                         <li><a href="{{ route('company.index') }}">All Companies</a></li>
                                     </ul>
                                 </li>
+
+                                <li class="has_sub">
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-note"></i>
+                                        <span>
+                                            Forms </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="{{ route('company.create') }}">Add Form</a></li>
+                                        <li><a href="{{ route('company.index') }}">All Forms</a></li>
+                                    </ul>
+                                </li>
                             @endif
 
                             <li>

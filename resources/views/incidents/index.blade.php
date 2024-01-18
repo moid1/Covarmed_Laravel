@@ -36,7 +36,9 @@
 
                                     <th>ID</th>
                                     <th>Employee Name</th>
+                                    <th>Kit Name</th>
                                     <th>Prevention Advisor</th>
+                                    <th>Company name</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -47,7 +49,9 @@
                                 <tr>
                                     <td>{{ $incident->id }}</td>
                                     <td>{{ $incident->employee_name }}</td>
-                                    <td>{{ $incident->preventionAdvisor->name }}</td>
+                                    <td>{{ $incident->kit->name }}</td>
+                                    <td>{{ $incident->preventionAdvisor->user->name }}</td>
+                                    <td>{{ $incident->preventionAdvisor->company->name }}</td>
                                     <td><a href=""><i class="mdi mdi-download text-primary"></i></a> / <a href=""><i
                                                 class="mdi mdi-eye"></i></a></td>
                                 </tr>

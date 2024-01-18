@@ -117,6 +117,12 @@
                                                     <p>Unique Code</p>
                                                     <p class="badge badge-primary">{{$kit->unique_code}}</p>
                                                 </div>
+
+                                                <div class="w-100 d-flex " style="justify-content: space-between">
+                                                    <p>Name</p>
+                                                    <p class="">{{$kit->name}}</p>
+                                                </div>
+                                                <a href="{{route('kits.show', $kit->id)}}" class="w-100 btn btn-success">Update</a>
                                             </div>
                                         </div>
                                     </div>

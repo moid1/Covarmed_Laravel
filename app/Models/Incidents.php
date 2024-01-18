@@ -14,4 +14,8 @@ class Incidents extends Model
     public function preventionAdvisor(){
         return $this->belongsTo(PreventionAdvisor::class);
     }
+
+    public function kit(){
+        return $this->belongsTo(Kits::class);
+    }
 }

@@ -36,6 +36,8 @@
 
                                         <th>ID</th>
                                         <th>Unique Code</th>
+                                        <th>Name</th>
+                                        <th>Company</th>
                                         <th>Prevention Advisor</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -48,6 +50,8 @@
                                         <tr>
                                             <td>{{ $kit->id }}</td>
                                             <td>{{ $kit->unique_code }}</td>
+                                            <td>{{ $kit->name }}</td>
+                                            <td>{{ $kit->preventionAdvisor->company->name }}</td>
                                             <td>{{ $kit->preventionAdvisor->user->name }}</td>
                                             <td><span class="badge badge-primary">Active</span></td>
                                             <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /

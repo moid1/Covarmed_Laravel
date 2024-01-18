@@ -81,7 +81,7 @@
 
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="text" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="" required/>
+                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="" required/>
                             </div>
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
