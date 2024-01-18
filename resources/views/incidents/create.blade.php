@@ -79,6 +79,10 @@
                             <div class="w-100 text-center">
                                 <button type="submit" class="w-100 btn btn-primary text-center">Submit</button>
                             </div>
+
+                            <div class="w-100 text-center mt-5">
+                                <img src="{{asset('logo.svg')}}" alt="">
+                            </div>
                         </form>
                     </div>
                 </div>
