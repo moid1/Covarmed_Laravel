@@ -35,6 +35,7 @@ class CompanyController extends Controller
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255', 'unique:companies'],
             'location' => ['required'],
+            'password' => ['required'],
             'logo' => ['required'],
         ]);
 
@@ -51,7 +52,8 @@ class CompanyController extends Controller
         Company::create([
             'name' => $request->name,
             'logo' => $folder . '/' . $fileName,
-            'location' => $request->location
+            'location' => $request->location,
+            'password' => $request->password
         ]);
 
 
@@ -96,6 +98,9 @@ class CompanyController extends Controller
             }
             $company->name = $request->name;
             $company->location = $request->location;
+            if($request->password){
+               $company->password = $request->password;
+            }
 
             $company->update();
             return back()->with('success', 'Company updated successfully');

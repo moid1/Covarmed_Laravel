@@ -19,7 +19,7 @@
                                     @csrf
                                     <div class="row">
                                         <input type="hidden" name="company_id" id="" value="{{$company->id}}">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Name</label>
                                                 <input id="name" type="text"
@@ -33,13 +33,27 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Location</label>
                                                 <input id="location" type="text"
                                                     class="form-control @error('location') is-invalid @enderror"
                                                     name="location" value="{{$company->location}}">
                                                 @error('location')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Password</label>
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror"
+                                                    name="password" value="{{ old('password') }}">
+                                                @error('password')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
