@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,7 +24,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('companies.create');
+        $questions = Question::all();
+        return view('companies.create', compact('questions'));
     }
 
     /**
@@ -37,6 +39,7 @@ class CompanyController extends Controller
             'location' => ['required'],
             'password' => ['required'],
             'logo' => ['required'],
+            'questions' => ['required'],
         ]);
 
         $file =  $request->file('logo');
@@ -53,7 +56,8 @@ class CompanyController extends Controller
             'name' => $request->name,
             'logo' => $folder . '/' . $fileName,
             'location' => $request->location,
-            'password' => $request->password
+            'password' => $request->password,
+            'questions' => implode(',', $request->questions),
         ]);
 
 

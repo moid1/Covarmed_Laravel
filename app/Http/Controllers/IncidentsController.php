@@ -79,6 +79,7 @@ class IncidentsController extends Controller
     public function createIncidentForm($code)
     {
         $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
+        dd($kit->preventionAdvisor->company->questions);
         if ($kit)
             return view('incidents.create', compact('kit'));
     }

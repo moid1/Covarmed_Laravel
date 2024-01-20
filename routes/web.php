@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\IncidentsController;
 use App\Http\Controllers\KitsController;
 use App\Http\Controllers\PreventionAdvisorController;
+use App\Http\Controllers\QuestionController;
 use App\Models\PreventionAdvisor;
 use Illuminate\Support\Facades\Route;
 
@@ -58,3 +59,8 @@ Route::get('/incidents', [IncidentsController::class,'index'])->name('incident.i
 
 Route::get('incident-kit/{code}', [IncidentsController::class, 'createIncidentForm'])->name('incident.createform');
 Route::post('submit-incident', [IncidentsController::class, 'submitIncident'])->name('incident.submit');
+
+//Questions
+Route::get('/questions', [QuestionController::class,'index'])->name('question.index');
+Route::post('/question', [QuestionController::class,'store'])->name('question.store');
+Route::get('/question', [QuestionController::class,'create'])->name('question.create');

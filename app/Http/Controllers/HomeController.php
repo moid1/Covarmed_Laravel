@@ -32,7 +32,7 @@ class HomeController extends Controller
         if (Auth::user()->user_type == 0) {
             $data = $this->getIncidentsReportedByMonth();
             $pieChartData = $this->getCompaniesNamesForIncidentsReported();
-            $preventionalAdvisors = PreventionAdvisor::latest()->limit(5)->get();
+            $preventionalAdvisors = PreventionAdvisor::latest()->where('is_verified', true)->limit(5)->get();
             $dashboardStats = $this->getDashboardStatsForAdmin();
             return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats'));
         } else if (Auth::user()->user_type == 1) {

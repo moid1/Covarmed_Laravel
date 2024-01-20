@@ -14,16 +14,15 @@
                                 </div>
                             @endif
                             <div class="p-20">
-                                <form action="{{ route('company.store') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('question.store') }}" method="POST"
+                                   >
                                     @csrf
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Question</label>
-                                                <input id="question" type="text"
-                                                    class="form-control @error('question') is-invalid @enderror" name="question"
-                                                    value="{{ old('question') }}" autofocus>
+                                                <textarea name="question" id="" class="form-control" cols="30" rows="2">
+                                                </textarea>
                                                 @error('question')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
