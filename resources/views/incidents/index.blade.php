@@ -2,69 +2,70 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 @section('content')
-<div class="page-content-wrapper ">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                @if (Session::has('success'))
-                <div class="alert alert-success" role="alert">
-                    {{ Session::get('success') }}
-                </div>
-                @endif
-            </div> <!-- end col -->
-        </div> <!-- end row -->
+    <div class="page-content-wrapper ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ Session::get('success') }}
+                        </div>
+                    @endif
+                </div> <!-- end col -->
+            </div> <!-- end row -->
 
-    </div><!-- container-fluid -->
-</div>
-
-
-
-{{-- DATATABLE --}}
+        </div><!-- container-fluid -->
+    </div>
 
 
-<div class="page-content-wrapper mt-5">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card m-b-20">
-                    <div class="card-body">
-                        <h4 class="mt-0 header-title">All Incidents</h4>
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
-                            width="100%">
-                            <thead>
-                                <tr>
 
-                                    <th>ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Kit Name</th>
-                                    <th>Prevention Advisor</th>
-                                    <th>Company name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+    {{-- DATATABLE --}}
 
 
-                            <tbody>
-                                @foreach ($incidents as $incident)
-                                <tr>
-                                    <td>{{ $incident->id }}</td>
-                                    <td>{{ $incident->employee_name }}</td>
-                                    <td>{{ $incident->kit->name }}</td>
-                                    <td>{{ $incident->preventionAdvisor->user->name }}</td>
-                                    <td>{{ $incident->preventionAdvisor->company->name }}</td>
-                                    <td><a href=""><i class="mdi mdi-download text-primary"></i></a> / <a href=""><i
-                                                class="mdi mdi-eye"></i></a></td>
-                                </tr>
-                                @endforeach
+    <div class="page-content-wrapper mt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title">All Incidents</h4>
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                                width="100%">
+                                <thead>
+                                    <tr>
+
+                                        <th>ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Kit Name</th>
+                                        <th>Prevention Advisor</th>
+                                        <th>Company name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
 
 
-                            </tbody>
-                        </table>
+                                <tbody>
+                                    @foreach ($incidents as $incident)
+                                        <tr>
+                                            <td>{{ $incident->id }}</td>
+                                            <td>{{ $incident->employee_name }}</td>
+                                            <td>{{ $incident->kit->name }}</td>
+                                            <td>{{ $incident->preventionAdvisor->user->name }}</td>
+                                            <td>{{ $incident->preventionAdvisor->company->name }}</td>
+                                            <td><a href=""><i class="mdi mdi-download text-primary"></i></a> / <a
+                                                    href="{{ route('incident.show', $incident->id) }}"><i
+                                                        class="mdi mdi-eye"></i></a></td>
+                                        </tr>
+                                    @endforeach
 
+
+                                </tbody>
+                            </table>
+
+                        </div>
                     </div>
-                </div>
-            </div> <!-- end col -->
-        </div> <!-- end row -->
-    </div><!-- container-fluid -->
-</div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div><!-- container-fluid -->
+    </div>
 @endsection

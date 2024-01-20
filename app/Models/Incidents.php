@@ -18,4 +18,8 @@ class Incidents extends Model
     public function kit(){
         return $this->belongsTo(Kits::class);
     }
+    
+    public function questionAnswers(){
+        return $this->hasMany(QuestionsAnswers::class, 'incident_id')->with('question');
+    }
 }

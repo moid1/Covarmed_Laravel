@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Incidents;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
+use App\Models\Question;
+use App\Models\QuestionsAnswers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,9 +49,10 @@ class IncidentsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Incidents $incidents)
+    public function show($id)
     {
-        //
+        $incident = Incidents::whereId($id)->with(['questionAnswers', 'preventionAdvisor', 'kit'])->first();
+        return view('incidents.show', compact('incident'));
     }
 
     /**
@@ -79,9 +82,15 @@ class IncidentsController extends Controller
     public function createIncidentForm($code)
     {
         $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
-        dd($kit->preventionAdvisor->company->questions);
+        $questionsString = $kit->preventionAdvisor->company->questions;
+        if ($questionsString) {
+            $questionValues = explode(',', $questionsString);
+            $questions = Question::whereIn('id', $questionValues)->get();
+        }
+        $companyPassword = $kit->preventionAdvisor->company->password;
+
         if ($kit)
-            return view('incidents.create', compact('kit'));
+            return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
     }
 
     public function submitIncident(Request $request)
@@ -89,11 +98,28 @@ class IncidentsController extends Controller
 
         $this->validate($request, [
             'employee_name' => ['required', 'string', 'max:255'],
-            'kit_use_reason' => ['required'],
-            'taken_from_kit' => ['required'],
         ]);
+        $incident = Incidents::create($request->only(['employee_name', 'prevention_advisor_id', 'kit_id']));
 
-        Incidents::create($request->all());
+        $kit = Kits::whereId($request->kit_id)->with('preventionAdvisor')->first();
+        if ($kit) {
+            $questionsString = $kit->preventionAdvisor->company->questions;
+            if ($questionsString) {
+                $questionValues = explode(',', $questionsString);
+                foreach ($questionValues as $key => $questionID) {
+                    $questionId = $request->input('question_' . $questionID);
+
+                    QuestionsAnswers::create([
+                        'incident_id' => $incident->id,
+                        'question_id' => $questionID,
+                        'answers' => $questionId
+                    ]);
+                }
+            }
+        }
+
+
+
         return back()->with('success', 'Your Incident is reported to preventional advisor');
     }
 }

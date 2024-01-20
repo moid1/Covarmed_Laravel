@@ -55,33 +55,39 @@
                                 {{ Session::get('success') }}
                             </div>
                         @endif
-                        <img class="img-fluid" src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->company->logo}" }}"
-                        alt="">
-                        <h3 class="text-center mt-3">{{$kit->preventionAdvisor->company_name}}</h3>
+                        <div class="w-100 text-center">
+                            <img class="img-fluid "
+                                src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->company->logo}" }}"
+                                alt="">
+                        </div>
+                        <h3 class="text-center mt-3">{{ $kit->preventionAdvisor->company->name }}</h3>
                         <p class="text-center text-grey">Please enter the incident details</p>
-                        <form action="{{route('incident.submit')}}" method="post">
+                        <form action="{{ route('incident.submit') }}" method="post">
                             @csrf
-                            <input type="hidden" name="prevention_advisor_id" id="" value="{{$kit->preventionAdvisor->id}}">
-                            <input type="hidden" name="kit_id" id="" value="{{$kit->id}}">
+                            <input type="hidden" name="prevention_advisor_id" id=""
+                                value="{{ $kit->preventionAdvisor->id }}">
+                            <input type="hidden" name="kit_id" id="" value="{{ $kit->id }}">
                             <div class="form-group">
                                 <label>Name</label>
-                                <input type="text" name="employee_name" class="form-control" placeholder="Name" required/>
+                                <input type="text" name="employee_name" class="form-control" placeholder="Name"
+                                    required />
                             </div>
 
-                            <div class="form-group">
-                                <label>Reason to use Kit</label>
-                                <textarea rows="2" class="form-control" name="kit_use_reason" id="" cols="30" rows="10" required></textarea>
-                            </div> 
-                            <div class="form-group">
-                                <label>Taken From Kit</label>
-                                <textarea rows="2" class="form-control" name="taken_from_kit" id="" cols="30" rows="10" required></textarea>
-                            </div>
+                            @foreach ($questions as $question)
+                                <div class="form-group">
+                                    <label>{{ $question->question }}</label>
+                                    <textarea rows="2" class="form-control" name="question_{{ $question->id }}" id="" cols="30"
+                                        rows="10" required></textarea>
+                                </div>
+                            @endforeach
+
+
                             <div class="w-100 text-center">
                                 <button type="submit" class="w-100 btn btn-primary text-center">Submit</button>
                             </div>
 
                             <div class="w-100 text-center mt-5">
-                                <img src="{{asset('logo.svg')}}" alt="">
+                                <img src="{{ asset('logo.svg') }}" alt="">
                             </div>
                         </form>
                     </div>
@@ -115,15 +121,43 @@
     <!-- App js -->
     <script src="{{ asset('dashboard/assets/js/app.js') }}"></script>
 
-    <script src="{{ asset('dashboard/assets/plugins/datatables/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
-
-    <!-- Datatable init js -->
-    <script src="{{ asset('dashboard/assets/pages/datatables.init.js') }}"></script>
 
     <!-- App js -->
     <script src="{{ asset('dashboard/') }}assets/js/app.js"></script>
     @yield('pageSpecificJs')
 </body>
+
+<script>
+    let password = @json($companyPassword);
+    var enteredPassword = window.prompt('Please enter the password:');
+    let attempts = 1;
+    let maxAttempts = 3;
+    function blockAccess() {
+        console.log('Maximum attempts reached. Blocking access.');
+        // Redirect to a blocked page or show an error message
+        window.location.href = '/blocked';
+    }
+
+    function authenticate() {
+        var enteredPassword = window.prompt('Please enter the password:');
+        
+        if (enteredPassword !== null && enteredPassword === password) {
+        } else {
+            // Increment the attempts
+            attempts++;
+
+            // If attempts are less than maxAttempts, prompt again
+            if (attempts < maxAttempts) {
+                authenticate();
+            } else {
+                // Block access after maxAttempts
+                blockAccess();
+            }
+        }
+    }
+
+    // Start the authentication process
+    authenticate();
+</script>
 
 </html>

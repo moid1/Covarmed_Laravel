@@ -1,4 +1,6 @@
 @extends('layouts.app')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 @section('content')
     <div class="page-content-wrapper ">
         <div class="container-fluid">
@@ -14,17 +16,16 @@
                                 </div>
                             @endif
                             <div class="p-20">
-                                <form action="{{ route('company.update') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('company.update') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <input type="hidden" name="company_id" id="" value="{{$company->id}}">
+                                        <input type="hidden" name="company_id" id="" value="{{ $company->id }}">
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Name</label>
                                                 <input id="name" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
-                                                    value="{{$company->name}}" autofocus>
+                                                    value="{{ $company->name }}" autofocus>
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -38,7 +39,7 @@
                                                 <label>Location</label>
                                                 <input id="location" type="text"
                                                     class="form-control @error('location') is-invalid @enderror"
-                                                    name="location" value="{{$company->location}}">
+                                                    name="location" value="{{ $company->location }}">
                                                 @error('location')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -78,8 +79,30 @@
                                         </div>
 
                                         <div class="col-lg-3 offset-md-3">
-                                            <img class="img-fluid" style="float: right" src="{{env('DO_CDN_ENDPOINT')."/".$company->logo}}" alt="" id="imagePlacement">
+                                            <img class="img-fluid" style="float: right"
+                                                src="{{ env('DO_CDN_ENDPOINT') . '/' . $company->logo }}" alt=""
+                                                id="imagePlacement">
 
+                                        </div>
+
+                                        @php
+                                            $alreadySelectedQuestions = explode(',', $company->questions);
+                                        @endphp
+
+                                        <div class="col-lg-12 mt-5">
+                                            <div class="form-group">
+                                                <label>Questions</label>
+                                                <select multiple="multiple" id="mySelect2" name="questions[]"
+                                                    class="js-example-basic-multiple form-control form-select form-select-lg mb-3"
+                                                    aria-label=".form-select-lg example">
+                                                    @foreach ($questions as $question)
+                                                        <option value="{{ $question->id }}" {{ in_array($question->id, $alreadySelectedQuestions) ? 'selected' : '' }}>
+                                                            {{ $question->question }}
+                                                        </option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
                                         </div>
 
 
@@ -111,6 +134,8 @@
 @endsection
 
 @section('pageSpecificJs')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -124,4 +149,11 @@
             }
         }
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        $('#mySelect2').find(':selected');
+    });
+</script>
 @endsection

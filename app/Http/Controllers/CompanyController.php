@@ -70,7 +70,8 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = Company::find($id);
-        return view('companies.show', compact('company'));
+        $questions = Question::all();
+        return view('companies.show', compact('company','questions'));
     }
 
     /**
@@ -101,10 +102,12 @@ class CompanyController extends Controller
                 $company->logo = $folder . '/' . $fileName;
             }
             $company->name = $request->name;
+            $company->questions = implode(',', $request->questions);
             $company->location = $request->location;
             if($request->password){
                $company->password = $request->password;
             }
+
 
             $company->update();
             return back()->with('success', 'Company updated successfully');

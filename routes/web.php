@@ -55,6 +55,7 @@ Route::post('/kit', [KitsController::class, 'store'])->name('kits.store');
 // Route::get('/download-qr/{id}', [KitsController::class, 'downloadQR'])->name('kits.download.qr');
 
 Route::get('/incidents', [IncidentsController::class,'index'])->name('incident.index');
+Route::get('/incident/{id}', [IncidentsController::class,'show'])->name('incident.show');
 
 
 Route::get('incident-kit/{code}', [IncidentsController::class, 'createIncidentForm'])->name('incident.createform');
