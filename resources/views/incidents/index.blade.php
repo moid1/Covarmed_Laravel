@@ -52,7 +52,7 @@
                                             <td>{{ $incident->kit->name }}</td>
                                             <td>{{ $incident->preventionAdvisor->user->name }}</td>
                                             <td>{{ $incident->preventionAdvisor->company->name }}</td>
-                                            <td><a href=""><i class="mdi mdi-download text-primary"></i></a> / <a
+                                            <td><a href="{{route('incident.export', $incident->id)}}"><i class="mdi mdi-download text-primary"></i></a> / <a
                                                     href="{{ route('incident.show', $incident->id) }}"><i
                                                         class="mdi mdi-eye"></i></a></td>
                                         </tr>

@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col-12">
                                 <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
@@ -77,6 +77,16 @@
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">Remember me</span>
                                 </label>
+                            </div>
+                        </div> --}}
+
+                        <div class="form-group row">
+                            <div class="col-md-4 offset-md-8">
+                                <div class="checkbox">
+                                    <label>
+                                        <a href="{{ route('forget.password.get') }}">Forgot Password</a>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

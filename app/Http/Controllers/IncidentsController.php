@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\IncidentFilledForm;
 use App\Models\Incidents;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
@@ -9,7 +10,7 @@ use App\Models\Question;
 use App\Models\QuestionsAnswers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Mail;
 class IncidentsController extends Controller
 {
     /**
@@ -100,7 +101,6 @@ class IncidentsController extends Controller
             'employee_name' => ['required', 'string', 'max:255'],
         ]);
         $incident = Incidents::create($request->only(['employee_name', 'prevention_advisor_id', 'kit_id']));
-
         $kit = Kits::whereId($request->kit_id)->with('preventionAdvisor')->first();
         if ($kit) {
             $questionsString = $kit->preventionAdvisor->company->questions;
@@ -116,10 +116,20 @@ class IncidentsController extends Controller
                     ]);
                 }
             }
+
+            $details = [
+                'link' =>route('incident.show', $incident->id)
+            ];
+            Mail::to($kit->preventionAdvisor->user->email)->send(new IncidentFilledForm($details));
         }
 
-
-
         return back()->with('success', 'Your Incident is reported to preventional advisor');
+    }
+
+    public function exportIncidentReport($id){
+        $incident = Incidents::whereId($id)->with(['questionAnswers', 'preventionAdvisor', 'kit'])->first();
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView('incidents.export', ['incident' => $incident]);
+         return $pdf->stream();
     }
 }

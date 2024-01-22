@@ -211,8 +211,8 @@
                                     My Account
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                                    <a class="dropdown-item" href=""><i
-                                            class="mdi mdi-account-circle m-r-5 text-muted"></i> Change Password</a>
+                                    <a class="dropdown-item" href="{{route('change-password')}}"><i
+                                        class="mdi mdi-account-circle m-r-5 text-muted"></i> Change Password</a>
                                     {{-- <a class="dropdown-item" href="#"><span
                                             class="badge badge-success pull-right">5</span><i
                                             class="mdi mdi-settings m-r-5 text-muted"></i> Settings</a>

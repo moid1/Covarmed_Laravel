@@ -130,7 +130,7 @@
 <script>
     let password = @json($companyPassword);
     var enteredPassword = window.prompt('Please enter the password:');
-    let attempts = 1;
+    let attempts = 0;
     let maxAttempts = 3;
     function blockAccess() {
         console.log('Maximum attempts reached. Blocking access.');
