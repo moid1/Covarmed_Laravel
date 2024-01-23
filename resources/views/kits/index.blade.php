@@ -48,12 +48,16 @@
                                 <tbody>
                                     @foreach ($kits as $kit)
                                         <tr>
-                                            <td>{{ $kit->id }}</td>
+                                            <td>10000{{ $kit->id }}</td>
                                             <td>{{ $kit->unique_code }}</td>
                                             <td>{{ $kit->name }}</td>
                                             <td>{{ $kit->preventionAdvisor->company->name }}</td>
                                             <td>{{ $kit->preventionAdvisor->user->name }}</td>
-                                            <td><span class="badge badge-primary">Active</span></td>
+                                            @if($kit->is_active)
+                                                <td><span class="badge badge-primary">Active</span></td>
+                                            @else
+                                                <td><span class="badge badge-secondary">In-Active</span></td>
+                                            @endif
                                             <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
                                                 <a href="{{ env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image }}" target="_blank"
                                                     download>

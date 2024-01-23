@@ -6,7 +6,11 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
+                            <div class="w-100 d-flex" style="justify-content: space-between">
                             <h4 class="mt-0 header-title">Update Kit</h4>
+                            <a href="{{route('kits.status', $kit->id)}}" class="btn btn-primary mb-3">{{$kit->is_active ? 'Inactive Kit' : 'Active Kit'}} </a>
+                        </div>
+                            
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
@@ -18,7 +22,15 @@
                                     @method('PUT')
                                     <input type="hidden" name="kit_id"  value="{{$kit->id}}">
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Company Name</label>
+                                                <input id="company" type="text"
+                                                    class="form-control @error('company') is-invalid @enderror"
+                                                    name="company" value="{{ $kit->preventionAdvisor->company->name }}" autofocus readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Unique ID</label>
                                                 <input id="unique_code" type="text"
@@ -32,7 +44,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Prevention Advisors</label>
                                                 <select id="" name="prevention_advisor_id"

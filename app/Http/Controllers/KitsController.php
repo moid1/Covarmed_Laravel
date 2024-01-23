@@ -75,7 +75,7 @@ class KitsController extends Controller
 
             return back()->with('success', 'Kit is created successfully');
         } catch (\Throwable $th) {
-           dd($th);
+            dd($th);
         }
     }
 
@@ -85,7 +85,7 @@ class KitsController extends Controller
     public function show($id)
     {
         $kit = Kits::find($id);
-        if($kit){
+        if ($kit) {
             $preventionAdvisors = PreventionAdvisor::where('is_verified', true)->get();
             return view('kits.show', compact('kit', 'preventionAdvisors'));
         }
@@ -105,7 +105,7 @@ class KitsController extends Controller
     public function update(Request $request)
     {
         $kit = Kits::find($request->kit_id);
-        if($kit){
+        if ($kit) {
             $kit->update($request->except(['unique_code', 'kit_id']));
             return back()->with('success', 'Kit is updated successfully');
         }
@@ -144,6 +144,18 @@ class KitsController extends Controller
         if ($kit) {
             $qrPath = env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image;
             return response()->download($qrPath);
+        }
+    }
+
+    public function updateKitStatus($id)
+    {
+        $kit = Kits::find($id);
+        if ($kit) {
+            $kit->is_active = !$kit->is_active;
+            $kit->update();
+            return back()->with('success', 'Kit Status has been changed successfully');
+        } else {
+            return back()->with('error', 'No Kit Found');
         }
     }
 }
