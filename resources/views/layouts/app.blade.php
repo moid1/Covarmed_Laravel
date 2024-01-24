@@ -138,8 +138,8 @@
                                             Questions </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('question.create') }}">Add Questions</a></li>
-                                        <li><a href="{{ route('question.index') }}">All Questions</a></li>
+                                        <li><a href="{{ route('question.create') }}">Add Form</a></li>
+                                        <li><a href="{{ route('question.index') }}">All Forms</a></li>
                                     </ul>
                                 </li>
                             @endif

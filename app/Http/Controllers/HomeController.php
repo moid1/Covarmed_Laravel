@@ -32,11 +32,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $distinctYears = DB::table('incidents')
+       
+        if (Auth::user()->user_type == 0) {
+            $distinctYears = DB::table('incidents')
             ->selectRaw('YEAR(created_at) as year')
             ->distinct()
             ->pluck('year');
-        if (Auth::user()->user_type == 0) {
             $data = $this->getIncidentsReportedByMonth();
             $pieChartData = $this->getCompaniesNamesForIncidentsReported();
             $preventionalAdvisors = PreventionAdvisor::latest()->where('is_verified', true)->limit(5)->get();
@@ -44,7 +45,13 @@ class HomeController extends Controller
             $companies = Company::where('is_active', true)->get();
             return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats', 'distinctYears', 'companies'));
         } else if (Auth::user()->user_type == 1) {
-            $data = $this->getIncidentsReportedByMonthPreventionAdvisor();
+            $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
+            $distinctYears = DB::table('incidents')
+            ->selectRaw('YEAR(created_at) as year')
+            ->where('prevention_advisor_id', $preventionAdvisorId->id)
+            ->distinct()
+            ->pluck('year');
+            $data = $this->getIncidentsReportedByMonthForPV();
             $dashboardStats = $this->getDashboardStatsForPreventionAdvisors();
             $pieChartData = $this->getTotalKitsByMonth();
             return view('prevention_dashboard.home', compact('data', 'dashboardStats', 'pieChartData', 'distinctYears'));
@@ -62,6 +69,45 @@ class HomeController extends Controller
         $monthlyIncidents = DB::table('incidents')
             ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
             ->whereYear('created_at', $currentYear)
+            ->groupBy('month')
+            ->orderByRaw('MIN(created_at) ASC')
+            ->get(['month', 'total']);
+
+        // Create a collection of all months
+        $allMonths = collect($months)->map(function ($month) use ($currentYear) {
+            return [
+                'month' => $month,
+                'total' => 0,
+            ];
+        });
+
+        // Merge the result with the collection of all months
+        $mergedData = $allMonths->mapWithKeys(function ($value, $key) use ($monthlyIncidents) {
+            $matchingIncident = $monthlyIncidents->firstWhere('month', $value['month']);
+
+            return [$key => $matchingIncident ? $matchingIncident : $value];
+        });
+
+        // Extract labels and data from the merged collection
+        return [
+            'labels' => $mergedData->pluck('month')->toArray(),
+            'data' => $mergedData->pluck('total')->toArray(),
+        ];
+    }
+
+    public function getIncidentsReportedByMonthForPV()
+    {
+        $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
+        $currentYear = date('Y');
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // Retrieve monthly incidents from the database
+        $monthlyIncidents = DB::table('incidents')
+            ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('prevention_advisor_id', $preventionAdvisorId->id)
             ->groupBy('month')
             ->orderByRaw('MIN(created_at) ASC')
             ->get(['month', 'total']);
