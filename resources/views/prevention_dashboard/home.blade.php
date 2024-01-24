@@ -69,7 +69,7 @@
 @section('pageSpecificJs')
 <script>
     var ctx = document.getElementById('barChart').getContext('2d');
-        var myChart = new Chart(ctx, {
+        var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: @json($data['labels']),
@@ -89,6 +89,22 @@
                 }
             }
         });
+
+        function updateChart(selectedYear) {
+            // Make an AJAX request to fetch data for the selected year
+            // Replace 'your-api-endpoint' with the actual endpoint to retrieve data based on the selected year
+            fetch(`/pv-chart-filter/${selectedYear}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update chart labels and data
+                    myBarChart.data.labels = data.labels;
+                    myBarChart.data.datasets[0].data = data.data;
+
+                    // Update the chart
+                    myBarChart.update();
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
 </script>
 
 <script>

@@ -59,8 +59,7 @@
                                                 <td><span class="badge badge-secondary">In-Active</span></td>
                                             @endif
                                             <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
-                                                <a href="{{ env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image }}" target="_blank"
-                                                    download>
+                                                <a href="{{ env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image }}" target="_blank" download>
                                                     <i class="fa fa-qrcode"></i>
                                                 </a>
                                             </td>

@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
@@ -17,8 +18,14 @@ class KitsController extends Controller
      */
     public function index()
     {
-        $kits = Kits::with('preventionAdvisor')->get();
-        return view('kits.index', compact('kits'));
+        if (Auth::user()->user_type == 0) {
+            $kits = Kits::with('preventionAdvisor')->get();
+            return view('kits.index', compact('kits'));
+        } else {
+            $pvId = PreventionAdvisor::where('user_id', Auth::id())->first();
+            $kits = Kits::with('preventionAdvisor')->where('prevention_advisor_id', $pvId->id)->get();
+            return view('kits.index', compact('kits'));
+        }
     }
 
     /**
@@ -36,11 +43,11 @@ class KitsController extends Controller
 
         $companies  = Company::where('is_active', true)->get();
 
-        // Storage::disk('do')->put(
-        //     "{$folder}/{$fileName}",
-        //     (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
-        //     'public'
-        // );
+        Storage::disk('do')->put(
+            "{$folder}/{$fileName}",
+            (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
+            'public'
+        );
 
         return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
     }
@@ -80,6 +87,10 @@ class KitsController extends Controller
     public function show($id)
     {
         $kit = Kits::find($id);
+        if (Auth::user()->user_type == 1) {
+            return view('kits.pv.show', compact('kit'));
+        }
+
         if ($kit) {
             $preventionAdvisors = PreventionAdvisor::where('is_verified', true)->get();
             return view('kits.show', compact('kit', 'preventionAdvisors'));

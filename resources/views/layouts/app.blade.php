@@ -93,6 +93,14 @@
                                     <span> Incidents </span>
                                 </a>
                             </li>
+                            @if (Auth::user()->user_type == 1)
+                                <li>
+                                    <a href="{{ route('kits.index') }}" class="waves-effect">
+                                        <i class="mdi mdi-hospital"></i>
+                                        <span> Kits </span>
+                                    </a>
+                                </li>
+                            @endif
 
 
 
@@ -135,7 +143,7 @@
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-note"></i>
                                         <span>
-                                            Questions </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            Forms </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
                                         <li><a href="{{ route('question.create') }}">Add Form</a></li>

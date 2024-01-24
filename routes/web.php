@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('chart-filter/{year}', [HomeController::class, 'getCompaniesIncidentByYear'])->name('chart.incidents.companies');
     Route::get('pie-chart-filter/{companyId}', [HomeController::class, 'getCompanyIncidentsReported'])->name('chart.incidents.company');
+    // PREVENTIONAL ADVISOR
+    Route::get('pv-chart-filter/{year}', [HomeController::class, 'getIncidentsReportedByMonthForPVForYear']);
 
     Route::get('preventional-advisors/{companyId}', [KitsController::class, 'getPreventionalAdvisorsForCompany']);
 });

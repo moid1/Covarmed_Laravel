@@ -51,14 +51,14 @@
                 <div class="card form-holder">
                     <div class="card-body">
                         @if (Session::has('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ Session::get('success') }}
-                            </div>
+                        <div class="alert alert-success" role="alert">
+                            {{ Session::get('success') }}
+                        </div>
                         @endif
                         <div class="w-100 text-center">
-                            <img class="img-fluid "
-                                src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->company->logo}" }}"
-                                alt="">
+                            <img class="img-fluid " src="{{ env('DO_CDN_ENDPOINT') . "
+                                /{$kit->preventionAdvisor->company->logo}" }}"
+                            alt="">
                         </div>
                         <h3 class="text-center mt-3">{{ $kit->preventionAdvisor->company->name }}</h3>
                         <p class="text-center text-grey">Please enter the incident details</p>
@@ -72,14 +72,15 @@
                                 <input type="text" name="employee_name" class="form-control" placeholder="Name"
                                     required />
                             </div>
-
-                            @foreach ($questions as $question)
-                                <div class="form-group">
-                                    <label>{{ $question->question }}</label>
-                                    <textarea rows="2" class="form-control" name="question_{{ $question->id }}" id="" cols="30"
-                                        rows="10" required></textarea>
-                                </div>
-                            @endforeach
+                            @if(!empty($questions))
+                                @foreach ($questions as $question)
+                                    <div class="form-group">
+                                        <label>{{ $question->question }}</label>
+                                        <textarea rows="2" class="form-control" name="question_{{ $question->id }}" id=""
+                                            cols="30" rows="10" required></textarea>
+                                    </div>
+                                @endforeach
+                            @endif
 
 
                             <div class="w-100 text-center">
@@ -129,7 +130,7 @@
 
 <script>
     let password = @json($companyPassword);
-    var enteredPassword = window.prompt('Please enter the password:');
+
     let attempts = 0;
     let maxAttempts = 3;
     function blockAccess() {
@@ -156,8 +157,10 @@
         }
     }
 
-    // Start the authentication process
-    authenticate();
+    if(password != null){
+        var enteredPassword = window.prompt('Please enter the password:');
+            authenticate();
+    }
 </script>
 
 </html>

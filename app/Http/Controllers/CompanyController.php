@@ -15,7 +15,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-       
+
 
         $companiesWithTotalActiveKits = Company::with('preventionalAdvisors.kits')
             ->get()
@@ -57,9 +57,7 @@ class CompanyController extends Controller
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255', 'unique:companies'],
             'location' => ['required'],
-            'password' => ['required'],
             'logo' => ['required'],
-            'questions' => ['required'],
         ]);
 
         $file =  $request->file('logo');
@@ -71,13 +69,16 @@ class CompanyController extends Controller
             file_get_contents($file),
             'public'
         );
-
+        $questions = null;
+        if ($request->questions) {
+            $questions = implode(',', $request->questions);
+        }
         Company::create([
             'name' => $request->name,
             'logo' => $folder . '/' . $fileName,
             'location' => $request->location,
             'password' => $request->password,
-            'questions' => implode(',', $request->questions),
+            'questions' => $questions ? implode(',', $request->questions) : null,
         ]);
 
 

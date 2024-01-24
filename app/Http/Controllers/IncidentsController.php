@@ -84,6 +84,7 @@ class IncidentsController extends Controller
     {
         $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
         $questionsString = $kit->preventionAdvisor->company->questions;
+        $questions =  null;
         if ($questionsString) {
             $questionValues = explode(',', $questionsString);
             $questions = Question::whereIn('id', $questionValues)->get();

@@ -134,6 +134,45 @@ class HomeController extends Controller
         ];
     }
 
+    public function getIncidentsReportedByMonthForPVForYear($year)
+    {
+        $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
+        $currentYear = $year;
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // Retrieve monthly incidents from the database
+        $monthlyIncidents = DB::table('incidents')
+            ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('prevention_advisor_id', $preventionAdvisorId->id)
+            ->groupBy('month')
+            ->orderByRaw('MIN(created_at) ASC')
+            ->get(['month', 'total']);
+
+        // Create a collection of all months
+        $allMonths = collect($months)->map(function ($month) use ($currentYear) {
+            return [
+                'month' => $month,
+                'total' => 0,
+            ];
+        });
+
+        // Merge the result with the collection of all months
+        $mergedData = $allMonths->mapWithKeys(function ($value, $key) use ($monthlyIncidents) {
+            $matchingIncident = $monthlyIncidents->firstWhere('month', $value['month']);
+
+            return [$key => $matchingIncident ? $matchingIncident : $value];
+        });
+
+        // Extract labels and data from the merged collection
+        return [
+            'labels' => $mergedData->pluck('month')->toArray(),
+            'data' => $mergedData->pluck('total')->toArray(),
+        ];
+    }
+
     public function getCompaniesNamesForIncidentsReported()
     {
         $currentYear = date('Y');
