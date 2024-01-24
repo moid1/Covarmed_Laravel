@@ -31,58 +31,74 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $distinctYears = DB::table('incidents')
+            ->selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->pluck('year');
         if (Auth::user()->user_type == 0) {
             $data = $this->getIncidentsReportedByMonth();
             $pieChartData = $this->getCompaniesNamesForIncidentsReported();
             $preventionalAdvisors = PreventionAdvisor::latest()->where('is_verified', true)->limit(5)->get();
             $dashboardStats = $this->getDashboardStatsForAdmin();
-            return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats'));
+            return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats', 'distinctYears'));
         } else if (Auth::user()->user_type == 1) {
             $data = $this->getIncidentsReportedByMonthPreventionAdvisor();
             $dashboardStats = $this->getDashboardStatsForPreventionAdvisors();
             $pieChartData = $this->getTotalKitsByMonth();
-            return view('prevention_dashboard.home', compact('data', 'dashboardStats', 'pieChartData'));
+            return view('prevention_dashboard.home', compact('data', 'dashboardStats', 'pieChartData', 'distinctYears'));
         }
     }
 
     public function getIncidentsReportedByMonth()
     {
-        $monthlyIncidents = Incidents::selectRaw('CONCAT(YEAR(created_at), "-", DATE_FORMAT(created_at, "%M")) as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->get();
-        return [
-            'labels' => $monthlyIncidents->pluck('month')->toArray(),
-            'data' => $monthlyIncidents->pluck('total')->toArray(),
+        $currentYear = date('Y');
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
         ];
-    }
 
-    public function getIncidentsReportedByMonthPreventionAdvisor()
-    {
-        $preventionAdvisor = PreventionAdvisor::whereUserId(Auth::id())->first();
-        if ($preventionAdvisor) {
-            $monthlyIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->selectRaw('CONCAT(YEAR(created_at), "-", DATE_FORMAT(created_at, "%M")) as month, COUNT(*) as total')
-                ->groupBy('month')
-                ->orderBy('month', 'asc')
-                ->get();
+        // Retrieve monthly incidents from the database
+        $monthlyIncidents = DB::table('incidents')
+            ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('month')
+            ->orderByRaw('MIN(created_at) ASC')
+            ->get(['month', 'total']);
+
+        // Create a collection of all months
+        $allMonths = collect($months)->map(function ($month) use ($currentYear) {
             return [
-                'labels' => $monthlyIncidents->pluck('month')->toArray(),
-                'data' => $monthlyIncidents->pluck('total')->toArray(),
+                'month' => $month,
+                'total' => 0,
             ];
-        } else {
-            return [
-                'labels' => [],
-                'data' => [],
-            ];
-        }
+        });
+
+        // Merge the result with the collection of all months
+        $mergedData = $allMonths->mapWithKeys(function ($value, $key) use ($monthlyIncidents) {
+            $matchingIncident = $monthlyIncidents->firstWhere('month', $value['month']);
+
+            return [$key => $matchingIncident ? $matchingIncident : $value];
+        });
+
+        // Extract labels and data from the merged collection
+        return [
+            'labels' => $mergedData->pluck('month')->toArray(),
+            'data' => $mergedData->pluck('total')->toArray(),
+        ];
     }
 
     public function getCompaniesNamesForIncidentsReported()
     {
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+
         $companyIncidents = Incidents::join('prevention_advisors', 'incidents.prevention_advisor_id', '=', 'prevention_advisors.id')
-            ->select('prevention_advisors.company_id as company', DB::raw('COUNT(*) as total'))
+            ->join('companies', 'prevention_advisors.company_id', '=', 'companies.id')
+            ->whereYear('incidents.created_at', $currentYear)
+            ->whereMonth('incidents.created_at', $currentMonth)
+            ->select('companies.name as company', DB::raw('COUNT(*) as total'))
             ->groupBy('company')
             ->get();
+
         return [
             'labels' => $companyIncidents->pluck('company')->toArray(),
             'data' => $companyIncidents->pluck('total')->toArray(),
@@ -132,7 +148,7 @@ class HomeController extends Controller
                 'labels' => $monthlyKits->pluck('month')->toArray(),
                 'data' => $monthlyKits->pluck('total')->toArray(),
             ];
-        }else{
+        } else {
             return [
                 'labels' => [],
                 'data' => [],
@@ -166,5 +182,42 @@ class HomeController extends Controller
         ]);
 
         return back()->with("status", "Password changed successfully!");
+    }
+
+    function getCompaniesIncidentByYear($year)
+    {
+        $currentYear = $year;
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // Retrieve monthly incidents from the database
+        $monthlyIncidents = DB::table('incidents')
+            ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('month')
+            ->orderByRaw('MIN(created_at) ASC')
+            ->get(['month', 'total']);
+
+        // Create a collection of all months
+        $allMonths = collect($months)->map(function ($month) use ($currentYear) {
+            return [
+                'month' => $month,
+                'total' => 0,
+            ];
+        });
+
+        // Merge the result with the collection of all months
+        $mergedData = $allMonths->mapWithKeys(function ($value, $key) use ($monthlyIncidents) {
+            $matchingIncident = $monthlyIncidents->firstWhere('month', $value['month']);
+
+            return [$key => $matchingIncident ? $matchingIncident : $value];
+        });
+
+        // Extract labels and data from the merged collection
+        return [
+            'labels' => $mergedData->pluck('month')->toArray(),
+            'data' => $mergedData->pluck('total')->toArray(),
+        ];
     }
 }

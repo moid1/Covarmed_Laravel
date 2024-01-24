@@ -37,6 +37,8 @@
                                         <th>ID</th>
                                         <th>Company Name</th>
                                         <th>Location</th>
+                                        <th>Active PV</th>
+                                        <th>Active Qrs</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -49,6 +51,8 @@
                                             <td>{{ $company->id }}</td>
                                             <td>{{ $company->name }}</td>
                                             <td>{{ $company->location }}</td>
+                                            <td>{{ $company->preventionalAdvisors? $company->preventionalAdvisors->count() : 0 }}</td>
+                                            <td></td>
                                             @if ($company->is_active)
                                                 <td> <span class="badge badge-primary">Active</span></td>
                                             @else

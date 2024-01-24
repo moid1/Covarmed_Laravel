@@ -10,4 +10,8 @@ class Company extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function preventionalAdvisors(){
+        return $this->hasMany(PreventionAdvisor::class);
+    }
 }

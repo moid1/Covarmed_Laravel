@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
     Route::post('/change-password', [HomeController::class, 'updatePassword'])->name('update-password');
+
+    Route::get('chart-filter/{year}', [HomeController::class, 'getCompaniesIncidentByYear'])->name('chart.incidents.companies');
 });
 
 Route::get('incident-kit/{code}', [IncidentsController::class, 'createIncidentForm'])->name('incident.createform');
