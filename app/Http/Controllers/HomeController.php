@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Incidents;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
@@ -40,7 +41,8 @@ class HomeController extends Controller
             $pieChartData = $this->getCompaniesNamesForIncidentsReported();
             $preventionalAdvisors = PreventionAdvisor::latest()->where('is_verified', true)->limit(5)->get();
             $dashboardStats = $this->getDashboardStatsForAdmin();
-            return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats', 'distinctYears'));
+            $companies = Company::where('is_active', true)->get();
+            return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats', 'distinctYears', 'companies'));
         } else if (Auth::user()->user_type == 1) {
             $data = $this->getIncidentsReportedByMonthPreventionAdvisor();
             $dashboardStats = $this->getDashboardStatsForPreventionAdvisors();
@@ -99,6 +101,26 @@ class HomeController extends Controller
             ->groupBy('company')
             ->get();
 
+        return [
+            'labels' => $companyIncidents->pluck('company')->toArray(),
+            'data' => $companyIncidents->pluck('total')->toArray(),
+        ];
+    }
+
+    public function getCompanyIncidentsReported($companyID)
+    {
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+        
+        $companyIncidents = Incidents::join('prevention_advisors', 'incidents.prevention_advisor_id', '=', 'prevention_advisors.id')
+            ->join('companies', 'prevention_advisors.company_id', '=', 'companies.id')
+            ->where('prevention_advisors.company_id', $companyID) // Add this line for filtering by company_id
+            ->whereYear('incidents.created_at', $currentYear)
+            ->whereMonth('incidents.created_at', $currentMonth)
+            ->select('companies.name as company', DB::raw('COUNT(*) as total'))
+            ->groupBy('company')
+            ->get();
+        
         return [
             'labels' => $companyIncidents->pluck('company')->toArray(),
             'data' => $companyIncidents->pluck('total')->toArray(),

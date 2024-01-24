@@ -87,18 +87,27 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('incident.index') }}" class="waves-effect">
+                                    <i class="mdi mdi-file"></i>
+                                    <span> Incidents </span>
+                                </a>
+                            </li>
+
+
 
                             @if (Auth::user()->user_type == 0)
                                 <li class="has_sub">
-                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
                                         <span>
-                                            Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            Companies </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
-                                        <li><a href="{{ route('kits.index') }}">All Kits</a></li>
+                                        <li><a href="{{ route('company.create') }}">Add Company</a></li>
+                                        <li><a href="{{ route('company.index') }}">All Companies</a></li>
                                     </ul>
                                 </li>
+
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
@@ -112,15 +121,16 @@
 
 
                                 <li class="has_sub">
-                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
                                         <span>
-                                            Companies </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('company.create') }}">Add Company</a></li>
-                                        <li><a href="{{ route('company.index') }}">All Companies</a></li>
+                                        <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
+                                        <li><a href="{{ route('kits.index') }}">All Kits</a></li>
                                     </ul>
                                 </li>
+
 
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-note"></i>
@@ -134,12 +144,6 @@
                                 </li>
                             @endif
 
-                            <li>
-                                <a href="{{ route('incident.index') }}" class="waves-effect">
-                                    <i class="mdi mdi-file"></i>
-                                    <span> Incidents </span>
-                                </a>
-                            </li>
 
                         </ul>
                     </div>
@@ -211,8 +215,9 @@
                                     My Account
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                                    <a style="margin-left:-16px" class="dropdown-item" href="{{route('change-password')}}"><i
-                                        class="mdi mdi-account-circle m-r-5 text-muted"></i> Change Password</a>
+                                    <a style="margin-left:-16px" class="dropdown-item"
+                                        href="{{ route('change-password') }}"><i
+                                            class="mdi mdi-account-circle m-r-5 text-muted"></i> Change Password</a>
                                     {{-- <a class="dropdown-item" href="#"><span
                                             class="badge badge-success pull-right">5</span><i
                                             class="mdi mdi-settings m-r-5 text-muted"></i> Settings</a>

@@ -68,6 +68,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/change-password', [HomeController::class, 'updatePassword'])->name('update-password');
 
     Route::get('chart-filter/{year}', [HomeController::class, 'getCompaniesIncidentByYear'])->name('chart.incidents.companies');
+    Route::get('pie-chart-filter/{companyId}', [HomeController::class, 'getCompanyIncidentsReported'])->name('chart.incidents.company');
+
+    Route::get('preventional-advisors/{companyId}', [KitsController::class, 'getPreventionalAdvisorsForCompany']);
 });
 
 Route::get('incident-kit/{code}', [IncidentsController::class, 'createIncidentForm'])->name('incident.createform');

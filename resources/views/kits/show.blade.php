@@ -77,7 +77,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input id="" type="text"
+                                                <input id="autocomplete" type="text"
                                                     class="form-control @error('address_1') is-invalid @enderror"
                                                     name="address_1" value="{{$kit->address_1}}" autofocus>
                                                 @error('address_1')
@@ -87,45 +87,9 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('city') is-invalid @enderror" name="city"
-                                                    value="{{$kit->city}}" autofocus>
-                                                @error('city')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>Postal Code</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('postal_code') is-invalid @enderror"
-                                                    name="postal_code" value="{{$kit->postal_code}}" autofocus>
-                                                @error('postal_code')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('country') is-invalid @enderror"
-                                                    name="country" value="{{$kit->country}}" autofocus>
-                                                @error('country')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        
+                                       
+                                      
 
 
                                         <div class="col-lg-12 mt-5">
@@ -156,4 +120,21 @@
 
 
     </div>
+@endsection
+
+<script type="text/javascript"
+src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places" ></script>
+@section('pageSpecificJs')
+<script>
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function initialize() {
+        var input = document.getElementById('autocomplete');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+    }
+</script>
 @endsection

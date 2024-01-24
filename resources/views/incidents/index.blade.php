@@ -35,10 +35,9 @@
                                     <tr>
 
                                         <th>ID</th>
-                                        <th>Employee Name</th>
+                                        <th>Company name</th>
                                         <th>Kit Name</th>
                                         <th>Prevention Advisor</th>
-                                        <th>Company name</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -48,10 +47,9 @@
                                     @foreach ($incidents as $incident)
                                         <tr>
                                             <td>{{ $incident->id }}</td>
-                                            <td>{{ $incident->employee_name }}</td>
+                                            <td>{{ $incident->preventionAdvisor->company->name }}</td>
                                             <td>{{ $incident->kit->name }}</td>
                                             <td>{{ $incident->preventionAdvisor->user->name }}</td>
-                                            <td>{{ $incident->preventionAdvisor->company->name }}</td>
                                             <td><a href="{{route('incident.export', $incident->id)}}"><i class="mdi mdi-download text-primary"></i></a> / <a
                                                     href="{{ route('incident.show', $incident->id) }}"><i
                                                         class="mdi mdi-eye"></i></a></td>

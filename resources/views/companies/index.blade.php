@@ -34,11 +34,10 @@
                                 <thead>
                                     <tr>
 
-                                        <th>ID</th>
                                         <th>Company Name</th>
                                         <th>Location</th>
                                         <th>Active PV</th>
-                                        <th>Active Qrs</th>
+                                        <th>Active QRs</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -46,21 +45,20 @@
 
 
                                 <tbody>
-                                    @foreach ($companies as $company)
+                                    @foreach ($companiesWithTotalActiveKits as $company)
                                         <tr>
-                                            <td>{{ $company->id }}</td>
-                                            <td>{{ $company->name }}</td>
-                                            <td>{{ $company->location }}</td>
-                                            <td>{{ $company->preventionalAdvisors? $company->preventionalAdvisors->count() : 0 }}</td>
-                                            <td></td>
-                                            @if ($company->is_active)
+                                            <td>{{ $company['company_name'] }}</td>
+                                            <td>{{ $company['location'] }}</td>
+                                            <td>{{ $company['total_preventional_advisors'] }}</td>
+                                            <td>{{ $company['total_active_kits'] }}</td>
+                                            @if ($company['is_active'])
                                                 <td> <span class="badge badge-primary">Active</span></td>
                                             @else
                                                 <td> <span class="badge badge-warning">Deactive</span></td>
                                             @endif
 
-                                                <td><a href="{{route('company.show', $company->id)}}"> <i class="mdi mdi-eye"></i></a>
-                                                    / <a style="text-decoration: none;color:blue" href="{{route('company.update.status', $company->id)}}" title="Change Company Status"> <i class="mdi mdi-note"></i></a>
+                                                <td><a href="{{route('company.show', $company['id'])}}"> <i class="mdi mdi-eye"></i></a>
+                                                    / <a style="text-decoration: none;color:blue" href="{{route('company.update.status', $company['id'])}}" title="Change Company Status"> <i class="mdi mdi-note"></i></a>
                                                     
                                                 </td>
                                         </tr>

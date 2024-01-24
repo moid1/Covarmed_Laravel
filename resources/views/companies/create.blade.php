@@ -19,7 +19,7 @@
                                 <form action="{{ route('company.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Name</label>
                                                 <input id="name" type="text"
@@ -33,13 +33,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4">
+
+
+                                        <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Location</label>
-                                                <input id="location" type="text"
-                                                    class="form-control @error('location') is-invalid @enderror"
-                                                    name="location" value="{{ old('location') }}">
-                                                @error('location')
+                                                <label>Password</label>
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror"
+                                                    name="password" value="{{ old('password') }}">
+                                                @error('password')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -47,13 +49,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>Password</label>
-                                                <input id="password" type="password"
-                                                    class="form-control @error('password') is-invalid @enderror"
-                                                    name="password" value="{{ old('password') }}">
-                                                @error('password')
+                                                <label>Location</label>
+                                                <input id="location" type="text"
+                                                    class="form-control @error('location') is-invalid @enderror"
+                                                    name="location" value="{{ old('location') }}">
+                                                @error('location')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -124,10 +126,22 @@
 
     </div>
 @endsection
-
+<script type="text/javascript"
+    src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places"></script>
 @section('pageSpecificJs')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
 
+        function initialize() {
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+            });
+        }
+    </script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {

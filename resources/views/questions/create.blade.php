@@ -14,15 +14,14 @@
                                 </div>
                             @endif
                             <div class="p-20">
-                                <form action="{{ route('question.store') }}" method="POST"
-                                   >
+                                <form action="{{ route('question.store') }}" method="POST">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Question</label>
-                                                <textarea name="question" id="" class="form-control" cols="30" rows="2">
-                                                </textarea>
+                                                <textarea name="question" id="" class="form-control" cols="30" rows="2"
+                                                    placeholder="Please add question"></textarea>
                                                 @error('question')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -57,4 +56,3 @@
 
     </div>
 @endsection
-

@@ -15,8 +15,28 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::with('preventionalAdvisors')->get();
-        return view('companies.index', compact('companies'));
+       
+
+        $companiesWithTotalActiveKits = Company::with('preventionalAdvisors.kits')
+            ->get()
+            ->map(function ($company) {
+                $totalActiveKits = $company->preventionalAdvisors->flatMap(function ($advisor) {
+                    return $advisor->kits;
+                })->where('is_active', true)->count();
+
+                return [
+                    'id' => $company->id,
+                    'company_name' => $company->name,
+                    'location' => $company->location,
+                    'total_active_kits' => $totalActiveKits,
+                    'total_preventional_advisors' => $company->preventionalAdvisors->count(),
+                    'is_active' => $company->is_active
+                ];
+            });
+
+        // $companies = Company::with('preventionalAdvisors')->get();
+
+        return view('companies.index', compact('companiesWithTotalActiveKits'));
     }
 
     /**
@@ -71,7 +91,7 @@ class CompanyController extends Controller
     {
         $company = Company::find($id);
         $questions = Question::all();
-        return view('companies.show', compact('company','questions'));
+        return view('companies.show', compact('company', 'questions'));
     }
 
     /**
@@ -104,8 +124,8 @@ class CompanyController extends Controller
             $company->name = $request->name;
             $company->questions = implode(',', $request->questions);
             $company->location = $request->location;
-            if($request->password){
-               $company->password = $request->password;
+            if ($request->password) {
+                $company->password = $request->password;
             }
 
 
@@ -122,9 +142,10 @@ class CompanyController extends Controller
         //
     }
 
-    public function updateCompanyStatus($id){
+    public function updateCompanyStatus($id)
+    {
         $company = Company::find($id);
-        if($company){
+        if ($company) {
             $company->is_active = !$company->is_active;
             $company->update();
             return back()->with('success', 'Company Status changed successfully');

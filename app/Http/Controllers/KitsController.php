@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
 use Illuminate\Http\Request;
@@ -33,13 +34,15 @@ class KitsController extends Controller
         $qrCodeFilePath = "{$folder}/{$fileName}";
         $absoluteUrl = url('incident-kit/' . $unique_code);
 
-        Storage::disk('do')->put(
-            "{$folder}/{$fileName}",
-            (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
-            'public'
-        );
+        $companies  = Company::where('is_active', true)->get();
 
-        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath'));
+        // Storage::disk('do')->put(
+        //     "{$folder}/{$fileName}",
+        //     (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
+        //     'public'
+        // );
+
+        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
     }
 
     /**
@@ -53,9 +56,6 @@ class KitsController extends Controller
             'qr_image' => ['required'],
             'name' => ['required'],
             'address_1' => ['required'],
-            'city' => ['required'],
-            'postal_code' => ['required'],
-            'country' => ['required'],
 
         ]);
 
@@ -66,11 +66,6 @@ class KitsController extends Controller
                 'qr_image' => $request->qr_image,
                 'name' => $request->name ?? 'N/A',
                 'address_1' => $request->address_1 ?? 'N/A',
-                'city' => $request->city ?? 'N/A',
-                'postal_code' => $request->postal_code ?? 'N/A',
-                'country' => $request->country ?? 'N/A'
-
-
             ]);
 
             return back()->with('success', 'Kit is created successfully');
@@ -157,5 +152,11 @@ class KitsController extends Controller
         } else {
             return back()->with('error', 'No Kit Found');
         }
+    }
+
+    public function getPreventionalAdvisorsForCompany($companyId)
+    {
+        $preventionalAdvisors = PreventionAdvisor::where('company_id', $companyId)->with('user')->get();
+        return $preventionalAdvisors;
     }
 }

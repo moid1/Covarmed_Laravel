@@ -13,11 +13,11 @@
                                 </div>
                             @endif
                             <div class="p-20">
-                                <form action="{{ route('kits.store') }}" method="POST"
-                                  >
+                                <p class="font-weight-bold">Kit Details</p>
+                                <form action="{{ route('kits.store') }}" method="POST">
                                     @csrf
                                     <div class="row">
-                                        <input type="hidden" name="qr_image" value="{{$qrCodeFilePath}}">
+                                        <input type="hidden" name="qr_image" value="{{ $qrCodeFilePath }}">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Unique ID</label>
@@ -34,16 +34,30 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
+                                                <label>Company</label>
+                                                <select id="" name="company"
+                                                    class="form-control form-select form-select-lg mb-3"
+                                                    aria-label=".form-select-lg example"
+                                                    onchange="updatePreventionalAdvisors(this.value)">
+                                                    <option value="" selected>Please select Company
+                                                    </option>
+                                                    @foreach ($companies as $company)
+                                                        <option value="{{ $company->id }}">
+                                                            {{ ucfirst($company->name) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 " id="preventionalAdvisorSelection">
+                                            <div class="form-group">
                                                 <label>Prevention Advisors</label>
-                                                <select id="" name="prevention_advisor_id"
+                                                <select id="sss" name="prevention_advisor_id"
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
                                                     <option value="" selected>Please select Prevention Advisor
                                                     </option>
-                                                    @foreach ($preventionAdvisors as $preventionAdvisor)
-                                                        <option value="{{ $preventionAdvisor->id }}">
-                                                            {{ ucfirst($preventionAdvisor->user->name) }}</option>
-                                                    @endforeach
+                                                   
                                                 </select>
                                             </div>
                                         </div>
@@ -52,62 +66,25 @@
                                             <div class="form-group">
                                                 <label>Name</label>
                                                 <input id="" type="text"
-                                                    class="form-control @error('name') is-invalid @enderror"
-                                                    name="name" value="" autofocus >
+                                                    class="form-control @error('name') is-invalid @enderror" name="name"
+                                                    value="" autofocus>
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
+                                        </div> 
+                                        <div class="col-lg-12">
+                                            <p class="font-weight-bold">Location</p>
                                         </div>
-
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input id="" type="text"
+                                                <input id="autocomplete" type="text"
                                                     class="form-control @error('address_1') is-invalid @enderror"
-                                                    name="address_1" value="" autofocus >
+                                                    name="address_1" value="" autofocus>
                                                 @error('address_1')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('city') is-invalid @enderror"
-                                                    name="city" value="" autofocus >
-                                                @error('city')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>Postal Code</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('postal_code') is-invalid @enderror"
-                                                    name="postal_code" value="" autofocus >
-                                                @error('postal_code')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input id="" type="text"
-                                                    class="form-control @error('country') is-invalid @enderror"
-                                                    name="country" value="" autofocus >
-                                                @error('country')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -144,4 +121,49 @@
 
 
     </div>
+@endsection
+<script type="text/javascript"
+src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places" ></script>
+@section('pageSpecificJs')
+<script>
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function initialize() {
+        var input = document.getElementById('autocomplete');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+        });
+    }
+</script>
+    <script>
+        function updatePreventionalAdvisors(companyId) {
+            // Make an AJAX request to fetch data for the selected year
+            // Replace 'your-api-endpoint' with the actual endpoint to retrieve data based on the selected year
+            fetch(`/preventional-advisors/${companyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    $('#preventionalAdvisorSelection').removeClass('d-none')
+                    const selectElement = document.getElementById('sss');
+
+                    // Check if the select element exists
+                    if (selectElement) {
+                        // Clear existing options
+                        selectElement.innerHTML = '';
+
+                        // Add new options based on the data received
+                        data.forEach(preventionAdvisor => {
+                            const option = document.createElement('option');
+                            option.value = preventionAdvisor.id;
+                            option.text = preventionAdvisor.user.name;
+                            selectElement.appendChild(option);
+                        });
+                    } else {
+                        console.error('Select element not found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
 @endsection
