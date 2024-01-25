@@ -56,8 +56,7 @@
                         </div>
                         @endif
                         <div class="w-100 text-center">
-                            <img class="img-fluid " src="{{ env('DO_CDN_ENDPOINT') . "
-                                /{$kit->preventionAdvisor->company->logo}" }}"
+                            <img class="img-fluid " src="{{ env('DO_CDN_ENDPOINT')."/{$kit->preventionAdvisor->company->logo}" }}"
                             alt="">
                         </div>
                         <h3 class="text-center mt-3">{{ $kit->preventionAdvisor->company->name }}</h3>
