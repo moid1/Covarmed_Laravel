@@ -192,14 +192,15 @@ class HomeController extends Controller
         ];
     }
 
-    public function getCompanyIncidentsReported($companyID)
+    public function getCompanyIncidentsReported(Request $request)
     {
+        $companyIds = $request->companyIds;
         $currentYear = date('Y');
         $currentMonth = date('m');
         
         $companyIncidents = Incidents::join('prevention_advisors', 'incidents.prevention_advisor_id', '=', 'prevention_advisors.id')
             ->join('companies', 'prevention_advisors.company_id', '=', 'companies.id')
-            ->where('prevention_advisors.company_id', $companyID) // Add this line for filtering by company_id
+            ->whereIn('prevention_advisors.company_id', $companyIds) // Add this line for filtering by company_id
             ->whereYear('incidents.created_at', $currentYear)
             ->whereMonth('incidents.created_at', $currentMonth)
             ->select('companies.name as company', DB::raw('COUNT(*) as total'))

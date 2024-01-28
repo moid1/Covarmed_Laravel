@@ -1,5 +1,6 @@
 @extends('layouts.app')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 @section('content')
     <div class="page-content-wrapper ">
@@ -58,9 +59,8 @@
                 <div class="col-lg-6">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <select class=" " name="companies" id="companies"
-                                style="float: right" onchange="updatePieChart(this.value)">
-                                <option value="" disabled selected>Company</option>
+                            <select style="justify-content: right" class="fo w-50  js-example-basic-multiple " multiple="multiple" name="companies[]"
+                                id="companies" style="" onchange="updatePieChart(this.value)">
                                 @foreach ($companies as $company)
                                     <option value="{{ $company->id }}">{{ $company->name }}</option>
                                 @endforeach
@@ -112,8 +112,13 @@
 
     </div>
 @endsection
-
 @section('pageSpecificJs')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
     <script>
         var ctx = document.getElementById('barChart').getContext('2d');
         var myBarChart = new Chart(ctx, {
@@ -181,10 +186,24 @@
             },
         });
 
-        function updatePieChart(companyId) {
+        function updatePieChart() {
+            const selectedValues = $('#companies').val();
+            const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
             // Make an AJAX request to fetch data for the selected year
             // Replace 'your-api-endpoint' with the actual endpoint to retrieve data based on the selected year
-            fetch(`/pie-chart-filter/${companyId}`)
+            const params = {
+                companyIds: selectedValues,
+            };
+            fetch(`/pie-chart-filter`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken, // Include the CSRF token in the headers
+
+                    },
+                    body: JSON.stringify(params),
+                })
                 .then(response => response.json())
                 .then(data => {
                     // Update chart labels and data
