@@ -27,6 +27,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('register-preventional-advisor/{id}', [PreventionAdvisorController::class, 'showRegisterFormViaMail'])->name('prevention.advisor.showregisterformviamail');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/company', [CompanyController::class, 'create'])->name('company.create');
@@ -44,7 +45,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/prevention-advisor/{id}', [PreventionAdvisorController::class, 'update'])->name('prevention.advisor.update');
     Route::get('/delete-preventional-advisor/{id}', [PreventionAdvisorController::class, 'destroy'])->name('prevention.advisor.delete');
 
-    Route::get('register-preventional-advisor/{id}', [PreventionAdvisorController::class, 'showRegisterFormViaMail'])->name('prevention.advisor.showregisterformviamail');
     Route::post('register-preventional-advisor', [PreventionAdvisorController::class, 'updateViaEmail'])->name('prevention.advisor.updateviamail');
     //kits
     Route::get('/kits', [KitsController::class, 'index'])->name('kits.index');
