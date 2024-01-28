@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/add-kit', [KitsController::class, 'create'])->name('kits.create');
     Route::post('/kit', [KitsController::class, 'store'])->name('kits.store');
     Route::get('kit-status/{id}', [KitsController::class, 'updateKitStatus'])->name('kits.status');
+    Route::get('download-qr/{id}', [KitsController::class, 'downloadQr'])->name('kit.qr.download');
+    Route::get('export-kits', [KitsController::class, 'exportKits'])->name('export.kits');
 
     Route::get('/incidents', [IncidentsController::class, 'index'])->name('incident.index');
     Route::get('/incident/{id}', [IncidentsController::class, 'show'])->name('incident.show');

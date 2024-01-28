@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportKits;
 use App\Models\Company;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KitsController extends Controller
 {
@@ -144,14 +147,6 @@ class KitsController extends Controller
         return $code;
     }
 
-    public function downloadQR($id)
-    {
-        $kit = Kits::find($id);
-        if ($kit) {
-            $qrPath = env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image;
-            return response()->download($qrPath);
-        }
-    }
 
     public function updateKitStatus($id)
     {
@@ -169,5 +164,31 @@ class KitsController extends Controller
     {
         $preventionalAdvisors = PreventionAdvisor::where('company_id', $companyId)->with('user')->get();
         return $preventionalAdvisors;
+    }
+
+    public function downloadQr($kitId)
+    {
+        $kit = Kits::find($kitId);
+        if ($kit) {
+            $output = file_get_contents(env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image);
+            $pdfPath = time() . '.svg';
+            $headers = [
+                'Content-Type' => 'application/octet-stream',
+                'Content-Disposition' => 'attachment; filename=' . $pdfPath,
+            ];
+            // Return the response with the file contents and headers
+            return Response::make($output, 200, $headers)->withHeaders([
+                'Cache-Control' => 'private',
+                'Content-Type' => 'application/octet-stream',
+                'Content-Disposition' => 'attachment; filename=' . $pdfPath,
+            ]);
+
+            return redirect('/');
+        }
+    }
+
+    public function exportKits()
+    {
+        return Excel::download(new ExportKits, 'kits.xlsx');
     }
 }

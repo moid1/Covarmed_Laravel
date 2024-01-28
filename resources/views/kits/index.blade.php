@@ -29,6 +29,7 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">All Kits</h4>
+                           <a href="{{route('export.kits')}}" class="btn btn-primary float-right">Export Kits</a>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
@@ -48,7 +49,7 @@
                                 <tbody>
                                     @foreach ($kits as $kit)
                                         <tr>
-                                            <td>10000{{ $kit->id }}</td>
+                                            <td>{{ $kit->id }}</td>
                                             <td>{{ $kit->unique_code }}</td>
                                             <td>{{ $kit->name }}</td>
                                             <td>{{ $kit->preventionAdvisor->company->name }}</td>
@@ -59,7 +60,7 @@
                                                 <td><span class="badge badge-secondary">In-Active</span></td>
                                             @endif
                                             <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
-                                                <a href="{{ env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image }}" target="_blank" download>
+                                                <a href="{{route('kit.qr.download', $kit->id)}}" >
                                                     <i class="fa fa-qrcode"></i>
                                                 </a>
                                             </td>

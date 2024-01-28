@@ -69,6 +69,7 @@
                                                 <label>Logo</label>
                                                 <input id="logo" type="file" onchange="readURL(this);"
                                                     class=" @error('logo') is-invalid @enderror" name="logo">
+                                                    <p class="text-danger">*Preferred png format</p>
 
                                                 @error('logo')
                                                     <span class="invalid-feedback" role="alert">

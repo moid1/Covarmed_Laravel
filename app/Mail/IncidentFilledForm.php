@@ -29,7 +29,7 @@ class IncidentFilledForm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Incident Filled Form',
+            subject: 'New incident form available - Covarmed',
         );
     }
 

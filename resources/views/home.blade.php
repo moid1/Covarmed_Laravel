@@ -58,7 +58,7 @@
                 <div class="col-lg-6">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <select class="form-control " name="companies" id="companies"
+                            <select class=" " name="companies" id="companies"
                                 style="float: right" onchange="updatePieChart(this.value)">
                                 <option value="" disabled selected>Company</option>
                                 @foreach ($companies as $company)

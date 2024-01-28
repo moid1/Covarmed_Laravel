@@ -74,9 +74,16 @@
 
 
 
-                                <div class="col-lg-12 mt-5">
-                                    <p>Here is your QR code for the KIT</p>
-                                    <img src="{{ env('DO_CDN_ENDPOINT') }}/{{ $kit->qr_image }}" alt="">
+                                <div class="w-100">
+                                    <div class="text-left">
+                                    <div class="col-lg-12">
+                                        <p>Here is your QR code for the KIT</p>
+                                        <img src="{{ env('DO_CDN_ENDPOINT') }}/{{ $kit->qr_image }}"
+                                            alt="">
+                                    </div>
+                                    <a href="{{ route('kit.qr.download', $kit->id) }}"
+                                        class=" btn btn-success mt-3 ml-5">Download</a>
+                                    </div>
                                 </div>
 
 
