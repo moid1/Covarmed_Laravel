@@ -43,6 +43,7 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <div style="margin: auto;">
+                                @if(!empty($distinctYears) && count($distinctYears))
                                 <select class="" name="year" id="year" style="float: right"
                                     onchange="updateChart(this.value)">
                                     <!-- Populate dropdown with available years -->
@@ -50,8 +51,10 @@
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach
                                 </select>
-
                                 <canvas id="barChart"></canvas>
+                                @else
+                                <h5>No Data Available</h5>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -59,16 +62,19 @@
                 <div class="col-lg-6">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <select style="justify-content: right" class="fo w-50  js-example-basic-multiple " multiple="multiple" name="companies[]"
-                                id="companies" style="" onchange="updatePieChart(this.value)">
-                                @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
-                            <div style="width: 50%; margin: auto;">
-
-                                <canvas id="pieChart"></canvas>
-                            </div>
+                            @if(!empty($companies) && count($companies))
+                                <select style="justify-content: right" class="fo w-50  js-example-basic-multiple " multiple="multiple" name="companies[]"
+                                    id="companies" style="" onchange="updatePieChart(this.value)">
+                                    @foreach ($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div style="width: 50%; margin: auto;">
+                                    <canvas id="pieChart"></canvas>
+                                </div>
+                            @else
+                                <h5>No Data Available</h5>
+                            @endif
                         </div>
                     </div>
                 </div>
