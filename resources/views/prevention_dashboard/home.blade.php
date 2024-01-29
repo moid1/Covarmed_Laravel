@@ -34,15 +34,18 @@
                 <div class="card m-b-20">
                     <div class="card-body">
                         <div style="margin: auto;">
-                            <select class="" name="year" id="year" style="float: right"
-                            onchange="updateChart(this.value)">
-                            <!-- Populate dropdown with available years -->
-                            @foreach ($distinctYears as $year)
-                                <option value="{{ $year }}">{{ $year }}</option>
-                            @endforeach
-                        </select>
-
-                            <canvas id="barChart"></canvas>
+                            @if(!empty($distinctYears) && count($distinctYears))
+                                <select class="" name="year" id="year" style="float: right"
+                                onchange="updateChart(this.value)">
+                                <!-- Populate dropdown with available years -->
+                                    @foreach ($distinctYears as $year)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                                <canvas id="barChart"></canvas>
+                            @else
+                                <h5>No Data Available</h5>
+                            @endif
                         </div>
                     </div>
                 </div>
