@@ -62,7 +62,7 @@ class HomeController extends Controller
     {
         $currentYear = date('Y');
         $months = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            trans('January'), trans('February'), trans('March'), trans('April'), trans('May'), trans('June'), trans('July'), trans('August'), trans('September'), trans('October'), trans('November'), trans('December')
         ];
 
         // Retrieve monthly incidents from the database

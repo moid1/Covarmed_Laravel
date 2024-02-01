@@ -28,17 +28,17 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">All Incidents</h4>
+                            <h4 class="mt-0 header-title">{{__('All Incidents')}}</h4>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
                                     <tr>
 
                                         <th>ID</th>
-                                        <th>Company name</th>
-                                        <th>Kit Name</th>
-                                        <th>Prevention Advisor</th>
-                                        <th>Actions</th>
+                                        <th>{{__('Company name')}}</th>
+                                        <th>{{__('First-aid Kit Name')}}</th>
+                                        <th>{{__('Prevention Advisor')}}</th>
+                                        <th>{{__('Actions')}}</th>
                                     </tr>
                                 </thead>
 
