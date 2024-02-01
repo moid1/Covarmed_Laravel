@@ -28,16 +28,16 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">All Prevention Advisors</h4>
+                        <h4 class="mt-0 header-title">{{__('All Prevention Advisors')}}</h4>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
                             <thead>
                                 <tr>
 
-                                    <th>Name</th>
-                                    <th>Company Name</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>{{__('Name')}}</th>
+                                    <th>{{__('Company Name')}}</th>
+                                    <th>{{__('Status')}}</th>
+                                    <th>{{__('Actions')}}</th>
                                 </tr>
                             </thead>
 

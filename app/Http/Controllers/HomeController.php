@@ -100,7 +100,7 @@ class HomeController extends Controller
         $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
         $currentYear = date('Y');
         $months = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            trans('January'), trans('February'), trans('March'), trans('April'), trans('May'), trans('June'), trans('July'), trans('August'), trans('September'), trans('October'), trans('November'), trans('December')
         ];
 
         // Retrieve monthly incidents from the database
@@ -139,7 +139,7 @@ class HomeController extends Controller
         $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
         $currentYear = $year;
         $months = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            trans('January'), trans('February'), trans('March'), trans('April'), trans('May'), trans('June'), trans('July'), trans('August'), trans('September'), trans('October'), trans('November'), trans('December')
         ];
 
         // Retrieve monthly incidents from the database
@@ -296,9 +296,8 @@ class HomeController extends Controller
     {
         $currentYear = $year;
         $months = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            trans('January'), trans('February'), trans('March'), trans('April'), trans('May'), trans('June'), trans('July'), trans('August'), trans('September'), trans('October'), trans('November'), trans('December')
         ];
-
         // Retrieve monthly incidents from the database
         $monthlyIncidents = DB::table('incidents')
             ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')

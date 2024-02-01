@@ -242,10 +242,10 @@
                                 </div>
                             </li>
 
-                            <li>
+                            {{-- <li>
                 @include('partials/language_switcher')
 
-                            </li>
+                            </li> --}}
 
                         </ul>
 

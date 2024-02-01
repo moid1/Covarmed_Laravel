@@ -78,7 +78,7 @@ class KitsController extends Controller
                 'address_1' => $request->address_1 ?? 'N/A',
             ]);
 
-            return back()->with('success', 'Kit is created successfully');
+            return back()->with('success', trans('First-aid Kit created succesfully'));
         } catch (\Throwable $th) {
             dd($th);
         }

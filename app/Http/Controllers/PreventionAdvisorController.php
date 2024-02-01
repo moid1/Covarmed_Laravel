@@ -63,7 +63,7 @@ class PreventionAdvisorController extends Controller
             ];
             Mail::to($request->email)->send(new RegisterPreventionalAdvisor($details));
 
-            return back()->with('success', 'Verification link send to preventional advisor');
+            return back()->with('success', trans('Verification link send to the prevention advisor'));
         }
     }
 
@@ -96,7 +96,7 @@ class PreventionAdvisorController extends Controller
             if ($user) {
                 $user->update(['name' => $request->name]);
             }
-            return back()->with('success', 'Data has been updated successfully');
+            return back()->with('success', 'Advisor succesfully updated');
         }
     }
 

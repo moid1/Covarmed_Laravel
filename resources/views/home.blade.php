@@ -126,13 +126,14 @@
         });
     </script>
     <script>
+          const totalReportsLabel = @json(__('Total Reports'));
         var ctx = document.getElementById('barChart').getContext('2d');
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: @json($data['labels']),
                 datasets: [{
-                    label: 'Total Reports',
+                    label: totalReportsLabel,
                     data: @json($data['data']),
                     backgroundColor: 'rgba(17, 145, 194, 0.6)',
                     borderColor: 'rgba(33, 66, 106, 1)',

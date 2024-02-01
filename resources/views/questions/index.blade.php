@@ -28,14 +28,14 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">All Questions</h4>
+                        <h4 class="mt-0 header-title">{{__('All forms')}}</h4>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
                             <thead>
                                 <tr>
 
                                     <th>ID</th>
-                                    <th>Question</th>
+                                    <th>{{__('Question')}}</th>
                                 </tr>
                             </thead>
 
