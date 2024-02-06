@@ -37,7 +37,7 @@ class KitsController extends Controller
     public function create()
     {
         $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-        $unique_code = $this->generateUniqueCode();
+        $unique_code = 'hrYSoFLE';
 
         $fileName = (string) Str::uuid();
         $folder = 'qrcodes';
