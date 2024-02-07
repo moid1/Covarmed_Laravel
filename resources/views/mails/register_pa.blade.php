@@ -11,4 +11,4 @@
 
 <p> Please do not answer this email. Any questions can be directed to <a href="mailto:info@covarmed.be">info@covarmed.be.</a></p>
 
-<img src="https://covarmed.sfo3.cdn.digitaloceanspaces.com/logo.png" alt="" srcset="">
+<img height="50" src="https://covarmed.sfo3.cdn.digitaloceanspaces.com/logo.png" alt="" srcset="">
