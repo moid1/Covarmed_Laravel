@@ -39,7 +39,7 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12 text-center">
                     <div class="card m-b-20">
                         <div class="card-body">
                             <div style="margin: auto;">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                {{-- <div class="col-lg-6">
                     <div class="card m-b-20">
                         <div class="card-body">
                             @if(!empty($companies) && count($companies))
@@ -77,7 +77,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="row">
