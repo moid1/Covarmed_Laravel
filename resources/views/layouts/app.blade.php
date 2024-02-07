@@ -157,7 +157,7 @@
                     </div>
                 @endif
                 <div class="text-center">
-                    <p class="w-100" style="bottom: 30;position: absolute;">©️ 2024 Covarmed BV</p>
+                    <p class="w-100" style="bottom: 70px;position: absolute;">©️ 2024 Covarmed BV</p>
                 </div>
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
