@@ -53,7 +53,7 @@
             <div class="topbar-left">
                 <div class="text-center mt-5">
                     <!--<a href="index.html" class="logo">Admiry</a>-->
-                    <a href="{{ url('/') }}" class="logo"><img src="{{ asset('logo.svg') }}" height="42"
+                    <a href="{{ url('/') }}" class="logo"><img src="{{ asset('logo.svg') }}" height="70"
                             alt="logo"></a>
                 </div>
             </div>
