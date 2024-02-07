@@ -156,6 +156,9 @@
                         </ul>
                     </div>
                 @endif
+                <div class="w-100 text-center">
+                    <p class="w-100" style="bottom: 20px;position: absolute;">©️ 2024 Covarmed BV</p>
+                </div>
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
         </div>
@@ -258,7 +261,6 @@
                         <div class="clearfix"></div>
 
                     </nav>
-
                 </div>
                 <!-- Top Bar End -->
                 @yield('content')
@@ -266,9 +268,9 @@
 
             </div> <!-- content -->
 
-            <footer class="footer">
+            {{-- <footer class="footer">
                 ©️ 2024 Covarmed BV - Co-authored by studiofives.
-            </footer>
+            </footer> --}}
 
         </div>
         <!-- End Right content here -->
