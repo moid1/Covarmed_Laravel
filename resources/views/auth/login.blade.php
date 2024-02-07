@@ -32,7 +32,7 @@
 
                 <h3 class="text-center mt-0 m-b-15">
                     <a href="{{ url('/') }}" class="logo logo-admin"><img src="{{ asset('logo.svg') }}"
-                            height="54" alt="logo"></a>
+                            height="100" alt="logo"></a>
                 </h3>
 
                 <h4 class="text-muted text-center font-18"><b>Sign In</b></h4>
