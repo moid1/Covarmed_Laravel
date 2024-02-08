@@ -115,7 +115,7 @@ class KitsController extends Controller
     {
         $kit = Kits::find($request->kit_id);
         if ($kit) {
-            $kit->update($request->except(['unique_code', 'kit_id']));
+            $kit->update($request->except(['unique_code', 'kit_id', 'company']));
             return back()->with('success', 'Kit is updated successfully');
         }
     }

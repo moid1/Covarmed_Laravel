@@ -6,5 +6,5 @@
 <p>Kind Regards</p>
 <p>Covarmed</p>
 
-<img src="https://covarmed.sfo3.cdn.digitaloceanspaces.com/logo.png" alt="" srcset="">
+<img height="50" src="https://covarmed.sfo3.cdn.digitaloceanspaces.com/logo.png" alt="" srcset="">
 
