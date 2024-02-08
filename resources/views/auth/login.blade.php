@@ -25,11 +25,6 @@
    
     <!-- Begin page -->
     {{-- <div class="accountbg"></div> --}}
-    <div class="mr-3" >
-        <div class="row justify-content-end mt-3">
-            @include('partials/language_switcher')
-        </div>
-    </div>
     <div class="wrapper-page">
        
         <div class="card">
@@ -85,8 +80,13 @@
                             </div>
                         </div> --}}
 
+
+
                         <div class="form-group row">
-                            <div class="col-md-4 offset-md-8">
+                                <div class="col-md-5">
+                                    @include('partials/language_switcher')
+                                </div>
+                            <div class="col-md-4 offset-md-3">
                                 <div class="checkbox">
                                     <label>
                                         <a href="{{ route('forget.password.get') }}">{{__('Forgot Password')}}</a>

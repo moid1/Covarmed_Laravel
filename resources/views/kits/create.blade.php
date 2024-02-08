@@ -39,7 +39,7 @@
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example"
                                                     onchange="updatePreventionalAdvisors(this.value)">
-                                                    <option value="" selected>{{__('Please select a Company')}}
+                                                    <option value="" selected>{{__('Please select a company')}}
                                                     </option>
                                                     @foreach ($companies as $company)
                                                         <option value="{{ $company->id }}">
@@ -55,7 +55,7 @@
                                                 <select id="sss" name="prevention_advisor_id"
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
-                                                    <option value="" selected>{{__('Please select a Prevention Advisor')}}
+                                                    <option value="" selected>{{__('Please select a prevention advisor')}}
                                                     </option>
                                                    
                                                 </select>

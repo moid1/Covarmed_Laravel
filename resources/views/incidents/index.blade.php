@@ -33,7 +33,7 @@
                                 width="100%">
                                 <thead>
                                     <tr>
-
+                                        <th>{{__('Date')}}</th>
                                         <th>ID</th>
                                         <th>{{__('Company name')}}</th>
                                         <th>{{__('First-aid Kit Name')}}</th>
@@ -46,6 +46,7 @@
                                 <tbody>
                                     @foreach ($incidents as $incident)
                                         <tr>
+                                            <td>{{$incident->created_at->format('m/d/Y')}}</td>
                                             <td>{{ $incident->id }}</td>
                                             <td>{{ $incident->preventionAdvisor->company->name }}</td>
                                             <td>{{ $incident->kit->name }}</td>

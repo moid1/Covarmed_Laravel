@@ -15,7 +15,7 @@
     <select class="form-control" onchange="changeLanguage(this.value)" name="language-picker-select" id="language-picker-select">
         @foreach($available_locales as $locale_name => $available_locale)
         <option value="{{$available_locale}}" {{$available_locale==$current_locale ? 'selected' : '' }}>
-            {{ $available_locale}}</option>
+            {{ __($locale_name)}}</option>
         @endforeach
     </select>
 </div>

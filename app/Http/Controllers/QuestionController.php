@@ -31,7 +31,7 @@ class QuestionController extends Controller
     {
         Question::create($request->all());
 
-        return back()->with('success', 'Question added successfully');
+        return back()->with('success', trans('Question added succesfully, please edit the correct company to the question'));
     }
 
     /**

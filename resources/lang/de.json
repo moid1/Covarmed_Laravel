@@ -1,8 +1,8 @@
 {
     "Sign In": "Aanmelden",
-    "Enter Email": "Adresse Email",
+    "Enter Email": "Emailadres",
     "Enter Password": "Wachtwoord",
-    "Forgot Password": "Mot de passe oublié",
+    "Forgot Password": "Wachtwoord vergeten",
     "My account": "Mijn account",
     "Change Password": "Wachtwoord wijzigen",
     "Log Out": "Se déconnecter",
@@ -18,7 +18,7 @@
     "All First-aid Kits": "Alle EHBO koffers",
     "Forms": "Formulieren",
     "Add Form": "Formulier toevoegen",
-    "All Forms": "TAlle formulieren",
+    "All Forms": "Alle formulieren",
     "Total Prevention Advisors": "Totaal Preventie Adviseurs",
     "Total First-aid Kits": "Totaal EHBO koffers",
     "Total Incidents": "Totaal incidenten",
@@ -78,5 +78,6 @@
     "Export First-aid Kits": "EHBO koffers exporteren",
     "Please fill in a question":"Vul de toe te voegen vraag in.",
     "Add a form question":"Formuliervraag toevoegen",
-    "Question":"Vragen"
+    "Question":"Vragen",
+    "Question added succesfully, please edit the correct company to the question":"De vraag werd toegevoegd, link het met het juiste bedrijf"
 }

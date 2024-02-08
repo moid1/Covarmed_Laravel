@@ -121,8 +121,8 @@ return [
     */
     'available_locales' => [
         'English' => 'en',
-        'Dutch' => 'de',
-        'French' => 'fr',
+        'Nederlands' => 'de',
+        'Français' => 'fr',
     ],
 
     /*

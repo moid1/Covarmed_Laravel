@@ -154,11 +154,16 @@
 
 
                         </ul>
+                      
                     </div>
                 @endif
-                <div class="text-center">
-                    <p class="w-100" style="bottom: 70px;position: absolute;">©️ 2024 Covarmed BV</p>
+                <div class="d-flex justify-content-center align-items-center w-100" style="position: absolute;bottom:100;">
+                    @include('partials/language_switcher')
                 </div>
+                <div class="text-center">
+                    <p class="w-100" style="bottom: 50px;position: absolute;">©️ 2024 Covarmed BV</p>
+                </div>
+               
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
         </div>
@@ -223,7 +228,7 @@
                                 <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user"
                                     data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
-                                    {{__('My Account')}}
+                                    {{__('My account')}}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                     <a style="margin-left:-16px" class="dropdown-item"

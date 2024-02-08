@@ -1,8 +1,8 @@
 {
     "Sign In": "Se Connecter",
-    "Enter Email": "Emailadres",
+    "Enter Email": "Adresse Email",
     "Enter Password": "Mot de passe",
-    "Forgot Password": "Wachtwoord vergeten",
+    "Forgot Password": "Mot de passe oublié",
     "My account": "Mon compte",
     "Change Password": "Modifier le mot de passe",
     "Log Out": "Afmelden",
@@ -78,6 +78,7 @@
     "Export First-aid Kits": "Exporter les coffrets de premiers secours",
     "Please fill in a question":"Remplissez également la question à ajouter.",
     "Add a form question":"Ajouter une question de formulaire",
-    "Question":"Question"
+    "Question":"Question",
+    "Question added succesfully, please edit the correct company to the question":"La question a été ajoutée, liez-la avex la bonne entreprise"
 
 }

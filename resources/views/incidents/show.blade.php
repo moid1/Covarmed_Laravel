@@ -6,6 +6,10 @@
                 <div class="col-12 ">
                     <div class="card m-b-20">
                         <div class="card-body">
+                            <p class="font-weight-bold">{{$incident->created_at->format('m/d/Y')}}</p>
+                            <div class="text-right">
+                                <a class="btn btn-primary" href="{{route('incident.export', $incident->id)}}">Export</a>
+                            </div>
                             <div class="user-details">
                                 <h4 class="mt-0 header-title">{{__('User Details')}}</h4>
                                 <div class="p-20 ">

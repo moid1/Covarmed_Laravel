@@ -19,7 +19,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>Question</label>
+                                                <label>{{__('Question')}}</label>
                                                 <textarea name="question" id="" class="form-control" cols="30" rows="2"
                                                     placeholder="{{__('Please fill in a question')}}"></textarea>
                                                 @error('question')
