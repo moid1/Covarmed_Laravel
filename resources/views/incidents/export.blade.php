@@ -141,10 +141,18 @@
                                 <h4 class="mt-0 header-title">Questions & Answers </h4>
                                 <div class="p-20 ">
                                     @foreach ($incident->questionAnswers as $question)
+                                    <?php
+                                    $contentArray = json_decode($question->question->content, true);
+                                        if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                            $label = $contentArray[0]['label'];
+                                        }else{
+                                            $label = '';
+                                        }
+                                    ?>
                                         <div class="row ">
                                             <div class="col-6">
                                                 <div class="employe-name">
-                                                    <p class="font-weight-bold">{{ $question->question->question }}</p>
+                                                    <p class="font-weight-bold">{{ $label }}</p>
                                                 </div>
                                             </div>
 

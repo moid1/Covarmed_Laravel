@@ -89,7 +89,7 @@
                                             case 'select':
                                                 $fieldValue = $contentArray[0]['values'];
                                                 echo '<div class="form-group">
-                                                    <label>'.__('Company Name').'</label>
+                                                    <label>'.__($label).'</label>
                                                     <select name="question_'.$question->id.'" class="form-control">';
                                                         foreach ($fieldValue as $fV) {
                                                             echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
@@ -98,9 +98,23 @@
                                                 </div>';
                                                 break;
 
-                                            case 'text'
+                                            case 'text':
+                                                echo '<div class="form-group">
+                                                    <label>'.__($label).'</label>
+                                                    <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
+                                                break;
 
-                                            break;
+                                            case 'checkbox-group':
+                                                $fieldValue = $contentArray[0]['values'];
+                                                echo '<div class="form-group">
+                                                    <label>'.__($label).'</label>';
+                                                        foreach ($fieldValue as $option) {
+                                                            echo '<div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
+                                                                    <label class="form-check-label">'.$option['label'].'</label>
+                                                                </div>';
+                                                        }
+                                                echo '</div>';
 
                                             
                                             default:
@@ -114,7 +128,7 @@
                             @endif
 
 
-                            <div class="w-100 text-center">
+                            <div class="w-100 text-center mt-5">
                                 <button type="submit" class="w-100 btn btn-primary text-center">Submit</button>
                             </div>
 

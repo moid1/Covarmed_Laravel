@@ -19,9 +19,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>{{__('Question')}}</label>
-                                                <textarea name="question" id="" class="form-control" cols="30" rows="2"
-                                                    placeholder="{{__('Please fill in a question')}}"></textarea>
+                                               
                                                      <div id="fb-editor"></div>
                                                 @error('question')
                                                     <span class="invalid-feedback" role="alert">
@@ -35,16 +33,7 @@
 
 
 
-                                       <!--  <div class="col-lg-12 text-center">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    {{__('Submit')}}
-                                                </button>
-                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    {{__('Cancel')}}
-                                                </button>
-                                            </div>
-                                        </div> -->
+                                      
                                 </form>
                             </div>
 
@@ -65,7 +54,6 @@
     jQuery(function($) {
         $(document.getElementById('fb-editor')).formBuilder({
             onSave: function(evt, formData) {
-                console.log(formData);
                 saveForm(formData);
             },
         });
@@ -91,6 +79,22 @@ function saveForm(form) {
         }
     });
 }
+
+// Function to remove specific <li> elements after a delay
+    function removeLiElements() {
+    var ulElements = document.querySelectorAll('ul.frmb-control');
+    ulElements.forEach(function(ulElement) {
+        var liElements = ulElement.getElementsByTagName('li');
+        var indicesToRemove = [0,1,3,4,5,6,7,8,9,12];
+        for (var i = indicesToRemove.length - 1; i >= 0; i--) {
+            var index = indicesToRemove[i];
+            ulElement.removeChild(liElements[index]);
+        }
+    });
+}
+
+setTimeout(removeLiElements, 1000);
+
 
 </script>
 @endsection

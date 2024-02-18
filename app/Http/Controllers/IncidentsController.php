@@ -109,6 +109,9 @@ class IncidentsController extends Controller
                 $questionValues = explode(',', $questionsString);
                 foreach ($questionValues as $key => $questionID) {
                     $questionId = $request->input('question_' . $questionID);
+                    if(is_array($questionId)){
+                        $questionId = implode(',', $questionId);
+                    }
 
                     QuestionsAnswers::create([
                         'incident_id' => $incident->id,
