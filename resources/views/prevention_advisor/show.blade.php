@@ -104,30 +104,55 @@
 
                     <div class="">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{__('First-aid Kits')}}</h4>
-                            <p>{{__('All linked First-aid Kits')}}</p>
                             <div class="p-20">
                                 <div class="row">
-                                    @foreach ($preventionalAdvisor->kits as $kit)
-                                    <div class="col-lg-4 mb-5 ">
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="{{env('DO_CDN_ENDPOINT')."/{$kit->qr_image}"}}" alt="Card image cap">
+                                    <div class="col-12">
+                                        <div class="card m-b-20">
                                             <div class="card-body">
-                                                <div class="w-100 d-flex " style="justify-content: space-between">
-                                                    <p>Unique Code</p>
-                                                    <p class="badge badge-primary">{{$kit->unique_code}}</p>
-                                                </div>
-
-                                                <div class="w-100 d-flex " style="justify-content: space-between">
-                                                    <p>Name</p>
-                                                    <p class="">{{$kit->name}}</p>
-                                                </div>
-                                                <a href="{{route('kits.show', $kit->id)}}" class="w-100 btn btn-success">Update</a>
+                                                <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
+                                                <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                                                    width="100%">
+                                                    <thead>
+                                                        <tr>
+                    
+                                                            <th>{{__('ID')}}</th>
+                                                            <th>{{__('Unique Code')}}</th>
+                                                            <th>{{__('Name')}}</th>
+                                                            <th>{{__('Prevention Advisor')}}</th>
+                                                            <th>{{__('Status')}}</th>
+                                                            <th>{{__('Actions')}}</th>
+                                                        </tr>
+                                                    </thead>
+                    
+                    
+                                                    <tbody>
+                                                        @foreach ($preventionalAdvisor->kits as $kit)
+                                                            <tr>
+                                                                <td>{{ $kit->id }}</td>
+                                                                <td>{{ $kit->unique_code }}</td>
+                                                                <td>{{ $kit->name }}</td>
+                                                                <td>{{ $kit->preventionAdvisor->user->name }}</td>
+                                                                @if($kit->is_active)
+                                                                    <td><span class="badge badge-primary">Active</span></td>
+                                                                @else
+                                                                    <td><span class="badge badge-secondary">In-Active</span></td>
+                                                                @endif
+                                                                <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
+                                                                    <a href="{{route('kit.qr.download', $kit->id)}}" >
+                                                                        <i class="fa fa-qrcode"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                    
+                    
+                                                    </tbody>
+                                                </table>
+                    
                                             </div>
                                         </div>
-                                    </div>
-                                    @endforeach
-                                </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
                             </div>
                         </div>
                     </div>

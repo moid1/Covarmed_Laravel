@@ -11,6 +11,9 @@ use App\Models\QuestionsAnswers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\IncidentsExport;
+
 class IncidentsController extends Controller
 {
     /**
@@ -135,5 +138,9 @@ class IncidentsController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('incidents.export', ['incident' => $incident]);
          return $pdf->stream();
+    }
+
+    public function exportIncidents(){
+        return Excel::download(new IncidentsExport, 'incidents.xlsx');
     }
 }

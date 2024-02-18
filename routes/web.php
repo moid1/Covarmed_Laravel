@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/incidents', [IncidentsController::class, 'index'])->name('incident.index');
     Route::get('/incident/{id}', [IncidentsController::class, 'show'])->name('incident.show');
     Route::get('/export-incident/{id}', [IncidentsController::class,'exportIncidentReport'])->name('incident.export');
+    Route::get('export-incidents', [IncidentsController::class, 'exportIncidents'])->name('export.incidents');
 
 
     //Questions

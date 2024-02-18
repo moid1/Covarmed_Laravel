@@ -29,6 +29,8 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">{{__('All Incidents')}}</h4>
+                            <a href="{{route('export.incidents')}}" class="btn btn-primary float-right">{{__('Export Incidents')}}</a>
+
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
