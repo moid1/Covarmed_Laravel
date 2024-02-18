@@ -42,9 +42,15 @@
 
                             <tbody>
                                 @foreach ($questions as $question)
+                                <?php
+                                $contentArray = json_decode($question->content, true);
+                                if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                    $label = $contentArray[0]['label'];
+                                }
+                                ?>
                                 <tr>
                                     <td>{{ $question->id }}</td>
-                                    <td>{{ $question->question }}</td>
+                                    <td>{{ $label }}</td>
                                 </tr>
                                 @endforeach
 

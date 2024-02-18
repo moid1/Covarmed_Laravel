@@ -98,9 +98,15 @@
                                                     class="js-example-basic-multiple form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
                                                     @foreach ($questions as $question)
+                                                    <?php
+                                                    $contentArray = json_decode($question->content, true);
+                                                    if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                                        $label = $contentArray[0]['label'];
+                                                    }
+                                                    ?>
                                                         <option value="{{ $question->id }}"
                                                             {{ in_array($question->id, $alreadySelectedQuestions) ? 'selected' : '' }}>
-                                                            {{ $question->question }}
+                                                            {{ $label }}
                                                         </option>
                                                     @endforeach
 

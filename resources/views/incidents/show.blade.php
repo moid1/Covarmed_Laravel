@@ -119,8 +119,24 @@
                                         <div class="row ">
                                             <div class="col-6">
                                                 <div class="employe-name">
-                                                    <p class="font-weight-bold">{{$question->question->question}}</p>
-                                                </div>
+    <?php
+    // Decode the JSON string into an array
+    $contentArray = json_decode($question->question->content, true);
+
+    // Check if decoding was successful and the array is not empty
+    if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+        // Access the "label" attribute of the first object in the array
+        $label = $contentArray[0]['label'];
+
+        // Output the label
+        echo '<p class="font-weight-bold">' . $label . '</p>';
+    } else {
+        // Handle case where decoding failed or array is empty
+        echo '<p class="font-weight-bold">Label not found</p>';
+    }
+    ?>
+</div>
+
                                             </div>
 
                                             <div class="col-6">
