@@ -29,8 +29,12 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
-                           <a href="{{route('export.kits')}}" class="btn btn-primary float-right">{{__('Export First-aid Kits')}}</a>
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                            
+                           <div class="d-flex justify-content-end">
+                                <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Export First-aid Kits')}}</a>&nbsp;
+                                <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>
+                            </div>
+                           <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
                                     <tr>

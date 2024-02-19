@@ -28,9 +28,13 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{__('All Incidents')}}</h4>
+                            
+                            <div class="d-flex justify-content-between">
+                                <h4 class="mt-0 header-title">{{__('All Incidents')}}</h4>
+                                <a href="{{route('export.incidents')}}" class="btn btn-primary mb-3">{{__('Export Incidents')}}</a>                            </div>
+                        </div>
                             @if(!empty($incidents))
-                                <a href="{{route('export.incidents')}}" class="btn btn-primary float-right">{{__('Export Incidents')}}</a>
+                               
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                     width="100%">

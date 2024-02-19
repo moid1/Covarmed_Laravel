@@ -105,6 +105,12 @@
 
 
                             @if (Auth::user()->user_type == 0)
+                            <li>
+                                <a href="{{ route('company.index') }}" class="waves-effect"><i class="mdi mdi-domain"></i>
+                                    <span>
+                                        {{__('Companies')}} </span>
+                                </a>
+                            {{-- </li>
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
                                         <span>
@@ -114,9 +120,12 @@
                                         <li><a href="{{ route('company.create') }}">{{__('Add Company')}}</a></li>
                                         <li><a href="{{ route('company.index') }}">{{__('All Companies')}}</a></li>
                                     </ul>
-                                </li>
-
-                                <li class="has_sub">
+                                </li> --}}
+                                <a href="{{ route('prevention.advisor.index') }}" class="waves-effect"><i class="mdi mdi-account"></i>
+                                    <span>
+                                        {{__('Advisors')}} </span>
+                                </a>
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
                                             {{__('Advisors')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -125,10 +134,13 @@
                                         <li><a href="{{ route('prevention.advisor.create') }}">{{__('Add Advisor')}}</a></li>
                                         <li><a href="{{ route('prevention.advisor.index') }}">{{__('All Advisors')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
+                                <a href="{{ route('kits.index') }}" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                    <span>
+                                        {{__('First-aid Kits')}} </span>
+                                </a>
 
-
-                                <li class="has_sub">
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
                                         <span>
                                             {{__('First-aid Kits')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -137,10 +149,14 @@
                                         <li><a href="{{ route('kits.create') }}">{{__('Add First-aid Kit')}}</a></li>
                                         <li><a href="{{ route('kits.index') }}">{{__('All First-aid Kits')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
+                                <a href="{{ route('question.index') }}" class="waves-effect"><i class="mdi mdi-note"></i>
+                                    <span>
+                                        {{__('Forms')}} </span>
+                                </a>
 
-                                <li class="has_sub">
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-note"></i>
                                         <span>
                                             {{__('Forms')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -149,7 +165,7 @@
                                         <li><a href="{{ route('question.create') }}">{{__('Add Form')}}</a></li>
                                         <li><a href="{{ route('question.index') }}">{{__('All Forms')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             @endif
 
 

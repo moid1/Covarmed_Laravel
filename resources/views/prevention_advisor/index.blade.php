@@ -28,7 +28,10 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">{{__('All Prevention Advisors')}}</h4>
+                        <div class="d-flex justify-content-between">
+                            <h4 class="header-title">{{__('All Prevention Advisors')}}</h4>
+                            <a href="{{route('prevention.advisor.create')}}" class="btn btn-primary mb-5">{{__('Create a new advisor')}}</a>
+                        </div>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
                             <thead>
