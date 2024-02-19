@@ -44,26 +44,28 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-        $unique_code = $this->generateUniqueCode();
+   public function create()
+{
+    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+    $unique_code = $this->generateUniqueCode();
 
-        $fileName = (string) Str::uuid();
-        $folder = 'qrcodes';
-        $qrCodeFilePath = "{$folder}/{$fileName}";
-        $absoluteUrl = url('incident-kit/' . $unique_code);
+    
 
-        $companies  = Company::where('is_active', true)->get();
+    $fileName = (string) Str::uuid();
+    $folder = 'qrcodes';
+    $qrCodeFilePath = "{$folder}/{$fileName}";
+    $absoluteUrl = url('incident-kit/' . $unique_code);
 
-        Storage::disk('do')->put(
-            "{$folder}/{$fileName}",
-            (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
-            'public'
-        );
+    $companies  = Company::where('is_active', true)->get();
 
-        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-    }
+    Storage::disk('do')->put(
+        "{$folder}/{$fileName}",
+        (QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl)),
+        'public'
+    );
+
+    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+}
 
     /**
      * Store a newly created resource in storage.
