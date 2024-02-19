@@ -26,7 +26,17 @@ class KitsController extends Controller
             return view('kits.index', compact('kits'));
         } else {
             $pvId = PreventionAdvisor::where('user_id', Auth::id())->first();
-            $kits = Kits::with('preventionAdvisor')->where('prevention_advisor_id', $pvId->id)->get();
+            if ($pvId->is_seniour) {
+                $seniourPVCompanyID = $pvId->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $kits = Kits::with('preventionAdvisor')->whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->get();
+                }
+            } else {
+                $kits = Kits::with('preventionAdvisor')->where('prevention_advisor_id', $pvId->id)->get();
+            }
+
+
             return view('kits.index', compact('kits'));
         }
     }

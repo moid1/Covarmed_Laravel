@@ -32,12 +32,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-       
+        $isSeniour = false;
         if (Auth::user()->user_type == 0) {
             $distinctYears = DB::table('incidents')
-            ->selectRaw('YEAR(created_at) as year')
-            ->distinct()
-            ->pluck('year');
+                ->selectRaw('YEAR(created_at) as year')
+                ->distinct()
+                ->pluck('year');
             $data = $this->getIncidentsReportedByMonth();
             $pieChartData = $this->getCompaniesNamesForIncidentsReported();
             $preventionalAdvisors = PreventionAdvisor::latest()->where('is_verified', true)->limit(5)->get();
@@ -46,15 +46,28 @@ class HomeController extends Controller
             return view('home', compact('data', 'preventionalAdvisors', 'pieChartData', 'dashboardStats', 'distinctYears', 'companies'));
         } else if (Auth::user()->user_type == 1) {
             $preventionAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first();
-            $distinctYears = DB::table('incidents')
-            ->selectRaw('YEAR(created_at) as year')
-            ->where('prevention_advisor_id', $preventionAdvisorId->id)
-            ->distinct()
-            ->pluck('year');
+            if ($preventionAdvisorId->is_seniour) {
+                $isSeniour = true;
+                $seniourPVCompanyID = $preventionAdvisorId->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $distinctYears = DB::table('incidents')
+                        ->selectRaw('YEAR(created_at) as year')
+                        ->whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)
+                        ->distinct()
+                        ->pluck('year');
+                }
+            } else {
+                $distinctYears = DB::table('incidents')
+                    ->selectRaw('YEAR(created_at) as year')
+                    ->where('prevention_advisor_id', $preventionAdvisorId->id)
+                    ->distinct()
+                    ->pluck('year');
+            }
             $data = $this->getIncidentsReportedByMonthForPV();
             $dashboardStats = $this->getDashboardStatsForPreventionAdvisors();
             $pieChartData = $this->getTotalKitsByMonth();
-            return view('prevention_dashboard.home', compact('data', 'dashboardStats', 'pieChartData', 'distinctYears'));
+            return view('prevention_dashboard.home', compact('data', 'dashboardStats', 'pieChartData', 'distinctYears', 'isSeniour'));
         }
     }
 
@@ -102,16 +115,25 @@ class HomeController extends Controller
         $months = [
             trans('January'), trans('February'), trans('March'), trans('April'), trans('May'), trans('June'), trans('July'), trans('August'), trans('September'), trans('October'), trans('November'), trans('December')
         ];
-
-        // Retrieve monthly incidents from the database
-        $monthlyIncidents = DB::table('incidents')
-            ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
-            ->whereYear('created_at', $currentYear)
-            ->where('prevention_advisor_id', $preventionAdvisorId->id)
-            ->groupBy('month')
-            ->orderByRaw('MIN(created_at) ASC')
-            ->get(['month', 'total']);
-
+        if ($preventionAdvisorId->is_seniour) {
+            $seniourPVCompanyID = $preventionAdvisorId->company_id;
+            $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+            $monthlyIncidents = DB::table('incidents')
+                ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+                ->whereYear('created_at', $currentYear)
+                ->whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)
+                ->groupBy('month')
+                ->orderByRaw('MIN(created_at) ASC')
+                ->get(['month', 'total']);
+        } else {
+            $monthlyIncidents = DB::table('incidents')
+                ->selectRaw('MONTHNAME(created_at) as month, COUNT(*) as total')
+                ->whereYear('created_at', $currentYear)
+                ->where('prevention_advisor_id', $preventionAdvisorId->id)
+                ->groupBy('month')
+                ->orderByRaw('MIN(created_at) ASC')
+                ->get(['month', 'total']);
+        }
         // Create a collection of all months
         $allMonths = collect($months)->map(function ($month) use ($currentYear) {
             return [
@@ -197,7 +219,7 @@ class HomeController extends Controller
         $companyIds = $request->companyIds;
         $currentYear = date('Y');
         $currentMonth = date('m');
-        
+
         $companyIncidents = Incidents::join('prevention_advisors', 'incidents.prevention_advisor_id', '=', 'prevention_advisors.id')
             ->join('companies', 'prevention_advisors.company_id', '=', 'companies.id')
             ->whereIn('prevention_advisors.company_id', $companyIds) // Add this line for filtering by company_id
@@ -206,7 +228,7 @@ class HomeController extends Controller
             ->select('companies.name as company', DB::raw('COUNT(*) as total'))
             ->groupBy('company')
             ->get();
-        
+
         return [
             'labels' => $companyIncidents->pluck('company')->toArray(),
             'data' => $companyIncidents->pluck('total')->toArray(),
@@ -229,12 +251,25 @@ class HomeController extends Controller
     {
         $preventionAdvisor = PreventionAdvisor::whereUserId(Auth::id())->get()->first();
         if ($preventionAdvisor) {
-            $totalKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->count();
-            $totalIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->count();
-            return [
-                'totalKits' => $totalKits,
-                'totalIncidents' => $totalIncidents
-            ];
+            if ($preventionAdvisor->is_seniour) {
+                $seniourPVCompanyID = $preventionAdvisor->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $totalKits = Kits::whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->count();
+                    $totalIncidents = Incidents::whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->count();
+                }
+                return [
+                    'totalKits' => $totalKits,
+                    'totalIncidents' => $totalIncidents
+                ];
+            } else {
+                $totalKits = Kits::where('prevention_advisor_id', $preventionAdvisor->id)->count();
+                $totalIncidents = Incidents::where('prevention_advisor_id', $preventionAdvisor->id)->count();
+                return [
+                    'totalKits' => $totalKits,
+                    'totalIncidents' => $totalIncidents
+                ];
+            }
         } else {
             return [
                 'totalKits' => 0,

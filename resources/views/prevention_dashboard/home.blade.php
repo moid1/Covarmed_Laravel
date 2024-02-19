@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 d-none">
                 <div class="card m-b-20">
                     <div class="card-body">
                         <div style="width: 50%; margin: auto;">

@@ -22,12 +22,21 @@ class IncidentsController extends Controller
     public function index()
     {
         $incidents  = null;
+        $pv = PreventionAdvisor::where('user_id', Auth::id())->first();
         if (Auth::user()->user_type == 0) {
             $incidents = Incidents::all();
         } elseif (Auth::user()->user_type == 1) {
-            $preventionalAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first()->only('id');
-            if (!empty($preventionalAdvisorId)) {
-                $incidents = Incidents::where('prevention_advisor_id', $preventionalAdvisorId['id'])->get();
+            if ($pv->is_seniour) {
+                $seniourPVCompanyID = $pv->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $incidents = Incidents::whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->get();
+                }
+            } else {
+                $preventionalAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first()->only('id');
+                if (!empty($preventionalAdvisorId)) {
+                    $incidents = Incidents::where('prevention_advisor_id', $preventionalAdvisorId['id'])->get();
+                }
             }
         }
 
@@ -86,16 +95,20 @@ class IncidentsController extends Controller
     public function createIncidentForm($code)
     {
         $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
-        $questionsString = $kit->preventionAdvisor->company->questions;
-        $questions =  null;
-        if ($questionsString) {
-            $questionValues = explode(',', $questionsString);
-            $questions = Question::whereIn('id', $questionValues)->get();
-        }
-        $companyPassword = $kit->preventionAdvisor->company->password;
+        if ($kit) {
+            $questionsString = $kit->preventionAdvisor->company->questions;
+            $questions =  null;
+            if ($questionsString) {
+                $questionValues = explode(',', $questionsString);
+                $questions = Question::whereIn('id', $questionValues)->get();
+            }
+            $companyPassword = $kit->preventionAdvisor->company->password;
 
-        if ($kit)
+
             return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
+        } else {
+            dd('Kit is not available');
+        }
     }
 
     public function submitIncident(Request $request)
@@ -112,7 +125,7 @@ class IncidentsController extends Controller
                 $questionValues = explode(',', $questionsString);
                 foreach ($questionValues as $key => $questionID) {
                     $questionId = $request->input('question_' . $questionID);
-                    if(is_array($questionId)){
+                    if (is_array($questionId)) {
                         $questionId = implode(',', $questionId);
                     }
 
@@ -125,7 +138,7 @@ class IncidentsController extends Controller
             }
 
             $details = [
-                'link' =>route('incident.show', $incident->id)
+                'link' => route('incident.show', $incident->id)
             ];
             Mail::to($kit->preventionAdvisor->user->email)->send(new IncidentFilledForm($details));
         }
@@ -133,14 +146,16 @@ class IncidentsController extends Controller
         return back()->with('success', 'Your Incident is reported to preventional advisor');
     }
 
-    public function exportIncidentReport($id){
+    public function exportIncidentReport($id)
+    {
         $incident = Incidents::whereId($id)->with(['questionAnswers', 'preventionAdvisor', 'kit'])->first();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('incidents.export', ['incident' => $incident]);
-         return $pdf->stream();
+        return $pdf->stream();
     }
 
-    public function exportIncidents(){
+    public function exportIncidents()
+    {
         return Excel::download(new IncidentsExport, 'incidents.xlsx');
     }
 }

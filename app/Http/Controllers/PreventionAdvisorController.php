@@ -49,15 +49,18 @@ class PreventionAdvisorController extends Controller
         ]);
 
         if ($user) {
-            $request->merge([
-                'user_id' => $user->id
-            ]);
-
-            if ($request->has('is_senior')) {
+          
+            if ($request->has('is_seniour')) {
                 $isSenior = true;
             } else {
                 $isSenior = false;
             }
+
+            $request->merge([
+                'user_id' => $user->id,
+                'is_seniour' => $isSenior
+            ]);
+
 
 
 
