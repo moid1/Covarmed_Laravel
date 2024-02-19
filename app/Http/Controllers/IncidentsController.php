@@ -11,6 +11,7 @@ use App\Models\QuestionsAnswers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+
 class IncidentsController extends Controller
 {
     /**
@@ -83,16 +84,20 @@ class IncidentsController extends Controller
     public function createIncidentForm($code)
     {
         $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
-        $questionsString = $kit->preventionAdvisor->company->questions;
-        $questions =  null;
-        if ($questionsString) {
-            $questionValues = explode(',', $questionsString);
-            $questions = Question::whereIn('id', $questionValues)->get();
-        }
-        $companyPassword = $kit->preventionAdvisor->company->password;
+        if ($kit) {
+            $questionsString = $kit->preventionAdvisor->company->questions;
+            $questions =  null;
+            if ($questionsString) {
+                $questionValues = explode(',', $questionsString);
+                $questions = Question::whereIn('id', $questionValues)->get();
+            }
+            $companyPassword = $kit->preventionAdvisor->company->password;
 
-        if ($kit)
+
             return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
+        }else{
+            dd('Kit is not available');
+        }
     }
 
     public function submitIncident(Request $request)
@@ -119,7 +124,7 @@ class IncidentsController extends Controller
             }
 
             $details = [
-                'link' =>route('incident.show', $incident->id)
+                'link' => route('incident.show', $incident->id)
             ];
             Mail::to($kit->preventionAdvisor->user->email)->send(new IncidentFilledForm($details));
         }
@@ -127,10 +132,11 @@ class IncidentsController extends Controller
         return back()->with('success', 'Your Incident is reported to preventional advisor');
     }
 
-    public function exportIncidentReport($id){
+    public function exportIncidentReport($id)
+    {
         $incident = Incidents::whereId($id)->with(['questionAnswers', 'preventionAdvisor', 'kit'])->first();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('incidents.export', ['incident' => $incident]);
-         return $pdf->stream();
+        return $pdf->stream();
     }
 }
