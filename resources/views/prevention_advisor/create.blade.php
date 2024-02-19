@@ -48,14 +48,24 @@
                                             </div>
                                         </div>
 
+                                       
+
+
                                         @if(!empty($companies) && count($companies))
-                                            <div class="col-lg-3 ">
+                                            <div class="col-lg-6 ">
                                                 <img class="img-fluid" style="float: right"
                                                     src="{{ env('DO_CDN_ENDPOINT')."/".$companies[0]->logo }}" alt=""
                                                     id="imagePlacement">
                                             </div>
                                         @endif
-
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="is_seniour">{{__('Is Seniour')}} </label>
+                                                <input id="is_seniour" type="checkbox"
+                                                    class="" name="is_seniour"
+                                                    value="true" >
+                                            </div>
+                                        </div>
 
 
 

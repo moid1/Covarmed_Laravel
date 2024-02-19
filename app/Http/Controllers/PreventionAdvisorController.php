@@ -37,7 +37,6 @@ class PreventionAdvisorController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
@@ -53,6 +52,15 @@ class PreventionAdvisorController extends Controller
             $request->merge([
                 'user_id' => $user->id
             ]);
+
+            if ($request->has('is_senior')) {
+                $isSenior = true;
+            } else {
+                $isSenior = false;
+            }
+
+
+
 
             $preventionAdvisor = PreventionAdvisor::create($request->except(['logo', 'email']));
 
