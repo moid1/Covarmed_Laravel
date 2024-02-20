@@ -32,6 +32,7 @@
                             
                            <div class="d-flex justify-content-end">
                                 <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Export First-aid Kits')}}</a>&nbsp;
+                                <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Import First-aid Kits')}}</a>&nbsp;
                                 <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>
                             </div>
                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
