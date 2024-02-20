@@ -1,54 +1,52 @@
-
 @extends('layouts.app')
 
 @section('content')
-<div class="page-content-wrapper ">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card m-b-20">
-                    <div class="card-body">
-                        <h4 class="mt-0 header-title">{{ __('Add a form question') }}</h4>
-                        <p class="text-muted m-b-30 font-14"></p>
-                        @if (Session::has('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ Session::get('success') }}
-                        </div>
-                        @endif
-                        <div class="p-20">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <!-- Add language selection dropdown -->
-                                        <label for="languageSelect">Select Language:</label>
-                                        <select class="form-control" id="languageSelect">
-                                            <option value="en">English</option>
-                                            <option value="nl">Netherlands</option>
-                                            <option value="fr">French</option>
-                                        </select>
-
-                                        <!-- Form builder container -->
-                                        <div style="margin-top: 20px;" id="fb-editor"></div>
-
-                                        @error('question')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
+    <div class="page-content-wrapper ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title">{{ __('Add a form question') }}</h4>
+                            <p class="text-muted m-b-30 font-14"></p>
+                            @if (Session::has('success'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ Session::get('success') }}
                                 </div>
+                            @endif
+                            <div class="p-20">
+                                <form action="{{ route('question.store') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+
+                                                <div id="fb-editor"></div>
+                                                @error('question')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                </form>
                             </div>
+
                         </div>
-
                     </div>
-                </div>
-            </div> <!-- end col -->
-        </div> <!-- end row -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
 
-    </div><!-- container-fluid -->
+        </div><!-- container-fluid -->
 
 
-</div>
+    </div>
 @endsection
 
 @section('pageSpecificJs')

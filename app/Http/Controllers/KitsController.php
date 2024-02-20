@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportKits;
+use App\Imports\KitsImport;
 use App\Models\Company;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
@@ -202,5 +203,14 @@ class KitsController extends Controller
     public function exportKits()
     {
         return Excel::download(new ExportKits, 'kits.xlsx');
+    }
+
+    public function importKits(Request $request)
+    {
+       
+            Excel::import(new KitsImport, $request->file);
+            
+            // Provide feedback to the user
+            return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }
