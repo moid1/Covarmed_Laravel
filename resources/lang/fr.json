@@ -79,6 +79,10 @@
     "Please fill in a question":"Remplissez également la question à ajouter.",
     "Add a form question":"Ajouter une question de formulaire",
     "Question":"Question",
-    "Question added succesfully, please edit the correct company to the question":"La question a été ajoutée, liez-la avex la bonne entreprise"
+    "Question added succesfully, please edit the correct company to the question":"La question a été ajoutée, liez-la avex la bonne entreprise",
+    "Create a new company":"Créer une nouvelle entreprise",
+    "Create a new advisor":"Créer un nouveau conseiller",
+    "Create a new First-Aid kit":"Créer une nouvelle trousse de premiers secours",
+    "Create a new Form Question": "Créer une nouvelle question de formulaire"
 
 }

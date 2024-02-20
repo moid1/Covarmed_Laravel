@@ -22,11 +22,13 @@ class IncidentsController extends Controller
     public function index()
     {
         $incidents  = null;
+        $isSeniour = false;
         $pv = PreventionAdvisor::where('user_id', Auth::id())->first();
         if (Auth::user()->user_type == 0) {
             $incidents = Incidents::all();
         } elseif (Auth::user()->user_type == 1) {
             if ($pv->is_seniour) {
+                $isSeniour = true;
                 $seniourPVCompanyID = $pv->company_id;
                 $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
                 if (!empty($allPVAdvisorsForSeniourPVCompany)) {
@@ -40,7 +42,7 @@ class IncidentsController extends Controller
             }
         }
 
-        return view('incidents.index', compact('incidents'));
+        return view('incidents.index', compact('incidents', 'isSeniour'));
     }
 
     /**
