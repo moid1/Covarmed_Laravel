@@ -31,8 +31,14 @@
                             <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
                             
                            <div class="d-flex justify-content-end">
+                                <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>&nbsp;
                                 <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Export First-aid Kits')}}</a>&nbsp;
-                                <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>
+                                <form action="{{ route('import.kits') }}" method="POST" enctype="multipart/form-data" >
+                                    @csrf
+                                    <input type="file" name="file" class="form-control-file" style="display: none;" id="importFile">
+                                    <button type="button" class="btn btn-primary float-right" onclick="document.getElementById('importFile').click();">{{ __('Import First-aid Kits') }}</button>
+                                </form>
+                                
                             </div>
                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
@@ -81,4 +87,11 @@
             </div> <!-- end row -->
         </div><!-- container-fluid -->
     </div>
+@endsection
+@section('pageSpecificJs')
+<script>
+    document.getElementById('importFile').addEventListener('change', function () {
+        this.form.submit();
+    });
+</script>
 @endsection
