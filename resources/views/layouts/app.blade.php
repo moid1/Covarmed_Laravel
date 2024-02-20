@@ -69,7 +69,7 @@
                             <h4 class="font-16">{{__('Hello')}} {{ Auth::user()->name }}</h4>
                             @if (Auth::user()->user_type == 1)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
-                              {{$isSeniour ? 'Seniour' : ''}}      Prevention Advisor</span>
+                              {{$isSeniour ? 'Senior' : ''}}      Prevention Advisor</span>
                             @elseif(Auth::user()->user_type == 0)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
                                     Admin</span>

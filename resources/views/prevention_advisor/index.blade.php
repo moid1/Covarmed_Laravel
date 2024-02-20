@@ -37,6 +37,7 @@
                             <thead>
                                 <tr>
 
+                                    <th>{{__('ID')}}</th>
                                     <th>{{__('Name')}}</th>
                                     <th>{{__('Company Name')}}</th>
                                     <th>{{__('Status')}}</th>
@@ -48,6 +49,7 @@
                             <tbody>
                                 @foreach ($preventionAdvisors as $preventionAdvisor)
                                 <tr>
+                                    <td>{{ $preventionAdvisor->id }}</td>
                                     <td>{{ $preventionAdvisor->user->name }}</td>
                                     <td>{{ $preventionAdvisor->company->name ?? 'N/A' }}</td>
                                     <td><span class="badge badge-primary">Active</span></td>

@@ -36,7 +36,7 @@
                                 width="100%">
                                 <thead>
                                     <tr>
-
+                                        <th>{{__('ID')}}</th>
                                         <th>{{__('Company Name')}}</th>
                                         <th>{{__('Location')}}</th>
                                         <th>{{__('Active PV')}}</th>
@@ -50,6 +50,7 @@
                                 <tbody>
                                     @foreach ($companiesWithTotalActiveKits as $company)
                                         <tr>
+                                            <td>{{ $company['id'] }}</td>
                                             <td>{{ $company['company_name'] }}</td>
                                             <td>{{ $company['location'] }}</td>
                                             <td>{{ $company['total_preventional_advisors'] }}</td>
