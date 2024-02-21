@@ -93,6 +93,12 @@
                                     <span> {{__('Incidents')}} </span>
                                 </a>
                             </li>
+                             <li>
+                                <a href="{{ route('translations.create') }}" class="waves-effect">
+                                    <i class="mdi mdi-file"></i>
+                                    <span> {{__('Translations')}} </span>
+                                </a>
+                            </li>
                             @if (Auth::user()->user_type == 1)
                                 <li>
                                     <a href="{{ route('kits.index') }}" class="waves-effect">
