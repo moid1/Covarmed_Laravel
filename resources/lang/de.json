@@ -79,5 +79,10 @@
     "Please fill in a question":"Vul de toe te voegen vraag in.",
     "Add a form question":"Formuliervraag toevoegen",
     "Question":"Vragen",
-    "Question added succesfully, please edit the correct company to the question":"De vraag werd toegevoegd, link het met het juiste bedrijf"
+    "Question added succesfully, please edit the correct company to the question":"De vraag werd toegevoegd, link het met het juiste bedrijf",
+    "Create a new company":"Nieuw bedrijf toevoegen",
+    "Create a new advisor":"Nieuwe adviseur toevoegen",
+    "Create a new First-Aid kit":"Nieuwe EHBO-koffer toevoegen",
+    "Create a new Form Question": "Nieuwe formuliervraag toevoegen"
+
 }

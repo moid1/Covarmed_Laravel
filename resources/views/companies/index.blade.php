@@ -28,12 +28,15 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{__('All Companies')}}</h4>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="header-title">{{__('All Companies')}}</h4>
+                                <a href="{{route('company.create')}}" class="btn btn-primary mb-5">{{__('Create a new company')}}</a>
+                            </div>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
                                     <tr>
-
+                                        <th>{{__('ID')}}</th>
                                         <th>{{__('Company Name')}}</th>
                                         <th>{{__('Location')}}</th>
                                         <th>{{__('Active PV')}}</th>
@@ -47,6 +50,7 @@
                                 <tbody>
                                     @foreach ($companiesWithTotalActiveKits as $company)
                                         <tr>
+                                            <td>{{ $company['id'] }}</td>
                                             <td>{{ $company['company_name'] }}</td>
                                             <td>{{ $company['location'] }}</td>
                                             <td>{{ $company['total_preventional_advisors'] }}</td>
