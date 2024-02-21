@@ -29,13 +29,14 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
+                            <a href="#" class="btn btn-secondary float-right" id="downloadButton">{{__('Download Sample File')}}</a>
                            <a href="{{route('export.kits')}}" class="btn btn-primary float-right">{{__('Export First-aid Kits')}}</a>
                            <form action="{{ route('import.kits') }}" method="POST" enctype="multipart/form-data" >
-    @csrf
-    <input type="file" name="file" class="form-control-file" style="display: none;" id="importFile">
-    <button type="button" class="btn btn-primary float-right" onclick="document.getElementById('importFile').click();">{{ __('Import First-aid Kits') }}</button>
-</form>
-
+                                @csrf
+                                <input type="file" name="file" class="form-control-file" style="display: none;" id="importFile">
+                                <button type="button" class="btn btn-primary float-right" onclick="document.getElementById('importFile').click();">{{ __('Import First-aid Kits') }}</button>
+                                
+                            </form>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
@@ -89,5 +90,21 @@
     document.getElementById('importFile').addEventListener('change', function () {
         this.form.submit();
     });
+</script>
+<script>
+document.getElementById('downloadButton').addEventListener('click', function() {
+    // Create an anchor element
+    var link = document.createElement('a');
+    // Set the href attribute to the URL of your sample Excel file
+    link.href = '{{asset('kits.xlsx')}}';
+    // Set the download attribute to prompt the browser to download the file instead of navigating to it
+    link.download = 'kits.xlsx';
+    // Append the anchor element to the document body
+    document.body.appendChild(link);
+    // Trigger a click event on the anchor element to start the download
+    link.click();
+    // Clean up by removing the anchor element from the document body
+    document.body.removeChild(link);
+});
 </script>
 @endsection
