@@ -182,9 +182,9 @@
                 <div class="d-flex justify-content-center align-items-center w-100" style="position: absolute;bottom:100;">
                     @include('partials/language_switcher')
                 </div>
-                <div class="text-center">
+                {{-- <div class="text-center">
                     <p class="w-100" style="bottom: 50px;position: absolute;">©️ 2024 Covarmed BV</p>
-                </div>
+                </div> --}}
                
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
