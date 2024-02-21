@@ -15,7 +15,8 @@ class TranslationController extends Controller
 
 
     public function translationsStore(Request $request) {
-     $text = $request->input('data');
+    $text = $request->input('data');
+    $value = $request->input('value');
     $language = $request->input('language');
 
     // Determine the file path based on the selected language
@@ -25,7 +26,7 @@ class TranslationController extends Controller
     $translations = json_decode(File::get($filePath), true);
 
     // Add or update the translation in the language file
-    $translations[$text] = $text; // Here, we use the input text as both key and value for demonstration. Replace $text with the actual translation.
+    $translations[$text] = $value; // Here, we use the input text as both key and value for demonstration. Replace $text with the actual translation.
 
     // Write the updated contents back to the language file
     File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
