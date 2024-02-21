@@ -7,6 +7,7 @@ use App\Http\Controllers\IncidentsController;
 use App\Http\Controllers\KitsController;
 use App\Http\Controllers\PreventionAdvisorController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/incident/{id}', [IncidentsController::class, 'show'])->name('incident.show');
     Route::get('/export-incident/{id}', [IncidentsController::class,'exportIncidentReport'])->name('incident.export');
     Route::get('export-incidents', [IncidentsController::class, 'exportIncidents'])->name('export.incidents');
+
+    Route::get('/translations', [TranslationController::class, 'create'])->name('translations.create');
+    Route::post('/translations', [TranslationController::class, 'translationsStore'])->name('translations.store');
 
 
     //Questions
