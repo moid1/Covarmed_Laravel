@@ -67,9 +67,12 @@
                             <input type="hidden" name="prevention_advisor_id" id=""
                                 value="{{ $kit->preventionAdvisor->id }}">
                             <input type="hidden" name="kit_id" id="" value="{{ $kit->id }}">
+                                <div class="d-flex justify-content-center align-items-center w-100" >
+                                    @include('partials/language_switcher')
+                                </div>
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="employee_name" class="form-control" placeholder="Name"
+                                <label>{{__('Name')}}</label>
+                                <input type="text" name="employee_name" class="form-control" placeholder="{{__('Name')}}"
                                     required />
                             </div>
                             @if (!empty($questions))
