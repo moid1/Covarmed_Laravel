@@ -207,9 +207,9 @@ class KitsController extends Controller
 
     public function importKits(Request $request)
     {
-       
+
             Excel::import(new KitsImport, $request->file);
-            
+
             // Provide feedback to the user
             return redirect()->back()->with('success', 'Data imported successfully!');
     }

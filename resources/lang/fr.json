@@ -76,9 +76,13 @@
     "First-aid Kit created succesfully": "Cr\u00e9ation le coffret de premiers secours",
     "Prevention Advisors": "Conseiller en pr\u00e9vention",
     "Export First-aid Kits": "Exporter les coffrets de premiers secours",
-    "Please fill in a question": "Remplissez \u00e9galement la question \u00e0 ajouter.",
-    "Add a form question": "Ajouter une question de formulaire",
-    "Question": "Question",
-    "Question added succesfully, please edit the correct company to the question": "La question a \u00e9t\u00e9 ajout\u00e9e, liez-la avex la bonne entreprise",
-    
+    "Please fill in a question":"Remplissez également la question à ajouter.",
+    "Add a form question":"Ajouter une question de formulaire",
+    "Question":"Question",
+    "Question added succesfully, please edit the correct company to the question":"La question a été ajoutée, liez-la avex la bonne entreprise",
+    "Create a new company":"Créer une nouvelle entreprise",
+    "Create a new advisor":"Créer un nouveau conseiller",
+    "Create a new First-Aid kit":"Créer une nouvelle trousse de premiers secours",
+    "Create a new Form Question": "Créer une nouvelle question de formulaire"
+
 }
