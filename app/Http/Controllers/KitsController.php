@@ -61,7 +61,12 @@ class KitsController extends Controller
 
     Storage::disk('do')->put(
         "{$folder}/{$fileName}",
-        (QrCode::format('png')->size(200)->merge(public_path('logo.jpg'), 0.8, true)->errorCorrection('H')->generate($absoluteUrl)),
+        (QrCode::format('png')
+            ->size(200)
+            ->merge(public_path('logo.jpg'), 0.8, true)
+            ->errorCorrection('H')
+            ->generate($absoluteUrl)
+        )->insert('kitname'), // Inserting text 'kitname' on the QR code
         'public'
     );
 
