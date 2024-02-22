@@ -66,7 +66,7 @@ class KitsController extends Controller
             ->merge(public_path('logo.jpg'), 0.8, true)
             ->errorCorrection('H')
             ->generate($absoluteUrl)
-        )->insert('kitname'), // Inserting text 'kitname' on the QR code
+    ),
         'public'
     );
 
