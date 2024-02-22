@@ -61,7 +61,7 @@ class KitsController extends Controller
 
     Storage::disk('do')->put(
         "{$folder}/{$fileName}",
-        (QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl)),
+        (QrCode::format('png')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl)),
         'public'
     );
 
