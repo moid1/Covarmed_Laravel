@@ -133,8 +133,8 @@ class IncidentsController extends Controller
 
                     QuestionsAnswers::create([
                         'incident_id' => $incident->id,
-                        'question_id' => $questionID,
-                        'answers' => $questionId
+                        'question_id' => $questionID ? $questionID : null,
+                        'answers' => $questionId 
                     ]);
                 }
             }
