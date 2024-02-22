@@ -6,8 +6,8 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Add Prevention Advisor Here</h4>
-                            <p class="text-muted m-b-30 font-14">Fill This instructions Carefully.</p>
+                            <h4 class="mt-0 header-title">{{__('Add Prevention Advisor')}}</h4>
+                            <p class="text-muted m-b-30 font-14">{{__('Fill This instructions Carefully')}}.</p>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
@@ -24,7 +24,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Company Name</label>
+                                                <label>{{__('Company Name')}}</label>
                                                 <select name="company_id" id="company" class="form-control">
                                                     @foreach ($companies as $company)
                                                         <option data-logo="{{ env('DO_CDN_ENDPOINT')."/".$company->logo }}"
@@ -36,7 +36,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>{{__('Email')}}</label>
                                                 <input id="email" type="text"
                                                     class="form-control @error('email') is-invalid @enderror" name="email"
                                                     value="{{ old('email') }}" autofocus>
@@ -48,14 +48,24 @@
                                             </div>
                                         </div>
 
+                                       
+
+
                                         @if(!empty($companies) && count($companies))
-                                            <div class="col-lg-3 ">
+                                            <div class="col-lg-6 ">
                                                 <img class="img-fluid" style="float: right"
                                                     src="{{ env('DO_CDN_ENDPOINT')."/".$companies[0]->logo }}" alt=""
                                                     id="imagePlacement">
                                             </div>
                                         @endif
-
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="is_seniour">{{__('Is Seniour')}} </label>
+                                                <input id="is_seniour" type="checkbox"
+                                                    class="" name="is_seniour"
+                                                    value="true" >
+                                            </div>
+                                        </div>
 
 
 
@@ -63,10 +73,10 @@
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    Submit
+                                                    {{__('Submit')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    Cancel
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>

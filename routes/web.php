@@ -7,6 +7,7 @@ use App\Http\Controllers\IncidentsController;
 use App\Http\Controllers\KitsController;
 use App\Http\Controllers\PreventionAdvisorController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\TranslationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,10 +56,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('kit-status/{id}', [KitsController::class, 'updateKitStatus'])->name('kits.status');
     Route::get('download-qr/{id}', [KitsController::class, 'downloadQr'])->name('kit.qr.download');
     Route::get('export-kits', [KitsController::class, 'exportKits'])->name('export.kits');
+    Route::post('import-kits', [KitsController::class, 'importKits'])->name('import.kits');
 
     Route::get('/incidents', [IncidentsController::class, 'index'])->name('incident.index');
     Route::get('/incident/{id}', [IncidentsController::class, 'show'])->name('incident.show');
     Route::get('/export-incident/{id}', [IncidentsController::class,'exportIncidentReport'])->name('incident.export');
+    Route::get('export-incidents', [IncidentsController::class, 'exportIncidents'])->name('export.incidents');
+
+    Route::get('/translations', [TranslationController::class, 'create'])->name('translations.create');
+    Route::post('/translations', [TranslationController::class, 'translationsStore'])->name('translations.store');
 
 
     //Questions
@@ -84,3 +90,10 @@ Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+Route::get('language/{locale}', function ($locale) {
+    app()->setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
+})->name('language');

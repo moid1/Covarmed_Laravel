@@ -82,7 +82,7 @@ class CompanyController extends Controller
         ]);
 
 
-        return back()->with('success', 'Company created successfully');
+        return back()->with('success', trans('Company created successfully'));
     }
 
     /**
@@ -131,7 +131,7 @@ class CompanyController extends Controller
 
 
             $company->update();
-            return back()->with('success', 'Company updated successfully');
+            return back()->with('success', 'Company successfully updated');
         }
     }
 

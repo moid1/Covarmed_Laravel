@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportKits;
+use App\Imports\KitsImport;
 use App\Models\Company;
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
@@ -26,7 +27,17 @@ class KitsController extends Controller
             return view('kits.index', compact('kits'));
         } else {
             $pvId = PreventionAdvisor::where('user_id', Auth::id())->first();
-            $kits = Kits::with('preventionAdvisor')->where('prevention_advisor_id', $pvId->id)->get();
+            if ($pvId->is_seniour) {
+                $seniourPVCompanyID = $pvId->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $kits = Kits::with('preventionAdvisor')->whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->get();
+                }
+            } else {
+                $kits = Kits::with('preventionAdvisor')->where('prevention_advisor_id', $pvId->id)->get();
+            }
+
+
             return view('kits.index', compact('kits'));
         }
     }
@@ -34,26 +45,28 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-        $unique_code = $this->generateUniqueCode();
+   public function create()
+{
+    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+    $unique_code = $this->generateUniqueCode();
 
-        $fileName = (string) Str::uuid();
-        $folder = 'qrcodes';
-        $qrCodeFilePath = "{$folder}/{$fileName}";
-        $absoluteUrl = url('incident-kit/' . $unique_code);
+    
 
-        $companies  = Company::where('is_active', true)->get();
+    $fileName = (string) Str::uuid();
+    $folder = 'qrcodes';
+    $qrCodeFilePath = "{$folder}/{$fileName}";
+    $absoluteUrl = url('incident-kit/' . $unique_code);
 
-        Storage::disk('do')->put(
-            "{$folder}/{$fileName}",
-            (QrCode::format('svg')->size(200)->generate($absoluteUrl)),
-            'public'
-        );
+    $companies  = Company::where('is_active', true)->get();
 
-        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-    }
+    Storage::disk('do')->put(
+        "{$folder}/{$fileName}",
+        (QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl)),
+        'public'
+    );
+
+    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+}
 
     /**
      * Store a newly created resource in storage.
@@ -78,7 +91,7 @@ class KitsController extends Controller
                 'address_1' => $request->address_1 ?? 'N/A',
             ]);
 
-            return back()->with('success', 'Kit is created successfully');
+            return back()->with('success', trans('First-aid Kit created succesfully'));
         } catch (\Throwable $th) {
             dd($th);
         }
@@ -190,5 +203,14 @@ class KitsController extends Controller
     public function exportKits()
     {
         return Excel::download(new ExportKits, 'kits.xlsx');
+    }
+
+    public function importKits(Request $request)
+    {
+
+            Excel::import(new KitsImport, $request->file);
+
+            // Provide feedback to the user
+            return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }

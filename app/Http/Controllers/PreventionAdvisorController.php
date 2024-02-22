@@ -37,7 +37,6 @@ class PreventionAdvisorController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
@@ -50,9 +49,21 @@ class PreventionAdvisorController extends Controller
         ]);
 
         if ($user) {
+          
+            if ($request->has('is_seniour')) {
+                $isSenior = true;
+            } else {
+                $isSenior = false;
+            }
+
             $request->merge([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'is_seniour' => $isSenior
             ]);
+
+
+
+
 
             $preventionAdvisor = PreventionAdvisor::create($request->except(['logo', 'email']));
 
@@ -63,7 +74,7 @@ class PreventionAdvisorController extends Controller
             ];
             Mail::to($request->email)->send(new RegisterPreventionalAdvisor($details));
 
-            return back()->with('success', 'Verification link send to preventional advisor');
+            return back()->with('success', trans('Verification link send to the prevention advisor'));
         }
     }
 
@@ -96,7 +107,7 @@ class PreventionAdvisorController extends Controller
             if ($user) {
                 $user->update(['name' => $request->name]);
             }
-            return back()->with('success', 'Data has been updated successfully');
+            return back()->with('success', 'Advisor succesfully updated');
         }
     }
 

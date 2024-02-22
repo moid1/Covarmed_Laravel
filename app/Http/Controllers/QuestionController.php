@@ -29,9 +29,12 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        Question::create($request->all());
+        $item = new Question();
+        $item->question = $request->question;
+        $item->content = $request->form;
+        $item->save();
 
-        return back()->with('success', 'Question added successfully');
+        return back()->with('success', trans('Question added succesfully, please edit the correct company to the question'));
     }
 
     /**

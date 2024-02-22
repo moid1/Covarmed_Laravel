@@ -28,38 +28,48 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">All Incidents</h4>
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
-                                width="100%">
-                                <thead>
-                                    <tr>
+                            
+                            <div class="d-flex justify-content-between">
+                                <h4 class="mt-0 header-title">{{__('All Incidents')}}</h4>
+                                <a href="{{route('export.incidents')}}" class="btn btn-primary mb-3">{{__('Export Incidents')}}</a>                            </div>
+                        </div>
+                            @if(!empty($incidents))
+                               
 
-                                        <th>ID</th>
-                                        <th>Company name</th>
-                                        <th>Kit Name</th>
-                                        <th>Prevention Advisor</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-
-
-                                <tbody>
-                                    @foreach ($incidents as $incident)
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                                    width="100%">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $incident->id }}</td>
-                                            <td>{{ $incident->preventionAdvisor->company->name }}</td>
-                                            <td>{{ $incident->kit->name }}</td>
-                                            <td>{{ $incident->preventionAdvisor->user->name }}</td>
-                                            <td><a href="{{route('incident.export', $incident->id)}}"><i class="mdi mdi-download text-primary"></i></a> / <a
-                                                    href="{{ route('incident.show', $incident->id) }}"><i
-                                                        class="mdi mdi-eye"></i></a></td>
+                                            <th>{{__('Date')}}</th>
+                                            <th>ID</th>
+                                            <th>{{__('Company name')}}</th>
+                                            <th>{{__('First-aid Kit Name')}}</th>
+                                            <th>{{__('Prevention Advisor')}}</th>
+                                            <th>{{__('Actions')}}</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
 
 
-                                </tbody>
-                            </table>
+                                    <tbody>
+                                        @foreach ($incidents as $incident)
+                                            <tr>
+                                                <td>{{$incident->created_at->format('m/d/Y')}}</td>
+                                                <td>{{ $incident->id }}</td>
+                                                <td>{{ $incident->preventionAdvisor->company->name }}</td>
+                                                <td>{{ $incident->kit->name }}</td>
+                                                <td>{{ $incident->preventionAdvisor->user->name }}</td>
+                                                <td><a href="{{route('incident.export', $incident->id)}}"><i class="mdi mdi-download text-primary"></i></a> / <a
+                                                        href="{{ route('incident.show', $incident->id) }}"><i
+                                                            class="mdi mdi-eye"></i></a></td>
+                                            </tr>
+                                        @endforeach
 
+
+                                    </tbody>
+                                </table>
+                            @else
+                            <h4 class="text-center">No Incidents Available</h4>
+                            @endif
                         </div>
                     </div>
                 </div> <!-- end col -->

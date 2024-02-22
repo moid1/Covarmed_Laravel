@@ -28,23 +28,32 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">All Questions</h4>
+                        <div class="d-flex justify-content-between">
+                            <h4 class="mt-0 header-title">{{__('All forms')}}</h4>
+                            <a href="{{route('question.create')}}" class="btn btn-primary mb-5">{{__('Create a new Form Question')}}</a>
+                        </div>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
                             <thead>
                                 <tr>
 
                                     <th>ID</th>
-                                    <th>Question</th>
+                                    <th>{{__('Question')}}</th>
                                 </tr>
                             </thead>
 
 
                             <tbody>
                                 @foreach ($questions as $question)
+                                <?php
+                                $contentArray = json_decode($question->content, true);
+                                if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                    $label = $contentArray[0]['label'];
+                                }
+                                ?>
                                 <tr>
                                     <td>{{ $question->id }}</td>
-                                    <td>{{ $question->question }}</td>
+                                    <td>{{ $label }}</td>
                                 </tr>
                                 @endforeach
 

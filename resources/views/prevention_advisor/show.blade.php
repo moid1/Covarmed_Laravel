@@ -6,7 +6,7 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Prevention Advisor Details</h4>
+                            <h4 class="mt-0 header-title">{{__('Update Prevention Advisor')}}</h4>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
@@ -20,7 +20,7 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>{{__('Name')}}</label>
                                                 <input id="name" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="{{ $preventionalAdvisor->user->name }}" autofocus>
@@ -34,7 +34,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Email</label>
+                                                <label>{{__('Email')}}</label>
                                                 <input id="email" type="text" readonly
                                                     class="form-control @error('email') is-invalid @enderror" name="email"
                                                     value="{{ $preventionalAdvisor->user->email }}" autofocus>
@@ -50,7 +50,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Phone #</label>
+                                                <label>{{__('Phone number')}}</label>
                                                 <input id="phone" type="text"
                                                     class="form-control @error('phone') is-invalid @enderror" name="phone"
                                                     value="{{ $preventionalAdvisor->phone }}">
@@ -66,7 +66,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Company Name</label>
+                                                <label>{{__('Company Name')}}</label>
                                                 <input id="company_name" readonly type="text"
                                                     class="form-control @error('company_name') is-invalid @enderror" name="company_name"
                                                     value="{{ $preventionalAdvisor->company->name }}">
@@ -85,10 +85,10 @@
                                         <div class="col-lg-12 text-center mt-3" >
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    Update
+                                                    {{__('Update')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    Cancel
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>
@@ -104,30 +104,55 @@
 
                     <div class="">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Kits</h4>
-                            <p>All Kits of this Preventional Advisor Listed Below</p>
                             <div class="p-20">
                                 <div class="row">
-                                    @foreach ($preventionalAdvisor->kits as $kit)
-                                    <div class="col-lg-4 mb-5 ">
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="{{env('DO_CDN_ENDPOINT')."/{$kit->qr_image}"}}" alt="Card image cap">
+                                    <div class="col-12">
+                                        <div class="card m-b-20">
                                             <div class="card-body">
-                                                <div class="w-100 d-flex " style="justify-content: space-between">
-                                                    <p>Unique Code</p>
-                                                    <p class="badge badge-primary">{{$kit->unique_code}}</p>
-                                                </div>
-
-                                                <div class="w-100 d-flex " style="justify-content: space-between">
-                                                    <p>Name</p>
-                                                    <p class="">{{$kit->name}}</p>
-                                                </div>
-                                                <a href="{{route('kits.show', $kit->id)}}" class="w-100 btn btn-success">Update</a>
+                                                <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
+                                                <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                                                    width="100%">
+                                                    <thead>
+                                                        <tr>
+                    
+                                                            <th>{{__('ID')}}</th>
+                                                            <th>{{__('Unique Code')}}</th>
+                                                            <th>{{__('Name')}}</th>
+                                                            <th>{{__('Prevention Advisor')}}</th>
+                                                            <th>{{__('Status')}}</th>
+                                                            <th>{{__('Actions')}}</th>
+                                                        </tr>
+                                                    </thead>
+                    
+                    
+                                                    <tbody>
+                                                        @foreach ($preventionalAdvisor->kits as $kit)
+                                                            <tr>
+                                                                <td>{{ $kit->id }}</td>
+                                                                <td>{{ $kit->unique_code }}</td>
+                                                                <td>{{ $kit->name }}</td>
+                                                                <td>{{ $kit->preventionAdvisor->user->name }}</td>
+                                                                @if($kit->is_active)
+                                                                    <td><span class="badge badge-primary">Active</span></td>
+                                                                @else
+                                                                    <td><span class="badge badge-secondary">In-Active</span></td>
+                                                                @endif
+                                                                <td><a href="{{route('kits.show', $kit->id)}}"> <i class="mdi mdi-eye"></i></a> /
+                                                                    <a href="{{route('kit.qr.download', $kit->id)}}" >
+                                                                        <i class="fa fa-qrcode"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                    
+                    
+                                                    </tbody>
+                                                </table>
+                    
                                             </div>
                                         </div>
-                                    </div>
-                                    @endforeach
-                                </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
                             </div>
                         </div>
                     </div>

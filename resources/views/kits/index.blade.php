@@ -1,6 +1,14 @@
 @extends('layouts.app')
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-
+<style>
+    .sample-file{
+        display: block;
+    text-align: center;
+    font-size: 11px;
+    background: none;
+    margin-top: 6px;
+    }
+</style>
 @section('content')
     <div class="page-content-wrapper ">
         <div class="container-fluid">
@@ -28,20 +36,29 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">All Kits</h4>
-                           <a href="{{route('export.kits')}}" class="btn btn-primary float-right">Export Kits</a>
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
+                            <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
+                            <div class="d-flex justify-content-end">
+                                <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>&nbsp;
+                                <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Export First-aid Kits')}}</a>&nbsp;
+                                <form action="{{ route('import.kits') }}" method="POST" enctype="multipart/form-data" >
+                                    @csrf
+                                    <input type="file" name="file" class="form-control-file" style="display: none;" id="importFile">
+                                    <button type="button" class="btn btn-primary " onclick="document.getElementById('importFile').click();">{{ __('Import First-aid Kits') }}</button>
+                                <a href="{{asset('kits.xlsx')}}" class="sample-file" download="">Download Sample file</a>
+                                </form>
+                            </div>
+                           <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">
                                 <thead>
                                     <tr>
 
-                                        <th>ID</th>
-                                        <th>Unique Code</th>
-                                        <th>Name</th>
-                                        <th>Company</th>
-                                        <th>Prevention Advisor</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>{{__('ID')}}</th>
+                                        <th>{{__('Unique Code')}}</th>
+                                        <th>{{__('Name')}}</th>
+                                        <th>{{__('Company')}}</th>
+                                        <th>{{__('Prevention Advisor')}}</th>
+                                        <th>{{__('Status')}}</th>
+                                        <th>{{__('Actions')}}</th>
                                     </tr>
                                 </thead>
 
@@ -77,4 +94,11 @@
             </div> <!-- end row -->
         </div><!-- container-fluid -->
     </div>
+@endsection
+@section('pageSpecificJs')
+<script>
+    document.getElementById('importFile').addEventListener('change', function () {
+        this.form.submit();
+    });
+</script>
 @endsection

@@ -7,7 +7,7 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <div class="w-100 d-flex" style="justify-content: space-between">
-                                <h4 class="mt-0 header-title">Update Kit</h4>
+                                <h4 class="mt-0 header-title">{{__('Update First-aid Kit')}}</h4>
                                 <a href="{{ route('kits.status', $kit->id) }}"
                                     class="btn btn-primary mb-3">{{ $kit->is_active ? 'Inactive Kit' : 'Active Kit' }} </a>
                             </div>
@@ -25,7 +25,7 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label>Company Name</label>
+                                                <label>{{__('Company Name')}}</label>
                                                 <input id="company" type="text"
                                                     class="form-control @error('company') is-invalid @enderror"
                                                     name="company" value="{{ $kit->preventionAdvisor->company->name }}"
@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label>Unique ID</label>
+                                                <label>{{__('Unique ID')}}</label>
                                                 <input id="unique_code" type="text"
                                                     class="form-control @error('unique_code') is-invalid @enderror"
                                                     name="unique_code" value="{{ $kit->unique_code }}" autofocus readonly>
@@ -48,7 +48,7 @@
 
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label>Prevention Advisors</label>
+                                                <label>{{__('Prevention Advisors')}}</label>
                                                 <select id="" name="prevention_advisor_id"
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
@@ -64,7 +64,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>{{__('Name')}}</label>
                                                 <input id="" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="{{ $kit->name }}" autofocus>
@@ -78,7 +78,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Address</label>
+                                                <label>{{__('Address')}}</label>
                                                 <input id="autocomplete" type="text"
                                                     class="form-control @error('address_1') is-invalid @enderror"
                                                     name="address_1" value="{{ $kit->address_1 }}" autofocus>
@@ -95,12 +95,12 @@
                                         <div class="w-100">
                                             <div class="text-left">
                                             <div class="col-lg-12">
-                                                <p>Here is your QR code for the KIT</p>
+                                                <p>QR Code</p>
                                                 <img src="{{ env('DO_CDN_ENDPOINT') }}/{{ $kit->qr_image }}"
                                                     alt="">
                                             </div>
                                             <a href="{{ route('kit.qr.download', $kit->id) }}"
-                                                class=" btn btn-success mt-3 ml-5">Download</a>
+                                                class=" btn btn-success mt-3 ml-5">{{__('Download')}}</a>
                                             </div>
                                         </div>
 
@@ -110,10 +110,10 @@
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    Submit
+                                                    {{__('Submit')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    Cancel
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>

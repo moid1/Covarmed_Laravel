@@ -11,6 +11,8 @@ use App\Models\QuestionsAnswers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\IncidentsExport;
 
 class IncidentsController extends Controller
 {
@@ -20,16 +22,27 @@ class IncidentsController extends Controller
     public function index()
     {
         $incidents  = null;
+        $isSeniour = false;
+        $pv = PreventionAdvisor::where('user_id', Auth::id())->first();
         if (Auth::user()->user_type == 0) {
             $incidents = Incidents::all();
         } elseif (Auth::user()->user_type == 1) {
-            $preventionalAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first()->only('id');
-            if (!empty($preventionalAdvisorId)) {
-                $incidents = Incidents::where('prevention_advisor_id', $preventionalAdvisorId['id'])->get();
+            if ($pv->is_seniour) {
+                $isSeniour = true;
+                $seniourPVCompanyID = $pv->company_id;
+                $allPVAdvisorsForSeniourPVCompany = PreventionAdvisor::where('company_id',  $seniourPVCompanyID)->get()->pluck('id');
+                if (!empty($allPVAdvisorsForSeniourPVCompany)) {
+                    $incidents = Incidents::whereIn('prevention_advisor_id', $allPVAdvisorsForSeniourPVCompany)->get();
+                }
+            } else {
+                $preventionalAdvisorId = PreventionAdvisor::where('user_id', Auth::id())->first()->only('id');
+                if (!empty($preventionalAdvisorId)) {
+                    $incidents = Incidents::where('prevention_advisor_id', $preventionalAdvisorId['id'])->get();
+                }
             }
         }
 
-        return view('incidents.index', compact('incidents'));
+        return view('incidents.index', compact('incidents', 'isSeniour'));
     }
 
     /**
@@ -95,7 +108,7 @@ class IncidentsController extends Controller
 
 
             return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
-        }else{
+        } else {
             dd('Kit is not available');
         }
     }
@@ -113,13 +126,25 @@ class IncidentsController extends Controller
             if ($questionsString) {
                 $questionValues = explode(',', $questionsString);
                 foreach ($questionValues as $key => $questionID) {
-                    $questionId = $request->input('question_' . $questionID);
-
-                    QuestionsAnswers::create([
-                        'incident_id' => $incident->id,
-                        'question_id' => $questionID,
-                        'answers' => $questionId
-                    ]);
+                    // Check if the question exists
+                    $question = Question::find($questionID);
+            
+                    // Proceed only if the question exists
+                    if ($question) {
+                        $questionId = $request->input('question_' . $questionID);
+                        if (is_array($questionId)) {
+                            $questionId = implode(',', $questionId);
+                        }
+            
+                        QuestionsAnswers::create([
+                            'incident_id' => $incident->id,
+                            'question_id' => $questionID,
+                            'answers' => $questionId 
+                        ]);
+                    } else {
+                        // Handle case where question does not exist
+                        // This could be logging an error, skipping this question, or any other appropriate action
+                    }
                 }
             }
 
@@ -138,5 +163,10 @@ class IncidentsController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('incidents.export', ['incident' => $incident]);
         return $pdf->stream();
+    }
+
+    public function exportIncidents()
+    {
+        return Excel::download(new IncidentsExport, 'incidents.xlsx');
     }
 }

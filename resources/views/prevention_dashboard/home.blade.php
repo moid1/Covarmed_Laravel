@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 d-none">
                 <div class="card m-b-20">
                     <div class="card-body">
                         <div style="width: 50%; margin: auto;">
@@ -71,13 +71,15 @@
 
 @section('pageSpecificJs')
 <script>
+    const totalReportsLabel = @json(__('Total Reports'));
+
     var ctx = document.getElementById('barChart').getContext('2d');
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: @json($data['labels']),
                 datasets: [{
-                    label: 'Total Reports',
+                    label: totalReportsLabel,
                     data: @json($data['data']),
                     backgroundColor: 'rgba(17, 145, 194, 0.6)',
                     borderColor: 'rgba(33, 66, 106, 1)',

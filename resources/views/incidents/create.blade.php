@@ -51,13 +51,14 @@
                 <div class="card form-holder">
                     <div class="card-body">
                         @if (Session::has('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ Session::get('success') }}
-                        </div>
+                            <div class="alert alert-success" role="alert">
+                                {{ Session::get('success') }}
+                            </div>
                         @endif
                         <div class="w-100 text-center">
-                            <img class="img-fluid " src="{{ env('DO_CDN_ENDPOINT')."/{$kit->preventionAdvisor->company->logo}" }}"
-                            alt="">
+                            <img class="img-fluid "
+                                src="{{ env('DO_CDN_ENDPOINT') . "/{$kit->preventionAdvisor->company->logo}" }}"
+                                alt="">
                         </div>
                         <h3 class="text-center mt-3">{{ $kit->preventionAdvisor->company->name }}</h3>
                         <p class="text-center text-grey">Please enter the incident details</p>
@@ -66,23 +67,71 @@
                             <input type="hidden" name="prevention_advisor_id" id=""
                                 value="{{ $kit->preventionAdvisor->id }}">
                             <input type="hidden" name="kit_id" id="" value="{{ $kit->id }}">
+                                <div class="d-flex justify-content-center align-items-center w-100" >
+                                    @include('partials/language_switcher')
+                                </div>
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="employee_name" class="form-control" placeholder="Name"
+                                <label>{{__('Name')}}</label>
+                                <input type="text" name="employee_name" class="form-control" placeholder="{{__('Name')}}"
                                     required />
                             </div>
-                            @if(!empty($questions))
+                            @if (!empty($questions))
                                 @foreach ($questions as $question)
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label>{{ $question->question }}</label>
                                         <textarea rows="2" class="form-control" name="question_{{ $question->id }}" id=""
                                             cols="30" rows="10" required></textarea>
-                                    </div>
+                                    </div> --}}
+
+                                    <?php
+                                    $contentArray = json_decode($question->content, true);
+                                    if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                        $type = $contentArray[0]['type'];
+                                        $label = $contentArray[0]['label'];
+                                        switch ($type) {
+                                            case 'select':
+                                                $fieldValue = $contentArray[0]['values'];
+                                                echo '<div class="form-group">
+                                                    <label>'.__($label).'</label>
+                                                    <select name="question_'.$question->id.'" class="form-control">';
+                                                        foreach ($fieldValue as $fV) {
+                                                            echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
+                                                        }
+                                                echo '</select>
+                                                </div>';
+                                                break;
+
+                                            case 'text':
+                                                echo '<div class="form-group">
+                                                    <label>'.__($label).'</label>
+                                                    <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
+                                                break;
+
+                                            case 'checkbox-group':
+                                                $fieldValue = $contentArray[0]['values'];
+                                                echo '<div class="form-group">
+                                                    <label>'.__($label).'</label>';
+                                                        foreach ($fieldValue as $option) {
+                                                            echo '<div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
+                                                                    <label class="form-check-label">'.$option['label'].'</label>
+                                                                </div>';
+                                                        }
+                                                echo '</div>';
+
+                                            
+                                            default:
+                                                # code...
+                                                break;
+                                        }
+                                      
+                                    }
+                                    ?>
                                 @endforeach
                             @endif
 
 
-                            <div class="w-100 text-center">
+                            <div class="w-100 text-center mt-5">
                                 <button type="submit" class="w-100 btn btn-primary text-center">Submit</button>
                             </div>
 
@@ -132,6 +181,7 @@
 
     let attempts = 0;
     let maxAttempts = 3;
+
     function blockAccess() {
         console.log('Maximum attempts reached. Blocking access.');
         // Redirect to a blocked page or show an error message
@@ -140,9 +190,8 @@
 
     function authenticate() {
         var enteredPassword = window.prompt('Please enter the password:');
-        
-        if (enteredPassword !== null && enteredPassword === password) {
-        } else {
+
+        if (enteredPassword !== null && enteredPassword === password) {} else {
             // Increment the attempts
             attempts++;
 
@@ -156,9 +205,9 @@
         }
     }
 
-    if(password != null){
+    if (password != null) {
         var enteredPassword = window.prompt('Please enter the password:');
-            authenticate();
+        authenticate();
     }
 </script>
 

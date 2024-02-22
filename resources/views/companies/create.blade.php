@@ -8,8 +8,8 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Add Company Here</h4>
-                            <p class="text-muted m-b-30 font-14">Fill This instructions Carefully.</p>
+                            <h4 class="mt-0 header-title">{{__('Add Company')}}</h4>
+                            <p class="text-muted m-b-30 font-14">{{__('Fill This instructions Carefully')}}.</p>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
@@ -21,7 +21,7 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>{{__('Name')}}</label>
                                                 <input id="name" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="{{ old('name') }}" autofocus>
@@ -37,7 +37,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Password</label>
+                                                <label>{{__('Password')}}</label>
                                                 <input id="password" type="password"
                                                     class="form-control @error('password') is-invalid @enderror"
                                                     name="password" value="{{ old('password') }}">
@@ -51,7 +51,7 @@
 
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>Location</label>
+                                                <label>{{__('Location')}}</label>
                                                 <input id="location" type="text"
                                                     class="form-control @error('location') is-invalid @enderror"
                                                     name="location" value="{{ old('location') }}">
@@ -66,10 +66,10 @@
 
                                         <div class="col-lg-6">
                                             <div class="">
-                                                <label>Logo</label>
+                                                <label>{{__('Logo')}}</label>
                                                 <input id="logo" type="file" onchange="readURL(this);"
                                                     class=" @error('logo') is-invalid @enderror" name="logo">
-                                                    <p class="text-danger">*Preferred png format</p>
+                                                    <p class="text-danger">*{{__('Please upload a .PNG file no larger then 2 MB')}}</p>
 
                                                 @error('logo')
                                                     <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@
 
                                         <div class="col-lg-12 mt-5">
                                             <div class="form-group">
-                                                <label>Questions</label>
+                                                <label>{{__('Form Questions')}}</label>
                                                 <select multiple="multiple" id="" name="questions[]"
                                                     class="js-example-basic-multiple form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
@@ -107,10 +107,10 @@
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    Submit
+                                                    {{__('Submit')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    Cancel
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>

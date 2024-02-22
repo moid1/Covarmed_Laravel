@@ -13,7 +13,7 @@
                         <span class="mini-stat-icon"><i class="mdi mdi-account"></i></span>
                         <div class="mini-stat-info text-right text-white">
                             <span class="counter">{{ $dashboardStats['totalPreventionalAdvisors'] }}</span>
-                            Total Prevention Advisors
+                            {{__('Total Prevention Advisors')}}
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                         <span class="mini-stat-icon"><i class="mdi mdi-hospital"></i></span>
                         <div class="mini-stat-info text-right text-white">
                             <span class="counter">{{ $dashboardStats['totalKits'] }}</span>
-                            Total Kits
+                            {{__('Total First-aid Kits')}}
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <span class="mini-stat-icon"><i class="mdi mdi-file"></i></span>
                         <div class="mini-stat-info text-right text-white">
                             <span class="counter">{{ $dashboardStats['totalIncidents'] }}</span>
-                            Total Incidents
+                            {{__('Total Incidents')}}
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 m-b-15 header-title">Recent Users</h4>
+                            <h4 class="mt-0 m-b-15 header-title">{{__('Recent Users')}}</h4>
                             <div class="table-responsive">
                                 <table class="table table-hover m-b-0">
                                     <thead>
@@ -126,13 +126,14 @@
         });
     </script>
     <script>
+          const totalReportsLabel = @json(__('Total Reports'));
         var ctx = document.getElementById('barChart').getContext('2d');
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: @json($data['labels']),
                 datasets: [{
-                    label: 'Total Reports',
+                    label: totalReportsLabel,
                     data: @json($data['data']),
                     backgroundColor: 'rgba(17, 145, 194, 0.6)',
                     borderColor: 'rgba(33, 66, 106, 1)',

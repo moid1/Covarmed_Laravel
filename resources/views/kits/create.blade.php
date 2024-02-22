@@ -6,21 +6,21 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Create Kit</h4>
+                            <h4 class="mt-0 header-title">{{__('Add First-aid Kit')}}</h4>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
                                 </div>
                             @endif
                             <div class="p-20">
-                                <p class="font-weight-bold">Kit Details</p>
+                                <p class="font-weight-bold">{{__('First-aid Kit Details')}}</p>
                                 <form action="{{ route('kits.store') }}" method="POST">
                                     @csrf
                                     <div class="row">
                                         <input type="hidden" name="qr_image" value="{{ $qrCodeFilePath }}">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Unique ID</label>
+                                                <label>{{__('Unique ID')}}</label>
                                                 <input id="unique_code" type="text"
                                                     class="form-control @error('unique_code') is-invalid @enderror"
                                                     name="unique_code" value="{{ $unique_code }}" autofocus readonly>
@@ -34,12 +34,12 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Company</label>
+                                                <label>{{__('Company')}}</label>
                                                 <select id="" name="company"
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example"
                                                     onchange="updatePreventionalAdvisors(this.value)">
-                                                    <option value="" selected>Please select Company
+                                                    <option value="" selected>{{__('Please select a company')}}
                                                     </option>
                                                     @foreach ($companies as $company)
                                                         <option value="{{ $company->id }}">
@@ -51,11 +51,11 @@
 
                                         <div class="col-lg-6 " id="preventionalAdvisorSelection">
                                             <div class="form-group">
-                                                <label>Prevention Advisors</label>
+                                                <label>{{__('Prevention Advisors')}}</label>
                                                 <select id="sss" name="prevention_advisor_id"
                                                     class="form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
-                                                    <option value="" selected>Please select Prevention Advisor
+                                                    <option value="" selected>{{__('Please select a prevention advisor')}}
                                                     </option>
                                                    
                                                 </select>
@@ -64,7 +64,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>{{__('Name')}}</label>
                                                 <input id="" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="" autofocus>
@@ -76,11 +76,11 @@
                                             </div>
                                         </div> 
                                         <div class="col-lg-12">
-                                            <p class="font-weight-bold">Location</p>
+                                            <p class="font-weight-bold">{{__('Location')}}</p>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>Address</label>
+                                                <label>{{__('Address')}}</label>
                                                 <input id="autocomplete" type="text"
                                                     class="form-control @error('address_1') is-invalid @enderror"
                                                     name="address_1" value="" autofocus>
@@ -94,7 +94,7 @@
 
 
                                         <div class="col-lg-12 mt-5">
-                                            <p>Here is your QR code for the KIT</p>
+                                            <p>QR Code</p>
                                             <img src="{{ env('DO_CDN_ENDPOINT') }}/{{ $qrCodeFilePath }}" alt="">
                                         </div>
 
@@ -102,10 +102,10 @@
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    Submit
+                                                    {{__('Submit')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    Cancel
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>

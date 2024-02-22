@@ -66,10 +66,10 @@
                             class="rounded-circle">
                     </div> --}}
                         <div class="user-info">
-                            <h4 class="font-16">Hello {{ Auth::user()->name }}</h4>
+                            <h4 class="font-16">{{__('Hello')}} {{ Auth::user()->name }}</h4>
                             @if (Auth::user()->user_type == 1)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
-                                    Prevention Advisor</span>
+                              {{$isSeniour ? 'Senior' : ''}}      Prevention Advisor</span>
                             @elseif(Auth::user()->user_type == 0)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
                                     Admin</span>
@@ -90,7 +90,13 @@
                             <li>
                                 <a href="{{ route('incident.index') }}" class="waves-effect">
                                     <i class="mdi mdi-file"></i>
-                                    <span> Incidents </span>
+                                    <span> {{__('Incidents')}} </span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="{{ route('translations.create') }}" class="waves-effect">
+                                    <i class="mdi mdi-file"></i>
+                                    <span> {{__('Translations')}} </span>
                                 </a>
                             </li>
                             @if (Auth::user()->user_type == 1)
@@ -105,60 +111,81 @@
 
 
                             @if (Auth::user()->user_type == 0)
+                            <li>
+                                <a href="{{ route('company.index') }}" class="waves-effect"><i class="mdi mdi-domain"></i>
+                                    <span>
+                                        {{__('Companies')}} </span>
+                                </a>
+                            {{-- </li>
                                 <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-domain"></i>
                                         <span>
-                                            Companies </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            {{__('Companies')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('company.create') }}">Add Company</a></li>
-                                        <li><a href="{{ route('company.index') }}">All Companies</a></li>
+                                        <li><a href="{{ route('company.create') }}">{{__('Add Company')}}</a></li>
+                                        <li><a href="{{ route('company.index') }}">{{__('All Companies')}}</a></li>
                                     </ul>
-                                </li>
-
-                                <li class="has_sub">
+                                </li> --}}
+                                <a href="{{ route('prevention.advisor.index') }}" class="waves-effect"><i class="mdi mdi-account"></i>
+                                    <span>
+                                        {{__('Advisors')}} </span>
+                                </a>
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i>
                                         <span>
-                                            Advisors </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            {{__('Advisors')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('prevention.advisor.create') }}">Add Advisor</a></li>
-                                        <li><a href="{{ route('prevention.advisor.index') }}">All Advisors</a></li>
+                                        <li><a href="{{ route('prevention.advisor.create') }}">{{__('Add Advisor')}}</a></li>
+                                        <li><a href="{{ route('prevention.advisor.index') }}">{{__('All Advisors')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
+                                <a href="{{ route('kits.index') }}" class="waves-effect"><i class="mdi mdi-hospital"></i>
+                                    <span>
+                                        {{__('First-aid Kits')}} </span>
+                                </a>
 
-
-                                <li class="has_sub">
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-hospital"></i>
                                         <span>
-                                            Kits </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            {{__('First-aid Kits')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('kits.create') }}">Add Kit</a></li>
-                                        <li><a href="{{ route('kits.index') }}">All Kits</a></li>
+                                        <li><a href="{{ route('kits.create') }}">{{__('Add First-aid Kit')}}</a></li>
+                                        <li><a href="{{ route('kits.index') }}">{{__('All First-aid Kits')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
+                                <a href="{{ route('question.index') }}" class="waves-effect"><i class="mdi mdi-note"></i>
+                                    <span>
+                                        {{__('Forms')}} </span>
+                                </a>
 
-                                <li class="has_sub">
+                                {{-- <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-note"></i>
                                         <span>
-                                            Forms </span><i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            {{__('Forms')}} </span><i class="fa fa-caret-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ route('question.create') }}">Add Form</a></li>
-                                        <li><a href="{{ route('question.index') }}">All Forms</a></li>
+                                        <li><a href="{{ route('question.create') }}">{{__('Add Form')}}</a></li>
+                                        <li><a href="{{ route('question.index') }}">{{__('All Forms')}}</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             @endif
 
 
                         </ul>
+                      
                     </div>
                 @endif
-                <div class="text-center">
-                    <p class="w-100" style="bottom: 70px;position: absolute;">©️ 2024 Covarmed BV</p>
+                <div class="d-flex justify-content-center align-items-center w-100" style="position: absolute;bottom:100;">
+                    @include('partials/language_switcher')
                 </div>
+                {{-- <div class="text-center">
+                    <p class="w-100" style="bottom: 50px;position: absolute;">©️ 2024 Covarmed BV</p>
+                </div> --}}
+               
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
         </div>
@@ -223,12 +250,12 @@
                                 <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user"
                                     data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
-                                    My Account
+                                    {{__('My account')}}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                     <a style="margin-left:-16px" class="dropdown-item"
                                         href="{{ route('change-password') }}"><i
-                                            class="mdi mdi-account-circle m-r-5 text-muted"></i> Change Password</a>
+                                            class="mdi mdi-account-circle m-r-5 text-muted"></i> {{__('Change Password')}}</a>
                                     {{-- <a class="dropdown-item" href="#"><span
                                             class="badge badge-success pull-right">5</span><i
                                             class="mdi mdi-settings m-r-5 text-muted"></i> Settings</a>
@@ -237,13 +264,18 @@
                                     <a style="margin-left:-16px" class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i
-                                            class="mdi mdi-logout m-r-5 text-muted"></i> Logout</a>
+                                            class="mdi mdi-logout m-r-5 text-muted"></i> {{__('Logout')}}</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         class="d-none">
                                         @csrf
                                     </form>
                                 </div>
                             </li>
+
+                            {{-- <li>
+                @include('partials/language_switcher')
+
+                            </li> --}}
 
                         </ul>
 
@@ -323,6 +355,7 @@
 
     <!-- App js -->
     <script src="{{ asset('dashboard/') }}assets/js/app.js"></script>
+      
     @yield('pageSpecificJs')
 </body>
 
