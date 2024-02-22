@@ -21,20 +21,20 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="text_field">KEY</label>
+                                                <label for="text_field">{{__('English Text')}}</label>
                                                 <input class="form-control" type="text" id="data" name="data">
                                             </div>
                                             <div class="form-group">
-                                                <label for="text_field">Value</label>
+                                                <label for="text_field">{{__('Translation')}}</label>
                                                 <input class="form-control" type="text" id="" name="value">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="language">Select Language:</label>
+                                                <label for="language">{{__('Select Language')}}:</label>
                                                 <select class="form-control" id="language" name="language">
-                                                    <option value="de">Dutch</option>
-                                                    <option value="fr">French</option>
+                                                    <option value="de">{{__('Dutch')}}</option>
+                                                    <option value="fr">{{__('French')}}</option>
                                                 </select>
 
                                             </div>
