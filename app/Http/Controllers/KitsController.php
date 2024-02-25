@@ -61,7 +61,12 @@ class KitsController extends Controller
 
     Storage::disk('do')->put(
         "{$folder}/{$fileName}",
-        (QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl)),
+        (QrCode::format('png')
+            ->size(200)
+            ->merge(public_path('logo.jpg'), 0.8, true)
+            ->errorCorrection('H')
+            ->generate($absoluteUrl)
+    ),
         'public'
     );
 
@@ -184,7 +189,7 @@ class KitsController extends Controller
         $kit = Kits::find($kitId);
         if ($kit) {
             $output = file_get_contents(env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image);
-            $pdfPath = time() . '.svg';
+            $pdfPath = time() . '.png';
             $headers = [
                 'Content-Type' => 'application/octet-stream',
                 'Content-Disposition' => 'attachment; filename=' . $pdfPath,

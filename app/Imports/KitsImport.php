@@ -30,10 +30,9 @@ class KitsImport implements ToModel, WithHeadingRow
             $folder = 'qrcodes';
             $qrCodeFilePath = "{$folder}/{$fileName}";
 
-            // Generate and store the QR code
             Storage::disk('do')->put(
                 $qrCodeFilePath,
-                QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl),
+                (QrCode::format('png')->size(200)->merge(public_path('logo.jpg'), 0.8, true)->errorCorrection('H')->generate($absoluteUrl)),
                 'public'
             );
 
