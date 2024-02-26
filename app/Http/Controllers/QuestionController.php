@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class QuestionController extends Controller
 {
@@ -34,6 +35,27 @@ class QuestionController extends Controller
         $item->content = $request->form;
         $item->save();
 
+        $de_value = $request->input('de_value');
+        $fr_value = $request->input('fr_value');
+
+        $contentArray = json_decode( $item->content, true);
+        if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+            $label = $contentArray[0]['label'];
+        }
+
+
+        if (!empty($de_value) && !empty($label)) {
+            $filePath = resource_path("lang/de.json");
+            $translations = json_decode(File::get($filePath), true);
+            $translations[$label] = $de_value;
+            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
+        }
+        if (!empty($fr_value) && !empty($label)) {
+            $filePath = resource_path("lang/fr.json");
+            $translations = json_decode(File::get($filePath), true);
+            $translations[$label] = $fr_value;
+            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
+        }
         return back()->with('success', trans('Question added succesfully, please edit the correct company to the question'));
     }
 

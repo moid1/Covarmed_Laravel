@@ -14,6 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use Intervention\Image\Facades\Image;
 
 class KitsController extends Controller
 {
@@ -45,53 +46,63 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
-{
-    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-    $unique_code = $this->generateUniqueCode();
-
-    
-
-    $fileName = (string) Str::uuid();
-    $folder = 'qrcodes';
-    $qrCodeFilePath = "{$folder}/{$fileName}";
-    $absoluteUrl = url('incident-kit/' . $unique_code);
-
-    $companies  = Company::where('is_active', true)->get();
-
-    Storage::disk('do')->put(
-        "{$folder}/{$fileName}",
-        (QrCode::format('png')
-            ->size(200)
-            ->merge(public_path('logo.jpg'), 0.8, true)
-            ->errorCorrection('H')
-            ->generate($absoluteUrl)
-    ),
-        'public'
-    );
-
-    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-}
+    public function create()
+    {
+        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+        $unique_code = $this->generateUniqueCode();
+        $companies  = Company::where('is_active', true)->get();
+        return view('kits.create', compact('preventionAdvisors', 'unique_code' ,'companies'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'unique_code' => ['required', 'string', 'max:255'],
             'prevention_advisor_id' => ['required'],
-            'qr_image' => ['required'],
             'name' => ['required'],
             'address_1' => ['required'],
 
         ]);
 
         try {
+
+            $fileName = (string) Str::uuid();
+            $folder = 'qrcodes';
+            $qrCodeFilePath = "{$folder}/{$fileName}";
+            $absoluteUrl = url('incident-kit/' . $request->unique_code);
+
+            
+            // Generate the QR code
+            $qrCode = QrCode::format('png')
+                ->size(400)
+                ->merge(public_path('logo.jpg'), 0.8, true)
+                ->errorCorrection('H')
+                ->generate($absoluteUrl);
+
+            // Save the QR code to a temporary file
+            $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
+            file_put_contents($tempQrCodePath, $qrCode);
+
+            $textImage = Image::canvas(200, 30, '#FFFFFF');
+            $textImage->text($request->name, 120, 15, function ($font) {
+                $font->size(40);
+                $font->align('center');
+                $font->valign('middle');
+            });
+            $qrCodeImage = Image::make($tempQrCodePath);
+            $qrCodeImage->insert($textImage, 'top-center', 0, 10);
+            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
+            unlink($tempQrCodePath);
+
+
             $kit = Kits::create([
                 'prevention_advisor_id' => $request->prevention_advisor_id,
                 'unique_code' => $request->unique_code,
-                'qr_image' => $request->qr_image,
+                'qr_image' => $qrCodeFilePath,
                 'name' => $request->name ?? 'N/A',
                 'address_1' => $request->address_1 ?? 'N/A',
             ]);
@@ -189,7 +200,12 @@ class KitsController extends Controller
         $kit = Kits::find($kitId);
         if ($kit) {
             $output = file_get_contents(env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image);
-            $pdfPath = time() . '.png';
+            $isSvg = strpos($output, '<svg') !== false;
+            if ($isSvg) {
+                $pdfPath = time() . '.svg';
+            } else {
+                $pdfPath = time() . '.png';
+            }
             $headers = [
                 'Content-Type' => 'application/octet-stream',
                 'Content-Disposition' => 'attachment; filename=' . $pdfPath,
@@ -213,9 +229,9 @@ class KitsController extends Controller
     public function importKits(Request $request)
     {
 
-            Excel::import(new KitsImport, $request->file);
+        Excel::import(new KitsImport, $request->file);
 
-            // Provide feedback to the user
-            return redirect()->back()->with('success', 'Data imported successfully!');
+        // Provide feedback to the user
+        return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }

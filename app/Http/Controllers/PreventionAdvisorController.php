@@ -50,11 +50,7 @@ class PreventionAdvisorController extends Controller
 
         if ($user) {
           
-            if ($request->has('is_seniour')) {
-                $isSenior = true;
-            } else {
-                $isSenior = false;
-            }
+            $isSenior = $request->pv_role == 'spv' ? true : false;
 
             $request->merge([
                 'user_id' => $user->id,
@@ -102,7 +98,9 @@ class PreventionAdvisorController extends Controller
     {
         $preventionAdvisor = PreventionAdvisor::find($id);
         if ($preventionAdvisor) {
-            $preventionAdvisor->update($request->only(['phone']));
+            $preventionAdvisor->phone = $request->phone;
+            $preventionAdvisor->is_seniour = $request->pv_role == 'spv' ? true : false;
+            $preventionAdvisor->update();
             $user = User::find($preventionAdvisor->user_id);
             if ($user) {
                 $user->update(['name' => $request->name]);
