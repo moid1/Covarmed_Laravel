@@ -51,7 +51,7 @@ class KitsController extends Controller
         $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
         $unique_code = $this->generateUniqueCode();
         $companies  = Company::where('is_active', true)->get();
-        return view('kits.create', compact('preventionAdvisors', 'unique_code' 'companies'));
+        return view('kits.create', compact('preventionAdvisors', 'unique_code' ,'companies'));
     }
 
     /**
