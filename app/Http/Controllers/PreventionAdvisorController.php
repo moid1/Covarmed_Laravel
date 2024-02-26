@@ -61,7 +61,7 @@ class PreventionAdvisorController extends Controller
 
 
 
-            $preventionAdvisor = PreventionAdvisor::create($request->except(['logo', 'email']));
+            $preventionAdvisor = PreventionAdvisor::create($request->except(['logo', 'email', 'pv_role']));
 
             // Need to send email to preventionalAdvisor
             $link = route('prevention.advisor.showregisterformviamail', $preventionAdvisor->id);
