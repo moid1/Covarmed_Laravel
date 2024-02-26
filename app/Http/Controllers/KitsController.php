@@ -46,61 +46,61 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
-{ 
-    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-    $unique_code = $this->generateUniqueCode();
+    public function create()
+    {
+        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+        $unique_code = $this->generateUniqueCode();
 
-    
 
-    $fileName = (string) Str::uuid();
-    $folder = 'qrcodes';
-    $qrCodeFilePath = "{$folder}/{$fileName}";
-    $absoluteUrl = url('incident-kit/' . $unique_code);
 
-    $companies  = Company::where('is_active', true)->get();
+        $fileName = (string) Str::uuid();
+        $folder = 'qrcodes';
+        $qrCodeFilePath = "{$folder}/{$fileName}";
+        $absoluteUrl = url('incident-kit/' . $unique_code);
 
-// Generate the QR code
-$qrCode = QrCode::format('png')
-    ->size(200)
-    ->merge(public_path('logo.jpg'), 0.8, true)
-    ->errorCorrection('H')
-    ->generate($absoluteUrl);
+        $companies  = Company::where('is_active', true)->get();
 
-// Save the QR code to a temporary file
-$tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
-file_put_contents($tempQrCodePath, $qrCode);
+        // Generate the QR code
+        $qrCode = QrCode::format('png')
+            ->size(200)
+            ->merge(public_path('logo.jpg'), 0.8, true)
+            ->errorCorrection('H')
+            ->generate($absoluteUrl);
 
-// Create an image from text
-$textImage = Image::canvas(200, 50, '#FFFFFF'); // Create a white canvas
-$textImage->text('testsqwe', 100, 25, function($font) { // Add text to canvas
-    $font->size(14);
-    $font->color('#000000'); // Black color
-    $font->align('center');
-    $font->valign('middle');
-});
+        // Save the QR code to a temporary file
+        $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
+        file_put_contents($tempQrCodePath, $qrCode);
 
-// Load the QR code image using Intervention Image
-$qrCodeImage = Image::make($tempQrCodePath);
+        // Create an image from text
+        $textImage = Image::canvas(200, 50, '#FFFFFF'); // Create a white canvas
+        $textImage->text('Company Name', 100, 25, function ($font) { // Add text to canvas
+            $font->size(30);
+            $font->color('#000000'); // Black color
+            $font->align('center');
+            $font->valign('middle');
+        });
 
-// Merge the text image with the QR code image
-$qrCodeImage->insert($textImage, 'bottom-center', 0, 10);
+        // Load the QR code image using Intervention Image
+        $qrCodeImage = Image::make($tempQrCodePath);
 
-// Save the merged image
-Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
+        // Merge the text image with the QR code image
+        $qrCodeImage->insert($textImage, 'bottom-center', 0, 10);
 
-// Clean up temporary QR code file
-unlink($tempQrCodePath);
+        // Save the merged image
+        Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
 
-    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-}
+        // Clean up temporary QR code file
+        unlink($tempQrCodePath);
+
+        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-       
+
         $this->validate($request, [
             'unique_code' => ['required', 'string', 'max:255'],
             'prevention_advisor_id' => ['required'],
@@ -241,9 +241,9 @@ unlink($tempQrCodePath);
     public function importKits(Request $request)
     {
 
-            Excel::import(new KitsImport, $request->file);
+        Excel::import(new KitsImport, $request->file);
 
-            // Provide feedback to the user
-            return redirect()->back()->with('success', 'Data imported successfully!');
+        // Provide feedback to the user
+        return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }
