@@ -73,7 +73,7 @@ class KitsController extends Controller
 
         // Create an image from text
         $textImage = Image::canvas(100, 20, '#FFFFFF'); // Create a white canvas
-        $textImage->text('Company Name', 50, 25, function ($font) { // Add text to canvas
+        $textImage->text('Company Name', 10, 5, function ($font) { // Add text to canvas
             $font->size(15);
             $font->color('#FF0000'); // Black color
             $font->align('center');
