@@ -81,8 +81,8 @@ $canvas->insert($image);
 // Add company name as text overlay
 $canvas->text('testingCompany', $canvas->width() / 2, $canvas->height() + 20, function($font) {
     $font->size(24);
-    $font->color('#000000');
-    $font->align('center');
+    $font->color('#FF0000');
+    $font->align('right');
     $font->valign('bottom');
 });
 
