@@ -47,8 +47,7 @@ class KitsController extends Controller
      * Show the form for creating a new resource.
      */
    public function create()
-{ phpinfo();
-    exit;
+{ 
     $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
     $unique_code = $this->generateUniqueCode();
 
