@@ -14,7 +14,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
-use Intervention\Image\Facades\Image;
 
 class KitsController extends Controller
 {
@@ -59,38 +58,18 @@ class KitsController extends Controller
     $absoluteUrl = url('incident-kit/' . $unique_code);
 
     $companies  = Company::where('is_active', true)->get();
-    $qrCode = QrCode::format('png')
-    ->size(200)
-    ->merge(public_path('logo.jpg'), 0.8, true)
-    ->errorCorrection('H')
-    ->generate($absoluteUrl);
 
-// Save the QR code to a temporary file
-$tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
-file_put_contents($tempQrCodePath, $qrCode);
-
-// Load the QR code image using Intervention Image
-$image = Image::make($tempQrCodePath);
-
-// Create a new canvas image
-$canvas = Image::canvas($image->width(), $image->height());
-
-// Insert the QR code onto the canvas
-$canvas->insert($image);
-
-// Add company name as text overlay
-$canvas->text('testingCompany', $canvas->width() / 2, $canvas->height() + 20, function($font) {
-    $font->size(24);
-    $font->color('#FF0000');
-    $font->align('right');
-    $font->valign('bottom');
-});
-
-// Save the canvas image
-Storage::disk('do')->put("{$folder}/{$fileName}", $canvas->encode(), 'public');
-
-// Clean up temporary QR code file
-unlink($tempQrCodePath);
+    Storage::disk('do')->put(
+        "{$folder}/{$fileName}",
+        (QrCode::format('png')
+            ->size(200)
+            ->merge(public_path('logo.jpg'), 0.8, true)
+            ->errorCorrection('H')
+            ->text('testingName') // Add company name as text on QR code
+            ->generate($absoluteUrl)
+    ),
+        'public'
+    );
 
     return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
 }
