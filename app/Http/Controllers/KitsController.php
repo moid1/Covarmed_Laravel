@@ -63,7 +63,6 @@ class KitsController extends Controller
         $this->validate($request, [
             'unique_code' => ['required', 'string', 'max:255'],
             'prevention_advisor_id' => ['required'],
-            'qr_image' => ['required'],
             'name' => ['required'],
             'address_1' => ['required'],
 
