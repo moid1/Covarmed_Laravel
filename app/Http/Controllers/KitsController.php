@@ -102,7 +102,7 @@ class KitsController extends Controller
             $kit = Kits::create([
                 'prevention_advisor_id' => $request->prevention_advisor_id,
                 'unique_code' => $request->unique_code,
-                'qr_image' => $request->qrCodeFilePath,
+                'qr_image' => $qrCodeFilePath,
                 'name' => $request->name ?? 'N/A',
                 'address_1' => $request->address_1 ?? 'N/A',
             ]);
