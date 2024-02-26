@@ -60,36 +60,29 @@ class KitsController extends Controller
 
         $companies  = Company::where('is_active', true)->get();
 
-        Storage::disk('do')->put(
-            "{$folder}/{$fileName}",
-            (QrCode::format('png')
-                ->size(200)
-                ->merge(public_path('logo.jpg'), 0.8, true)
-                ->errorCorrection('H')
-                ->generate($absoluteUrl)
-            ),
-            'public'
-        );
-        // Generate the QR code
-        $qrCode = QrCode::format('png')
-            ->size(200)
-            ->merge(public_path('logo.jpg'), 0.8, true)
-            ->errorCorrection('H')
-            ->generate($absoluteUrl);
+       // Generate the QR code
+$qrCode = QrCode::format('png')
+->size(200)
+->merge(public_path('logo.jpg'), 0.8, true)
+->errorCorrection('H')
+->generate($absoluteUrl);
 
-        // Create an image instance from the QR code
-        $image = Image::make($qrCode);
+// Create a new blank canvas image
+$image = Image::canvas(300, 300);
 
-        // Add company name as text overlay
-        $image->text('Tetsting Name', $image->width() / 2, $image->height() + 20, function ($font) {
-            $font->size(24);
-            $font->color('#000000');
-            $font->align('center');
-            $font->valign('bottom');
-        });
+// Add the QR code to the canvas
+$image->insert($qrCode, 'center');
 
-        // Save the modified image
-        Storage::disk('do')->put("{$folder}/{$fileName}", $image->encode(), 'public');
+// Add company name as text overlay
+$image->text('testing name', $image->width() / 2, $image->height() + 20, function($font) {
+$font->size(24);
+$font->color('#000000');
+$font->align('center');
+$font->valign('bottom');
+});
+
+// Save the image
+Storage::disk('do')->put("{$folder}/{$fileName}", $image->encode(), 'public');
 
 
         return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
