@@ -73,8 +73,8 @@ class KitsController extends Controller
 
         // Create an image from text
         $textImage = Image::canvas(100, 50, '#FFFFFF'); // Create a white canvas
-        $textImage->text('Company Name', function ($font) { // Add text to canvas
-            $font->size(14);
+        $textImage->text('Company Name', 100, 25, function ($font) { // Add text to canvas
+            $font->size(130);
             $font->color('#FF0000'); // Black color
             $font->align('center');
             $font->valign('middle');
@@ -84,7 +84,7 @@ class KitsController extends Controller
         $qrCodeImage = Image::make($tempQrCodePath);
 
         // Merge the text image with the QR code image
-        $qrCodeImage->insert($textImage, 'top', 0, 10);
+        $qrCodeImage->insert($textImage, 0, 10);
 
         // Save the merged image
         Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
