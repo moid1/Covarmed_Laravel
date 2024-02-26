@@ -38,7 +38,7 @@ class QuestionController extends Controller
         $de_value = $request->input('de_value');
         $fr_value = $request->input('fr_value');
 
-        $contentArray = json_decode( $item->content, true);
+        $contentArray = json_decode($item->content, true);
         if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
             $label = $contentArray[0]['label'];
         }
@@ -88,7 +88,58 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-       Question::find($id)->delete();
-       return back()->with('success', "Form deleted successfully");
+        Question::find($id)->delete();
+        return back()->with('success', "Form deleted successfully");
+    }
+
+    public function showQuestion($id)
+    {
+        $question = Question::find($id);
+        if ($question) {
+            $contentArray = json_decode($question->content, true);
+            if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                $label = $contentArray[0]['label'];
+            }
+            $filePath = resource_path("lang/de.json");
+            $translations = json_decode(File::get($filePath), true);
+            $deValue = null;
+
+            if (array_key_exists($label, $translations)) {
+                $deValue = $translations[$label];
+            }
+            $frValue = null;
+            $filePath = resource_path("lang/fr.json");
+            $translations = json_decode(File::get($filePath), true);
+
+            if (array_key_exists($label, $translations)) {
+                $frValue = $translations[$label];
+            }
+            return view('questions.show', compact('question', 'label', 'deValue', 'frValue'));
+        }
+    }
+
+    public function updateQuestionTranslation(Request $request){
+        $question = Question::find($request->question_id);
+        if ($question) {
+            $contentArray = json_decode($question->content, true);
+            if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                $contentArray[0]['label'] = $request->eng_value;
+                $question->content = json_encode($contentArray);
+                $question->save();
+            }
+
+            $filePath = resource_path("lang/de.json");
+            $translations = json_decode(File::get($filePath), true);
+            $translations[$request->eng_value] = $request->de_value;
+            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
+
+            $filePath = resource_path("lang/fr.json");
+            $translations = json_decode(File::get($filePath), true);
+            $translations[$request->eng_value] = $request->fr_value;
+            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
+
+            return redirect('/questions');
+          
+        }
     }
 }

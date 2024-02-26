@@ -57,7 +57,8 @@
                                 <tr>
                                     <td>{{ $question->id }}</td>
                                     <td>{{ $label }}</td>
-                                    <td><a href="{{route('question.delete', $question->id)}}"><i class="mdi mdi-delete" style="color: red"></i></a></td>
+                                    <td><a href="{{route('question.delete', $question->id)}}"><i class="mdi mdi-delete" style="color: red"></i></a>/
+                                    <a href="{{route('question.show', $question->id)}}"><i class="fa fa-edit"></i></a></td>
                                 </tr>
                                 @endforeach
 
