@@ -72,9 +72,9 @@ class KitsController extends Controller
         file_put_contents($tempQrCodePath, $qrCode);
 
         // Create an image from text
-        $textImage = Image::canvas(200, 50, '#FFFFFF'); // Create a white canvas
+        $textImage = Image::canvas(200, 50); // Create a white canvas
         $textImage->text('Company Name', 100, 25, function ($font) { // Add text to canvas
-            $font->size(30);
+            $font->size(130);
             $font->color('#000000'); // Black color
             $font->align('center');
             $font->valign('middle');
