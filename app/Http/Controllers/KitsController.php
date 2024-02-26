@@ -46,53 +46,62 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-        $unique_code = $this->generateUniqueCode();
+   public function create()
+{ phpinfo();
+    exit;
+    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+    $unique_code = $this->generateUniqueCode();
 
+    
 
+    $fileName = (string) Str::uuid();
+    $folder = 'qrcodes';
+    $qrCodeFilePath = "{$folder}/{$fileName}";
+    $absoluteUrl = url('incident-kit/' . $unique_code);
 
-        $fileName = (string) Str::uuid();
-        $folder = 'qrcodes';
-        $qrCodeFilePath = "{$folder}/{$fileName}";
-        $absoluteUrl = url('incident-kit/' . $unique_code);
+    $companies  = Company::where('is_active', true)->get();
+    $qrCode = QrCode::format('png')
+    ->size(200)
+    ->merge(public_path('logo.jpg'), 0.8, true)
+    ->errorCorrection('H')
+    ->generate($absoluteUrl);
 
-        $companies  = Company::where('is_active', true)->get();
+// Save the QR code to a temporary file
+$tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
+file_put_contents($tempQrCodePath, $qrCode);
 
-       // Generate the QR code
-$qrCode = QrCode::format('png')
-->size(200)
-->merge(public_path('logo.jpg'), 0.8, true)
-->errorCorrection('H')
-->generate($absoluteUrl);
+// Load the QR code image using Intervention Image
+$image = Image::make($tempQrCodePath);
 
-// Create a new blank canvas image
-$image = Image::canvas(300, 300);
+// Create a new canvas image
+$canvas = Image::canvas($image->width(), $image->height());
 
-// Add the QR code to the canvas
-$image->insert($qrCode, 'center');
+// Insert the QR code onto the canvas
+$canvas->insert($image);
 
 // Add company name as text overlay
-$image->text('testing name', $image->width() / 2, $image->height() + 20, function($font) {
-$font->size(24);
-$font->color('#000000');
-$font->align('center');
-$font->valign('bottom');
+$canvas->text('testingCompany', $canvas->width() / 2, $canvas->height() + 20, function($font) {
+    $font->size(24);
+    $font->color('#000000');
+    $font->align('center');
+    $font->valign('bottom');
 });
 
-// Save the image
-Storage::disk('do')->put("{$folder}/{$fileName}", $image->encode(), 'public');
+// Save the canvas image
+Storage::disk('do')->put("{$folder}/{$fileName}", $canvas->encode(), 'public');
 
+// Clean up temporary QR code file
+unlink($tempQrCodePath);
 
-        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-    }
+    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+       
         $this->validate($request, [
             'unique_code' => ['required', 'string', 'max:255'],
             'prevention_advisor_id' => ['required'],
@@ -233,9 +242,9 @@ Storage::disk('do')->put("{$folder}/{$fileName}", $image->encode(), 'public');
     public function importKits(Request $request)
     {
 
-        Excel::import(new KitsImport, $request->file);
+            Excel::import(new KitsImport, $request->file);
 
-        // Provide feedback to the user
-        return redirect()->back()->with('success', 'Data imported successfully!');
+            // Provide feedback to the user
+            return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }
