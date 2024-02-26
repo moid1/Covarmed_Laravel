@@ -18,7 +18,7 @@ class KitsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        if (!PreventionAdvisor::whereId((int)$row['prevention_advisor'])->exists()) {
+        if (PreventionAdvisor::whereId((int)$row['prevention_advisor'])->exists()) {
             // Generate a unique code for the kit
             $uniqueCode = $this->generateUniqueCode();
 
