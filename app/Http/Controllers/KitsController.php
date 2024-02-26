@@ -14,6 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use Intervention\Image\Facades\Image;
 
 class KitsController extends Controller
 {
@@ -45,33 +46,54 @@ class KitsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
-{
-    $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
-    $unique_code = $this->generateUniqueCode();
+    public function create()
+    {
+        $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
+        $unique_code = $this->generateUniqueCode();
 
-    
 
-    $fileName = (string) Str::uuid();
-    $folder = 'qrcodes';
-    $qrCodeFilePath = "{$folder}/{$fileName}";
-    $absoluteUrl = url('incident-kit/' . $unique_code);
 
-    $companies  = Company::where('is_active', true)->get();
+        $fileName = (string) Str::uuid();
+        $folder = 'qrcodes';
+        $qrCodeFilePath = "{$folder}/{$fileName}";
+        $absoluteUrl = url('incident-kit/' . $unique_code);
 
-    Storage::disk('do')->put(
-        "{$folder}/{$fileName}",
-        (QrCode::format('png')
+        $companies  = Company::where('is_active', true)->get();
+
+        Storage::disk('do')->put(
+            "{$folder}/{$fileName}",
+            (QrCode::format('png')
+                ->size(200)
+                ->merge(public_path('logo.jpg'), 0.8, true)
+                ->errorCorrection('H')
+                ->generate($absoluteUrl)
+            ),
+            'public'
+        );
+        // Generate the QR code
+        $qrCode = QrCode::format('png')
             ->size(200)
             ->merge(public_path('logo.jpg'), 0.8, true)
             ->errorCorrection('H')
-            ->generate($absoluteUrl)
-    ),
-        'public'
-    );
+            ->generate($absoluteUrl);
 
-    return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
-}
+        // Create an image instance from the QR code
+        $image = Image::make($qrCode);
+
+        // Add company name as text overlay
+        $image->text('Tetsting Name', $image->width() / 2, $image->height() + 20, function ($font) {
+            $font->size(24);
+            $font->color('#000000');
+            $font->align('center');
+            $font->valign('bottom');
+        });
+
+        // Save the modified image
+        Storage::disk('do')->put("{$folder}/{$fileName}", $image->encode(), 'public');
+
+
+        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -218,9 +240,9 @@ class KitsController extends Controller
     public function importKits(Request $request)
     {
 
-            Excel::import(new KitsImport, $request->file);
+        Excel::import(new KitsImport, $request->file);
 
-            // Provide feedback to the user
-            return redirect()->back()->with('success', 'Data imported successfully!');
+        // Provide feedback to the user
+        return redirect()->back()->with('success', 'Data imported successfully!');
     }
 }
