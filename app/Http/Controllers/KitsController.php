@@ -50,48 +50,8 @@ class KitsController extends Controller
     {
         $preventionAdvisors = PreventionAdvisor::where('is_verified', 1)->with('user')->get();
         $unique_code = $this->generateUniqueCode();
-
-
-
-        $fileName = (string) Str::uuid();
-        $folder = 'qrcodes';
-        $qrCodeFilePath = "{$folder}/{$fileName}";
-        $absoluteUrl = url('incident-kit/' . $unique_code);
-
         $companies  = Company::where('is_active', true)->get();
-
-        // Generate the QR code
-        $qrCode = QrCode::format('png')
-            ->size(400)
-            ->merge(public_path('logo.jpg'), 0.8, true)
-            ->errorCorrection('H')
-            ->generate($absoluteUrl);
-
-        // Save the QR code to a temporary file
-        $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
-        file_put_contents($tempQrCodePath, $qrCode);
-
-        // Create an image from text
-        $textImage = Image::canvas(200, 30, '#FFFFFF'); // Create a white canvas
-        $textImage->text('Company Name', 120, 15, function ($font) { // Add text to canvas
-            $font->size(40);
-            $font->align('center');
-            $font->valign('middle');
-        });
-
-        // Load the QR code image using Intervention Image
-        $qrCodeImage = Image::make($tempQrCodePath);
-
-        // Merge the text image with the QR code image
-        $qrCodeImage->insert($textImage, 'top-center', 0, 10);
-
-        // Save the merged image
-        Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
-
-        // Clean up temporary QR code file
-        unlink($tempQrCodePath);
-
-        return view('kits.create', compact('preventionAdvisors', 'unique_code', 'qrCodeFilePath', 'companies'));
+        return view('kits.create', compact('preventionAdvisors', 'unique_code' 'companies'));
     }
 
     /**
@@ -110,10 +70,40 @@ class KitsController extends Controller
         ]);
 
         try {
+
+            $fileName = (string) Str::uuid();
+            $folder = 'qrcodes';
+            $qrCodeFilePath = "{$folder}/{$fileName}";
+            $absoluteUrl = url('incident-kit/' . $request->unique_code);
+
+            
+            // Generate the QR code
+            $qrCode = QrCode::format('png')
+                ->size(400)
+                ->merge(public_path('logo.jpg'), 0.8, true)
+                ->errorCorrection('H')
+                ->generate($absoluteUrl);
+
+            // Save the QR code to a temporary file
+            $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
+            file_put_contents($tempQrCodePath, $qrCode);
+
+            $textImage = Image::canvas(200, 30, '#FFFFFF');
+            $textImage->text($request->name, 120, 15, function ($font) {
+                $font->size(40);
+                $font->align('center');
+                $font->valign('middle');
+            });
+            $qrCodeImage = Image::make($tempQrCodePath);
+            $qrCodeImage->insert($textImage, 'top-center', 0, 10);
+            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
+            unlink($tempQrCodePath);
+
+
             $kit = Kits::create([
                 'prevention_advisor_id' => $request->prevention_advisor_id,
                 'unique_code' => $request->unique_code,
-                'qr_image' => $request->qr_image,
+                'qr_image' => $request->qrCodeFilePath,
                 'name' => $request->name ?? 'N/A',
                 'address_1' => $request->address_1 ?? 'N/A',
             ]);
