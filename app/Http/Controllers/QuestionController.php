@@ -64,8 +64,9 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy($id)
     {
-        //
+       Question::find($id)->delete();
+       return back()->with('success', "Form deleted successfully");
     }
 }

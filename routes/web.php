@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/questions', [QuestionController::class, 'index'])->name('question.index');
     Route::post('/question', [QuestionController::class, 'store'])->name('question.store');
     Route::get('/question', [QuestionController::class, 'create'])->name('question.create');
+    Route::get('/question/{id}', [QuestionController::class, 'destroy'])->name('question.delete');
 
     Route::get('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
     Route::post('/change-password', [HomeController::class, 'updatePassword'])->name('update-password');
