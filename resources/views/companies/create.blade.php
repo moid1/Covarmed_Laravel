@@ -100,6 +100,11 @@
                                             </div>
                                         </div>
 
+                                        {{-- <div class="col-lg-6">
+                                            <a href="{{route('question.create')}}" class="btn btn-primary mb-5">{{__('Create a new Form Question')}}</a>&nbsp;
+
+                                        </div> --}}
+
 
 
 

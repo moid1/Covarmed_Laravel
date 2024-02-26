@@ -20,6 +20,17 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
+                                                <label for="text_field">{{__('Dutch Translation')}}</label>
+                                                <input class="form-control" type="text" id="" name="de_value">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="text_field">{{__('French Translation')}}</label>
+                                                <input class="form-control" type="text" id="" name="fr_value">
+                                            </div>
+                                        </div>
+                                     
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
 
                                                 <div id="fb-editor"></div>
                                                 @error('question')
@@ -73,6 +84,8 @@
                 data: {
                     'form': form,
                     'question': $("textarea[name='question']").val(), // Corrected to target by name attribute
+                    'de_value': $("input[name='de_value']").val(),
+                    'fr_value': $("input[name='fr_value']").val(),
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(data) {

@@ -189,7 +189,12 @@ class KitsController extends Controller
         $kit = Kits::find($kitId);
         if ($kit) {
             $output = file_get_contents(env('DO_CDN_ENDPOINT') . '/' . $kit->qr_image);
-            $pdfPath = time() . '.png';
+            $isSvg = strpos($output, '<svg') !== false;
+            if ($isSvg) {
+                $pdfPath = time() . '.svg';
+            } else {
+                $pdfPath = time() . '.png';
+            }
             $headers = [
                 'Content-Type' => 'application/octet-stream',
                 'Content-Disposition' => 'attachment; filename=' . $pdfPath,
