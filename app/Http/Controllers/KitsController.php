@@ -84,7 +84,7 @@ class KitsController extends Controller
         $qrCodeImage = Image::make($tempQrCodePath);
 
         // Merge the text image with the QR code image
-        $qrCodeImage->insert($textImage, 0, 10);
+        $qrCodeImage->insert($textImage, 'top', 0, 10);
 
         // Save the merged image
         Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
