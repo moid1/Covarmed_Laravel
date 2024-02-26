@@ -76,8 +76,8 @@ class KitsController extends Controller
         $textImage->text('Company Name', 100, 25, function ($font) { // Add text to canvas
             $font->size(130);
             $font->color('#FF0000'); // Black color
-            $font->align('center');
-            $font->valign('middle');
+            $font->align('top');
+            $font->valign('right');
         });
 
         // Load the QR code image using Intervention Image
