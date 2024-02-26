@@ -73,12 +73,7 @@ class KitsController extends Controller
 
         // Create an image from text
         $textImage = Image::canvas(200, 30, '#FFFFFF'); // Create a white canvas
-        $textImage->text('Company Name', 100, 10, function ($font) { // Add text to canvas
-            $font->size(20);
-            $font->color('#FF0000'); // Black color
-            $font->align('center');
-            $font->valign('middle');
-        });
+        $textImage->text('Company Name', 100, 15);
 
         // Load the QR code image using Intervention Image
         $qrCodeImage = Image::make($tempQrCodePath);
