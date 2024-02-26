@@ -65,7 +65,6 @@ class KitsController extends Controller
             ->size(200)
             ->merge(public_path('logo.jpg'), 0.8, true)
             ->errorCorrection('H')
-            ->text('testingName') // Add company name as text on QR code
             ->generate($absoluteUrl)
     ),
         'public'
