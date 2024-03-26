@@ -118,43 +118,6 @@
 
     </div>
 
-  
-  <!-- Modal: modalAbandonedCart-->
-  <div class="modal fade modal-dialog-centered" id="modalAbandonedCart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <!--Content-->
-      <div class="modal-content">
-        <!--Header-->
-        <div class="modal-header" style="background: #1191c1">
-          <p class="text-white">Maintaince Mode
-          </p>
-  
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="text-white">&times;</span>
-          </button>
-        </div>
-  
-        <!--Body-->
-        <div class="modal-body">
-  
-          <div class="row">
-            <div class="col-12 text-center">
-              <h6>We shedule down time for tonight between 20h-01h</h6>
-              <h5>We'll be right back soon</h5>
-            </div>
-          </div>
-        </div>
-  
-        <!--Footer-->
-        <div class="modal-footer justify-content-center">
-          <a type="button" class="btn btn-primary text-white" data-dismiss="modal">Okay</a>
-        </div>
-      </div>
-      <!--/.Content-->
-    </div>
-  </div>
-  <!-- Modal: modalAbandonedCart-->
 
 @endsection
 @section('pageSpecificJs')
@@ -163,7 +126,6 @@
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
 
-            $('#modalAbandonedCart').modal('show')
         });
     </script>
     <script>
