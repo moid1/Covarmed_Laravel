@@ -87,15 +87,15 @@ class KitsController extends Controller
             $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
             file_put_contents($tempQrCodePath, $qrCode);
 
-            $textImage = Image::canvas(200, 30, '#FFFFFF');
-            $textImage->text($request->name, 120, 15, function ($font) {
-                $font->size(40);
-                $font->align('center');
-                $font->valign('middle');
-            });
-            $qrCodeImage = Image::make($tempQrCodePath);
-            $qrCodeImage->insert($textImage, 'top-center', 0, 10);
-            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
+            // $textImage = Image::canvas(200, 30, '#FFFFFF');
+            // $textImage->text($request->name, 120, 15, function ($font) {
+            //     $font->size(40);
+            //     $font->align('center');
+            //     $font->valign('middle');
+            // });
+            // $qrCodeImage = Image::make($tempQrCodePath);
+            // $qrCodeImage->insert($textImage, 'top-center', 0, 10);
+            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCode, 'public');
             unlink($tempQrCodePath);
 
 
