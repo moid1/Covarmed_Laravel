@@ -80,6 +80,16 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="is_seniour">{{__('Role')}} </label>
+                                                <select name="pv_role" id="" class="form-control">
+                                                        <option value="pv" {{ $preventionalAdvisor->is_seniour ? '': 'selected'}}>{{__('Prevention Advisor')}}</option>
+                                                        <option value="spv" {{ $preventionalAdvisor->is_seniour ? 'selected': ''}}>{{__('Senior Prevention Advisor')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
 
 
                                         <div class="col-lg-12 text-center mt-3" >

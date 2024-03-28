@@ -4,21 +4,18 @@ namespace App\Imports;
 
 use App\Models\Kits;
 use App\Models\PreventionAdvisor;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class KitsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        if (!PreventionAdvisor::whereId((int)$row['prevention_advisor'])->exists()) {
+        if (PreventionAdvisor::whereId((int)$row['prevention_advisor'])->exists()) {
             // Generate a unique code for the kit
             $uniqueCode = $this->generateUniqueCode();
 
@@ -30,12 +27,28 @@ class KitsImport implements ToModel, WithHeadingRow
             $folder = 'qrcodes';
             $qrCodeFilePath = "{$folder}/{$fileName}";
 
-            // Generate and store the QR code
-            Storage::disk('do')->put(
-                $qrCodeFilePath,
-                QrCode::format('svg')->size(200)->merge(public_path('logo.svg'), 0.4, true)->generate($absoluteUrl),
-                'public'
-            );
+             // Generate the QR code
+             $qrCode = QrCode::format('png')
+             ->size(400)
+             ->merge(public_path('logo.jpg'), 0.8, true)
+             ->errorCorrection('H')
+             ->generate($absoluteUrl);
+
+               // Save the QR code to a temporary file
+            $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
+            file_put_contents($tempQrCodePath, $qrCode);
+
+            $textImage = Image::canvas(200, 30, '#FFFFFF');
+            $textImage->text($row['name'], 120, 15, function ($font) {
+                $font->size(40);
+                $font->align('center');
+                $font->valign('middle');
+            });
+            $qrCodeImage = Image::make($tempQrCodePath);
+            $qrCodeImage->insert($textImage, 'top-center', 0, 10);
+            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
+            unlink($tempQrCodePath);
+
 
             // Create or update the kit
             return Kits::updateOrCreate(

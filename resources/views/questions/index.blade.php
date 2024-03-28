@@ -28,9 +28,10 @@
             <div class="col-12">
                 <div class="card m-b-20">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h4 class="mt-0 header-title">{{__('All forms')}}</h4>
-                            <a href="{{route('question.create')}}" class="btn btn-primary mb-5">{{__('Create a new Form Question')}}</a>
+                        <h4 class="mt-0 header-title">{{__('All forms')}}</h4>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{route('question.create')}}" class="btn btn-primary mb-5">{{__('Create a new Form Question')}}</a>&nbsp;
+                            <a href="{{route('translations.create')}}" class="btn btn-primary mb-5">{{__('Add Translation')}}</a>
                         </div>
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                             width="100%">
@@ -39,6 +40,8 @@
 
                                     <th>ID</th>
                                     <th>{{__('Question')}}</th>
+                                    <th>{{__('Action')}}</th>
+
                                 </tr>
                             </thead>
 
@@ -54,6 +57,8 @@
                                 <tr>
                                     <td>{{ $question->id }}</td>
                                     <td>{{ $label }}</td>
+                                    <td><a href="{{route('question.delete', $question->id)}}"><i class="mdi mdi-delete" style="color: red"></i></a>/
+                                    <a href="{{route('question.show', $question->id)}}"><i class="fa fa-edit"></i></a></td>
                                 </tr>
                                 @endforeach
 

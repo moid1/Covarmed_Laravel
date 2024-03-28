@@ -94,24 +94,28 @@ class IncidentsController extends Controller
         //
     }
 
-    public function createIncidentForm($code)
-    {
-        $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
-        if ($kit) {
-            $questionsString = $kit->preventionAdvisor->company->questions;
-            $questions =  null;
-            if ($questionsString) {
-                $questionValues = explode(',', $questionsString);
-                $questions = Question::whereIn('id', $questionValues)->get();
-            }
-            $companyPassword = $kit->preventionAdvisor->company->password;
-
-
-            return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
-        } else {
-            dd('Kit is not available');
+   public function createIncidentForm($code, Request $request)
+{
+    $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
+    
+    if ($kit) {
+        $questionsString = $kit->preventionAdvisor->company->questions;
+        $questions =  null;
+        if ($questionsString) {
+            $questionValues = explode(',', $questionsString);
+            $questions = Question::whereIn('id', $questionValues)->get();
         }
+        $companyPassword = $kit->preventionAdvisor->company->password;
+
+        // Determine the selected language
+        $selectedLanguage = $request->input('lang', 'en'); // Default language is English ('en')
+
+        return view('incidents.create', compact('kit', 'questions', 'companyPassword', 'selectedLanguage'));
+    } else {
+        dd('Kit is not available');
     }
+}
+
 
     public function submitIncident(Request $request)
     {
@@ -126,16 +130,25 @@ class IncidentsController extends Controller
             if ($questionsString) {
                 $questionValues = explode(',', $questionsString);
                 foreach ($questionValues as $key => $questionID) {
-                    $questionId = $request->input('question_' . $questionID);
-                    if (is_array($questionId)) {
-                        $questionId = implode(',', $questionId);
+                    // Check if the question exists
+                    $question = Question::find($questionID);
+            
+                    // Proceed only if the question exists
+                    if ($question) {
+                        $questionId = $request->input('question_' . $questionID);
+                        if (is_array($questionId)) {
+                            $questionId = implode(',', $questionId);
+                        }
+            
+                        QuestionsAnswers::create([
+                            'incident_id' => $incident->id,
+                            'question_id' => $questionID,
+                            'answers' => $questionId 
+                        ]);
+                    } else {
+                        // Handle case where question does not exist
+                        // This could be logging an error, skipping this question, or any other appropriate action
                     }
-
-                    QuestionsAnswers::create([
-                        'incident_id' => $incident->id,
-                        'question_id' => $questionID,
-                        'answers' => $questionId
-                    ]);
                 }
             }
 

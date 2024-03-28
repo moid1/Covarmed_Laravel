@@ -60,10 +60,11 @@
                                         @endif
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="is_seniour">{{__('Is Seniour')}} </label>
-                                                <input id="is_seniour" type="checkbox"
-                                                    class="" name="is_seniour"
-                                                    value="true" >
+                                                <label for="is_seniour">{{__('Role')}} </label>
+                                                <select name="pv_role" id="" class="form-control">
+                                                        <option value="pv">{{__('Prevention Advisor')}}</option>
+                                                        <option value="spv">{{__('Senior Prevention Advisor')}}</option>
+                                                </select>
                                             </div>
                                         </div>
 

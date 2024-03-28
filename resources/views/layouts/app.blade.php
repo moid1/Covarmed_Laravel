@@ -69,7 +69,7 @@
                             <h4 class="font-16">{{__('Hello')}} {{ Auth::user()->name }}</h4>
                             @if (Auth::user()->user_type == 1)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
-                              {{$isSeniour ? 'Senior' : ''}}      Prevention Advisor</span>
+                     Prevention Advisor</span>
                             @elseif(Auth::user()->user_type == 0)
                                 <span class="text-muted user-status"><i class="fa fa-dot-circle-o text-success"></i>
                                     Admin</span>
@@ -91,12 +91,6 @@
                                 <a href="{{ route('incident.index') }}" class="waves-effect">
                                     <i class="mdi mdi-file"></i>
                                     <span> {{__('Incidents')}} </span>
-                                </a>
-                            </li>
-                             <li>
-                                <a href="{{ route('translations.create') }}" class="waves-effect">
-                                    <i class="mdi mdi-file"></i>
-                                    <span> {{__('Translations')}} </span>
                                 </a>
                             </li>
                             @if (Auth::user()->user_type == 1)
@@ -182,9 +176,9 @@
                 <div class="d-flex justify-content-center align-items-center w-100" style="position: absolute;bottom:100;">
                     @include('partials/language_switcher')
                 </div>
-                <div class="text-center">
+                {{-- <div class="text-center">
                     <p class="w-100" style="bottom: 50px;position: absolute;">©️ 2024 Covarmed BV</p>
-                </div>
+                </div> --}}
                
                 <div class="clearfix"></div>
             </div> <!-- end sidebarinner -->
@@ -321,7 +315,7 @@
     <script src="{{ asset('dashboard/assets/js/fastclick.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.blockUI.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/waves.js') }}"></script>
+    <!-- <script src="{{ asset('dashboard/assets/js/waves.js') }}"></script> -->
     <script src="{{ asset('dashboard/assets/js/jquery.nicescroll.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.scrollTo.min.js') }}"></script>
 

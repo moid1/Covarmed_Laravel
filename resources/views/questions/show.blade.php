@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{ __('Add a Translation') }}</h4>
+                            <h4 class="mt-0 header-title">{{ __('Update a form question') }}</h4>
                             <p class="text-muted m-b-30 font-14"></p>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
@@ -15,43 +15,40 @@
                                 </div>
                             @endif
                             <div class="p-20">
-
-                                <form method="POST" action="{{ route('translations.store') }}">
+                                <form action="{{ route('question.update') }}" method="POST">
                                     @csrf
                                     <div class="row">
+                                        <input type="hidden" name="question_id" value="{{$question->id}}">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="text_field">{{__('English Text')}}</label>
-                                                <input class="form-control" type="text" id="data" name="data">
+                                                <label for="text_field">{{__('English Translation')}}</label>
+                                                <input  class="form-control" value="{{$label}}" type="text" id="" name="eng_value">
                                             </div>
                                             <div class="form-group">
-                                                <label for="text_field">{{__('Translation')}}</label>
-                                                <input class="form-control" type="text" id="" name="value">
+                                                <label for="text_field">{{__('Dutch Translation')}}</label>
+                                                <input class="form-control" type="text" id="" value="{{$deValue}}" name="de_value">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="text_field">{{__('French Translation')}}</label>
+                                                <input class="form-control" type="text" value="{{$frValue}}" id="" name="fr_value">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label for="language">{{__('Select Language')}}:</label>
-                                                <select class="form-control" id="language" name="language">
-                                                    <option value="de">{{__('Dutch')}}</option>
-                                                    <option value="fr">{{__('French')}}</option>
-                                                </select>
+                                     
 
-                                            </div>
-                                        </div>
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    {{ __('Submit') }}
+                                                    {{__('Submit')}}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    {{ __('Cancel') }}
+                                                    {{__('Cancel')}}
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
 
+
+
+                                </form>
                             </div>
 
                         </div>
@@ -63,4 +60,11 @@
 
 
     </div>
+@endsection
+
+@section('pageSpecificJs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+  
 @endsection

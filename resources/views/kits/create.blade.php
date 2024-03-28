@@ -17,7 +17,6 @@
                                 <form action="{{ route('kits.store') }}" method="POST">
                                     @csrf
                                     <div class="row">
-                                        <input type="hidden" name="qr_image" value="{{ $qrCodeFilePath }}">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>{{__('Unique ID')}}</label>
@@ -90,12 +89,6 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
-
-
-                                        <div class="col-lg-12 mt-5">
-                                            <p>QR Code</p>
-                                            <img src="{{ env('DO_CDN_ENDPOINT') }}/{{ $qrCodeFilePath }}" alt="">
                                         </div>
 
 
