@@ -79,6 +79,7 @@ class CompanyController extends Controller
             'location' => $request->location,
             'password' => $request->password,
             'questions' => $questions ? implode(',', $request->questions) : null,
+            'is_name_required' => $request->is_name_required ?? false
         ]);
 
 
@@ -125,6 +126,7 @@ class CompanyController extends Controller
             $company->name = $request->name;
             $company->questions = implode(',', $request->questions);
             $company->location = $request->location;
+            $company->is_name_required = $request->is_name_required ? true : false;
             if ($request->password) {
                 $company->password = $request->password;
             }

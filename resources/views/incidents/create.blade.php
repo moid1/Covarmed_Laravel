@@ -70,11 +70,14 @@
                                 <div class="d-flex justify-content-center align-items-center w-100" >
                                     @include('partials/language_switcher')
                                 </div>
-                            <div class="form-group">
-                                <label>{{__('Name')}}</label>
-                                <input type="text" name="employee_name" class="form-control" placeholder="{{__('Name')}}"
-                                    required />
-                            </div>
+                                
+                            @if( $kit->preventionAdvisor->company->is_name_required )
+                                <div class="form-group">
+                                    <label>{{__('Name')}}</label>
+                                    <input type="text" name="employee_name" class="form-control" placeholder="{{__('Name')}}"
+                                        required />
+                                </div>
+                            @endif
                             @if (!empty($questions))
                                 @foreach ($questions as $question)
                                     {{-- <div class="form-group">

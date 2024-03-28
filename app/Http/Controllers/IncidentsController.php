@@ -116,10 +116,15 @@ class IncidentsController extends Controller
     public function submitIncident(Request $request)
     {
 
-        $this->validate($request, [
-            'employee_name' => ['required', 'string', 'max:255'],
-        ]);
-        $incident = Incidents::create($request->only(['employee_name', 'prevention_advisor_id', 'kit_id']));
+
+        $dataToSave = $request->only(['prevention_advisor_id', 'kit_id']);
+
+        if ($request->has('employee_name')) {
+            $dataToSave['employee_name'] = $request->input('employee_name');
+        }
+
+        $incident = Incidents::create($dataToSave);
+        
         $kit = Kits::whereId($request->kit_id)->with('preventionAdvisor')->first();
         if ($kit) {
             $questionsString = $kit->preventionAdvisor->company->questions;
@@ -128,18 +133,18 @@ class IncidentsController extends Controller
                 foreach ($questionValues as $key => $questionID) {
                     // Check if the question exists
                     $question = Question::find($questionID);
-            
+
                     // Proceed only if the question exists
                     if ($question) {
                         $questionId = $request->input('question_' . $questionID);
                         if (is_array($questionId)) {
                             $questionId = implode(',', $questionId);
                         }
-            
+
                         QuestionsAnswers::create([
                             'incident_id' => $incident->id,
                             'question_id' => $questionID,
-                            'answers' => $questionId 
+                            'answers' => $questionId
                         ]);
                     } else {
                         // Handle case where question does not exist
