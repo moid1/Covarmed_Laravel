@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="page-content-wrapper">
         <div class="container-fluid">
@@ -15,21 +14,20 @@
                                 </div>
                             @endif
                             <div class="p-20">
-                                <form action="{{ route('question.store') }}" method="POST">
+                                <form action="{{ route('question.store') }}" method="POST" id="questionForm">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="language">{{ __('Select Language') }}</label>
-                                                <select  class="form-control" id="language" name="language">
+                                                <select class="form-control" id="language" name="language">
                                                     <option value="en">English</option>
                                                     <option value="fr">French</option>
-                                                    <option value="nl">Netherland</option>
+                                                    <option value="nl">Netherlands</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" id="saveData">Save</button>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -42,6 +40,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <button type="submit" class="btn btn-primary">{{ __('Save Question') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -53,57 +52,27 @@
 @endsection
 
 @section('pageSpecificJs')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script src="{{ URL::asset('dashboard/assets/form-builder/form-builder.min.js') }}"></script>
     <script src="{{ URL::asset('dashboard/assets/form-builder/form-render.min.js') }}"></script>
 
     <script>
-    jQuery.noConflict();
+        $(document).ready(function() {
+            var formBuilderInstance = null;
 
-    jQuery(function($) {
-        var formBuilderInstance = null;
-
-        function loadFormBuilder(locale) {
-            var options = {
-                i18n: {
-                    locale: locale
-                }
-            };
-            $('#fb-editor').empty();
-            formBuilderInstance = $(document.getElementById('fb-editor')).formBuilder(options);
-                        // Integration with onSave callback
-            formBuilderInstance.on('save', function(formData) {
-                saveForm(formData);
-            });
-            return formBuilderInstance;
-        }
-
-        function initializeFormBuilder() {
-            loadFormBuilder('en-US');
-
-            $('#language').change(function() {
-                var selectedLanguage = $(this).val();
-                switch (selectedLanguage) {
-                    case 'en':
-                        loadFormBuilder('en-US');
-                        break;
-                    case 'fr':
-                        loadFormBuilder('fr-FR');
-                        break;
-                    case 'de':
-                        loadFormBuilder('nl-NL');
-                        break;
-                    default:
-                        loadFormBuilder('en-US');
-                }
-            });
-
-    //         document
-    // .getElementById("saveData")
-    // .addEventListener("click", () => formBuilder.actions.save());
-
-
+            function loadFormBuilder(locale) {
+                var options = {
+                    i18n: {
+                        locale: locale
+                    },
+                    onSave: function(evt, formData) {
+                        saveForm(formData);
+                    }
+                };
+                $('#fb-editor').empty();
+                formBuilderInstance = $(document.getElementById('fb-editor')).formBuilder(options);
+                setTimeout(removeLiElements, 1000);
+            }
 
             function removeLiElements() {
                 var ulElements = $('ul.frmb-control');
@@ -118,32 +87,47 @@
                 });
             }
 
-            setTimeout(removeLiElements, 1000);
-        }
+            function saveForm(form) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route('question.store') }}',
+                    data: {
+                        'form': JSON.stringify(form),
+                        'language': $('#language').val(),
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    success: function(data) {
+                        // Redirect or show success message
+                        location.href = "/questions";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // Handle error
+                    }
+                });
+            }
 
-        initializeFormBuilder();
-
-        function saveForm(form) {
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                url: '/question',
-                data: {
-                    'form': JSON.stringify(form),
-                    "_token": "{{ csrf_token() }}",
-                },
-                success: function(data) {
-                    location.href = "/questions";
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
+            $('#language').change(function() {
+                var selectedLanguage = $(this).val();
+                switch (selectedLanguage) {
+                    case 'en':
+                        loadFormBuilder('en-US');
+                        break;
+                    case 'fr':
+                        loadFormBuilder('fr-FR');
+                        break;
+                    case 'nl':
+                        loadFormBuilder('nl-NL');
+                        break;
+                    default:
+                        loadFormBuilder('en-US');
                 }
             });
-        }
-    });
-</script>
 
+            // Call the form builder loader function initially
+            loadFormBuilder('en-US');
+
+            // Call removeLiElements after a delay to ensure the form builder is fully loaded
+        });
+    </script>
 @endsection
-

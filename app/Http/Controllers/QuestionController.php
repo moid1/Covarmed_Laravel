@@ -29,37 +29,31 @@ class QuestionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    dd($request->all());
-    $item = new Question();
-    $item->question = $request->question;
-    
-    // Determine which content column to use based on language
-    $language = $request->language;
-    // dd($language);
-    switch ($language) {
-        case 'en':
+    {
+        $item = new Question();
+        $item->question = $request->question;
 
-            $item->content = $request->form;
-            break;
-        case 'fr':
+        // Determine which content column to use based on language
+        $language = $request->language;
+        // dd($language);
+        switch ($language) {
+            case 'en':
+                $item->content = $request->form;
+                break;
+            case 'fr':
+                $item->content_fr = $request->form;
+                break;
+            case 'nl':
+                $item->content_nl = $request->form;
+                break;
+            default:
+                $item->content = $request->form;
+        }
 
-            $item->content_fr = $request->form;
-            break;
-        case 'nl':
-            $item->content_nl = $request->form;
-            break;
-        default:
+        $item->save();
 
-            $item->content = $request->form;
+        return back()->with('success', trans('Question added successfully, please edit the correct company to the question'));
     }
-
-    $item->save();
-     // dd($item);
-
-
-    return back()->with('success', trans('Question added successfully, please edit the correct company to the question'));
-}
 
     /**
      * Display the specified resource.
@@ -120,7 +114,8 @@ class QuestionController extends Controller
         }
     }
 
-    public function updateQuestionTranslation(Request $request){
+    public function updateQuestionTranslation(Request $request)
+    {
         $question = Question::find($request->question_id);
         if ($question) {
             $contentArray = json_decode($question->content, true);
@@ -141,7 +136,6 @@ class QuestionController extends Controller
             File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
 
             return redirect('/questions');
-          
         }
     }
 }
