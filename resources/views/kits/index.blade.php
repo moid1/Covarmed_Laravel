@@ -37,17 +37,6 @@
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">{{__('All First-aid Kits')}}</h4>
-<<<<<<< HEAD
-                            <a href="#" class="btn btn-secondary float-right" id="downloadButton">{{__('Download Sample File')}}</a>
-                           <a href="{{route('export.kits')}}" class="btn btn-primary float-right">{{__('Export First-aid Kits')}}</a>
-                           <form action="{{ route('import.kits') }}" method="POST" enctype="multipart/form-data" >
-                                @csrf
-                                <input type="file" name="file" class="form-control-file" style="display: none;" id="importFile">
-                                <button type="button" class="btn btn-primary float-right" onclick="document.getElementById('importFile').click();">{{ __('Import First-aid Kits') }}</button>
-                                
-                            </form>
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
-=======
                             <div class="d-flex justify-content-end">
                                 <a href="{{route('kits.create')}}" class="btn btn-primary mb-5">{{__('Create a new First-Aid kit')}}</a>&nbsp;
                                 <a href="{{route('export.kits')}}" class="btn btn-primary mb-5">{{__('Export First-aid Kits')}}</a>&nbsp;
@@ -59,7 +48,6 @@
                                 </form>
                             </div>
                            <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
->>>>>>> 27dcfb071cb6c811944de663424d8a6e21a4604e
                                 width="100%">
                                 <thead>
                                     <tr>
