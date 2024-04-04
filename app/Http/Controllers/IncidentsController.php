@@ -94,24 +94,26 @@ class IncidentsController extends Controller
         //
     }
 
-    public function createIncidentForm($code)
-    {
-        $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
-        if ($kit) {
-            $questionsString = $kit->preventionAdvisor->company->questions;
-            $questions =  null;
-            if ($questionsString) {
-                $questionValues = explode(',', $questionsString);
-                $questions = Question::whereIn('id', $questionValues)->get();
-            }
-            $companyPassword = $kit->preventionAdvisor->company->password;
-
-
-            return view('incidents.create', compact('kit', 'questions', 'companyPassword'));
-        } else {
-            dd('Kit is not available');
+   public function createIncidentForm($code, Request $request)
+{
+    $kit = Kits::where('unique_code', $code)->with('preventionAdvisor')->first();
+    
+    if ($kit) {
+        $questionsString = $kit->preventionAdvisor->company->questions;
+        $questions =  null;
+        if ($questionsString) {
+            $questionValues = explode(',', $questionsString);
+            $questions = Question::whereIn('id', $questionValues)->get();
         }
+        $companyPassword = $kit->preventionAdvisor->company->password;
+
+        $selectedLanguage = app()->getLocale();
+        return view('incidents.create', compact('kit', 'questions', 'companyPassword', 'selectedLanguage'));
+    } else {
+        dd('Kit is not available');
     }
+}
+
 
     public function submitIncident(Request $request)
     {

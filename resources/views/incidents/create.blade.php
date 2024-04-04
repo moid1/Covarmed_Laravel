@@ -77,58 +77,76 @@
                             </div>
                             @if (!empty($questions))
                                 @foreach ($questions as $question)
-                                    {{-- <div class="form-group">
-                                        <label>{{ $question->question }}</label>
-                                        <textarea rows="2" class="form-control" name="question_{{ $question->id }}" id=""
-                                            cols="30" rows="10" required></textarea>
-                                    </div> --}}
-
                                     <?php
-                                    $contentArray = json_decode($question->content, true);
-                                    if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-                                        $type = $contentArray[0]['type'];
-                                        $label = $contentArray[0]['label'];
-                                        switch ($type) {
-                                            case 'select':
-                                                $fieldValue = $contentArray[0]['values'];
-                                                echo '<div class="form-group">
-                                                    <label>'.__($label).'</label>
-                                                    <select name="question_'.$question->id.'" class="form-control">';
-                                                        foreach ($fieldValue as $fV) {
-                                                            echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
-                                                        }
-                                                echo '</select>
-                                                </div>';
-                                                break;
+                                    // Determine which column to use based on the selected language
+                                    $contentColumn = 'content'; // Default to 'content' column for English
+                                    switch ($selectedLanguage) {
+                                        case 'en':
+                                            $contentColumn = 'content';
+                                            break;
+                                        case 'fr':
+                                            $contentColumn = 'content_fr';
+                                            break;
+                                        case 'nl':
+                                            $contentColumn = 'content_nl';
+                                            break;
+                                    }
+                                    // Fetch the question content based on the determined column
+                                    if (!empty($question->$contentColumn)) {
+                                        $jsonData = trim($question->$contentColumn);
 
-                                            case 'text':
-                                                echo '<div class="form-group">
-                                                    <label>'.__($label).'</label>
-                                                    <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
-                                                break;
-
-                                            case 'checkbox-group':
-                                                $fieldValue = $contentArray[0]['values'];
-                                                echo '<div class="form-group">
-                                                    <label>'.__($label).'</label>';
-                                                        foreach ($fieldValue as $option) {
-                                                            echo '<div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
-                                                                    <label class="form-check-label">'.$option['label'].'</label>
-                                                                </div>';
-                                                        }
-                                                echo '</div>';
-
-                                            
-                                            default:
-                                                # code...
-                                                break;
+                                        $content = json_decode($jsonData, true);
+                                
+                                        if (is_array($content)) {
+                                            $type = $content[0]['type'];
+                                            $label = $content[0]['label'];
+                                
+                                            switch ($type) {
+                                                case 'select':
+                                                    $fieldValue = $content[0]['values'];
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <select name="question_'.$question->id.'" class="form-control">';
+                                                    foreach ($fieldValue as $fV) {
+                                                        echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
+                                                    }
+                                                    echo '</select>
+                                                    </div>';
+                                                    break;
+                                
+                                                case 'text':
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
+                                                    break;
+                                
+                                                case 'checkbox-group':
+                                                    $fieldValue = $content[0]['values'];
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>';
+                                                    foreach ($fieldValue as $option) {
+                                                        echo '<div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
+                                                                <label class="form-check-label">'.$option['label'].'</label>
+                                                            </div>';
+                                                    }
+                                                    echo '</div>';
+                                                    break;
+                                
+                                                default:
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <input type="'.$type.'" class="form-control" name="question_'.$question->id.'" id="" required>
+                                                        </div>';
+                                                    break;
+                                            }
                                         }
-                                      
                                     }
                                     ?>
-                                @endforeach
+                            @endforeach
+                        
                             @endif
+
 
 
                             <div class="w-100 text-center mt-5">

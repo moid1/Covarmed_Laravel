@@ -22,7 +22,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        $questions = Question::all();
+        return view('questions.create', compact('questions'));
     }
 
     /**
@@ -30,33 +31,52 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // check if question already available just entering the translations
+        if($request->question_available){
+            $question = Question::findOrFail($request->question_available);
+            if($question){
+                $language = $request->language;
+                switch ($language) {
+                    case 'en':
+                        $question->content = $request->form;
+                        break;
+                    case 'fr':
+                        $question->content_fr = $request->form;
+                        break;
+                    case 'nl':
+                        $question->content_nl = $request->form;
+                        break;
+                    default:
+                        $question->content = $request->form;
+                }
+                $question->update();
+                return back()->with('success', trans('Question added successfully'));
+
+            }
+        }
         $item = new Question();
         $item->question = $request->question;
-        $item->content = $request->form;
+
+        // Determine which content column to use based on language
+        $language = $request->language;
+        // dd($language);
+        switch ($language) {
+            case 'en':
+                $item->content = $request->form;
+                break;
+            case 'fr':
+                $item->content_fr = $request->form;
+                break;
+            case 'nl':
+                $item->content_nl = $request->form;
+                break;
+            default:
+                $item->content = $request->form;
+        }
+
         $item->save();
 
-        $de_value = $request->input('de_value');
-        $fr_value = $request->input('fr_value');
-
-        $contentArray = json_decode($item->content, true);
-        if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-            $label = $contentArray[0]['label'];
-        }
-
-
-        if (!empty($de_value) && !empty($label)) {
-            $filePath = resource_path("lang/de.json");
-            $translations = json_decode(File::get($filePath), true);
-            $translations[$label] = $de_value;
-            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
-        }
-        if (!empty($fr_value) && !empty($label)) {
-            $filePath = resource_path("lang/fr.json");
-            $translations = json_decode(File::get($filePath), true);
-            $translations[$label] = $fr_value;
-            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
-        }
-        return back()->with('success', trans('Question added succesfully, please edit the correct company to the question'));
+        return back()->with('success', trans('Question added successfully, please edit the correct company to the question'));
     }
 
     /**
@@ -118,7 +138,8 @@ class QuestionController extends Controller
         }
     }
 
-    public function updateQuestionTranslation(Request $request){
+    public function updateQuestionTranslation(Request $request)
+    {
         $question = Question::find($request->question_id);
         if ($question) {
             $contentArray = json_decode($question->content, true);
@@ -139,7 +160,6 @@ class QuestionController extends Controller
             File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
 
             return redirect('/questions');
-          
         }
     }
 }
