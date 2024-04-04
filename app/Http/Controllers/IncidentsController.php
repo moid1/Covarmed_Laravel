@@ -107,9 +107,7 @@ class IncidentsController extends Controller
         }
         $companyPassword = $kit->preventionAdvisor->company->password;
 
-        // Determine the selected language
-        $selectedLanguage = $request->input('lang', 'en'); // Default language is English ('en')
-
+        $selectedLanguage = app()->getLocale();
         return view('incidents.create', compact('kit', 'questions', 'companyPassword', 'selectedLanguage'));
     } else {
         dd('Kit is not available');

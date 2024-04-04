@@ -76,66 +76,76 @@
                                     required />
                             </div>
                             @if (!empty($questions))
-    @foreach ($questions as $question)
-        <?php
-        // Determine which column to use based on the selected language
-        $contentColumn = 'content'; // Default to 'content' column for English
-        if ($selectedLanguage !== 'en') {
-            switch ($selectedLanguage) {
-                case 'fr':
-                    $contentColumn = 'content_fr';
-                    break;
-                case 'nl':
-                    $contentColumn = 'content_nl';
-                    break;
-            }
-        }
+                                @foreach ($questions as $question)
+                                    <?php
+                                    // Determine which column to use based on the selected language
+                                    $contentColumn = 'content'; // Default to 'content' column for English
+                                    switch ($selectedLanguage) {
+                                        case 'en':
+                                            $contentColumn = 'content';
+                                            break;
+                                        case 'fr':
+                                            $contentColumn = 'content_fr';
+                                            break;
+                                        case 'nl':
+                                            $contentColumn = 'content_nl';
+                                            break;
+                                    }
+                                    // Fetch the question content based on the determined column
+                                    if (!empty($question->$contentColumn)) {
+                                        $jsonData = trim($question->$contentColumn);
 
-        // Fetch the question content based on the determined column
-        $content = json_decode($question->$contentColumn, true);
-        if ($content && is_array($content) && !empty($content)) {
-            $type = $content[0]['type'];
-            $label = $content[0]['label'];
-            switch ($type) {
-                case 'select':
-                    $fieldValue = $content[0]['values'];
-                    echo '<div class="form-group">
-                        <label>'.__($label).'</label>
-                        <select name="question_'.$question->id.'" class="form-control">';
-                            foreach ($fieldValue as $fV) {
-                                echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
-                            }
-                    echo '</select>
-                    </div>';
-                    break;
-
-                case 'text':
-                    echo '<div class="form-group">
-                        <label>'.__($label).'</label>
-                        <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
-                    break;
-
-                case 'checkbox-group':
-                    $fieldValue = $content[0]['values'];
-                    echo '<div class="form-group">
-                        <label>'.__($label).'</label>';
-                            foreach ($fieldValue as $option) {
-                                echo '<div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
-                                        <label class="form-check-label">'.$option['label'].'</label>
-                                    </div>';
-                            }
-                    echo '</div>';
-                
-                default:
-                    # code...
-                    break;
-            }
-          
-        }
-        ?>
-    @endforeach
-@endif
+                                        $content = json_decode($jsonData, true);
+                                
+                                        if (is_array($content)) {
+                                            $type = $content[0]['type'];
+                                            $label = $content[0]['label'];
+                                
+                                            switch ($type) {
+                                                case 'select':
+                                                    $fieldValue = $content[0]['values'];
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <select name="question_'.$question->id.'" class="form-control">';
+                                                    foreach ($fieldValue as $fV) {
+                                                        echo '<option value="'.$fV['value'].'">'. $fV['label'].'</option>';
+                                                    }
+                                                    echo '</select>
+                                                    </div>';
+                                                    break;
+                                
+                                                case 'text':
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <textarea rows="2" class="form-control" name="question_'.$question->id.'" id="" cols="30" rows="10" required></textarea>';
+                                                    break;
+                                
+                                                case 'checkbox-group':
+                                                    $fieldValue = $content[0]['values'];
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>';
+                                                    foreach ($fieldValue as $option) {
+                                                        echo '<div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" name="question_'.$question->id.'[]" id="" value="'.$option['value'].'" >
+                                                                <label class="form-check-label">'.$option['label'].'</label>
+                                                            </div>';
+                                                    }
+                                                    echo '</div>';
+                                                    break;
+                                
+                                                default:
+                                                    echo '<div class="form-group">
+                                                        <label>'.__($label).'</label>
+                                                        <input type="'.$type.'" class="form-control" name="question_'.$question->id.'" id="" required>
+                                                        </div>';
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                            @endforeach
+                        
+                            @endif
 
 
 

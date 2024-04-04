@@ -22,7 +22,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        $questions = Question::all();
+        return view('questions.create', compact('questions'));
     }
 
     /**
@@ -30,6 +31,29 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // check if question already available just entering the translations
+        if($request->question_available){
+            $question = Question::findOrFail($request->question_available);
+            if($question){
+                $language = $request->language;
+                switch ($language) {
+                    case 'en':
+                        $question->content = $request->form;
+                        break;
+                    case 'fr':
+                        $question->content_fr = $request->form;
+                        break;
+                    case 'nl':
+                        $question->content_nl = $request->form;
+                        break;
+                    default:
+                        $question->content = $request->form;
+                }
+                $question->update();
+                return back()->with('success', trans('Question added successfully'));
+
+            }
+        }
         $item = new Question();
         $item->question = $request->question;
 

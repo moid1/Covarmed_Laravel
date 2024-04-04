@@ -28,6 +28,38 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="language">{{ __('Select Question for translation If Available') }}</label>
+                                                <select class="form-control" id="question_available" name="question_available">
+                                                    <option value="" selected>Not Available</option>
+                                                    @if(!empty($questions) && count($questions))
+                                                        @foreach ($questions as $question)
+                                                            <?php
+                                                            // Decode English content
+                                                            if($question && $question->content)
+                                                               { 
+                                                                    $contentArray = json_decode(($question->content), true);
+                                                                    $label = 'N/A';
+                                                                    if (!empty($contentArray) && is_array($contentArray)) {
+                                                                        $label = $contentArray[0]['label'];
+                                                                    }
+                                                                }
+                                                            ?>
+
+                                                            <option value="{{ $question->id }}">{{ $label }}</option>
+                                                        @endforeach
+                                                    @endif
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -40,7 +72,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">{{ __('Save Question') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -92,8 +123,9 @@
                     type: 'post',
                     url: '{{ route('question.store') }}',
                     data: {
-                        'form': JSON.stringify(form),
+                        'form': form,
                         'language': $('#language').val(),
+                        'question_available': $('#question_available').val(),
                         "_token": "{{ csrf_token() }}",
                     },
                     success: function(data) {
