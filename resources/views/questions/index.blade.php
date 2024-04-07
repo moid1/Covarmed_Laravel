@@ -33,45 +33,28 @@
                                 width="100%">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>@lang('Question')</th>
+                                        <th>@lang('Form Name')</th>
+                                        <th>@lang('Company Name')</th>
                                         <th>@lang('Action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($questions as $question)
-                                        <?php
-                                        // Decode English content
-                                        $contentArray = json_decode($question->content, true);
-                                        
-                                        $label = 'N/A';
-                                        if (!empty($contentArray)) {
-                                            $label = $contentArray[0]['label'];
-                                        }
-                                        
-                                        // // Decode Dutch (nl) content
-                                        // $nlContentArray = ($question->content_nl);
-                                        // if (!empty($nlContentArray)) {
-                                        //     $label = $nlContentArray[0]['label'];
-                                        // }
-                                        
-                                        // $frContentArray = ($question->content_fr);
-                                        // if (!empty($frContentArray)) {
-                                        //     $label = $frContentArray[0]['label'];
-                                        // }
-                                        ?>
+                                    @foreach ($companies as $company)
+                                        @if (!empty($company->question))
+                                            <tr>
+                                                <td>{{ $company->question ? $company->question->question : 'N/A' }}</td>
+                                                <td>{{ $company->name ?? 'N/A' }}</td>
+                                                <td>
+                                                    <a href="{{ route('question.delete', $company->id) }}"><i
+                                                            class="mdi mdi-delete" style="color: red"></i></a> /
 
-                                        <tr>
-                                            <td>{{ $question->id }}</td>
-                                            <td>{{ $label }}</td>
-                                            <td>
-                                                <a href="{{ route('question.delete', $question->id) }}"><i
-                                                        class="mdi mdi-delete" style="color: red"></i></a>/
-                                                <a href="{{ route('question.show', $question->id) }}"><i
-                                                        class="fa fa-edit"></i></a>
-                                            </td>
-                                        </tr>
+                                                            <a href="{{ route('question.show', $company->question->id) }}"><i
+                                                                class="mdi mdi-eye" ></i></a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
+
                                 </tbody>
                             </table>
                         </div>

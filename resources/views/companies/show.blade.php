@@ -8,8 +8,8 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{__('Update Company Here')}}</h4>
-                            <p class="text-muted m-b-30 font-14">{{__('Fill This instructions Carefully')}}.</p>
+                            <h4 class="mt-0 header-title">{{ __('Update Company Here') }}</h4>
+                            <p class="text-muted m-b-30 font-14">{{ __('Fill This instructions Carefully') }}.</p>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
                                     {{ Session::get('success') }}
@@ -22,7 +22,7 @@
                                         <input type="hidden" name="company_id" id="" value="{{ $company->id }}">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>{{__('Name')}}</label>
+                                                <label>{{ __('Name') }}</label>
                                                 <input id="name" type="text"
                                                     class="form-control @error('name') is-invalid @enderror" name="name"
                                                     value="{{ $company->name }}" autofocus>
@@ -38,7 +38,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label>{{__('Password')}}</label>
+                                                <label>{{ __('Password') }}</label>
                                                 <input id="password" type="password"
                                                     class="form-control @error('password') is-invalid @enderror"
                                                     name="password" value="{{ old('password') }}">
@@ -52,7 +52,7 @@
 
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>{{__('Location')}}</label>
+                                                <label>{{ __('Location') }}</label>
                                                 <input id="location" type="text"
                                                     class="form-control @error('location') is-invalid @enderror"
                                                     name="location" value="{{ $company->location }}">
@@ -67,7 +67,7 @@
 
                                         <div class="col-lg-6">
                                             <div class="">
-                                                <label>{{__('Logo')}}</label>
+                                                <label>{{ __('Logo') }}</label>
                                                 <input id="logo" type="file" onchange="readURL(this);"
                                                     class=" @error('logo') is-invalid @enderror" name="logo">
 
@@ -87,23 +87,38 @@
 
                                         </div>
 
-                                        @php
-                                            $alreadySelectedQuestions = explode(',', $company->questions);
-                                        @endphp
-
                                         <div class="col-lg-12 mt-5">
+                                            <div class="form-group">
+                                                <label>{{ __('Form Questions') }}</label>
+                                                <select name="question" class="form-control">
+                                                    @foreach ($questions as $question)
+                                                    <option value="{{ $question->id }}">
+                                                        {{ $question->question }}
+                                                    </option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {{-- @php
+                                            $alreadySelectedQuestions = explode(',', $company->questions);
+                                        @endphp --}}
+
+                                        {{-- <div class="col-lg-12 mt-5">
                                             <div class="form-group">
                                                 <label>{{__('Form Questions')}}</label>
                                                 <select multiple="multiple" id="mySelect2" name="questions[]"
                                                     class="js-example-basic-multiple form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
                                                     @foreach ($questions as $question)
-                                                    <?php
                                                     $contentArray = json_decode($question->content, true);
                                                     if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-                                                        $label = $contentArray[0]['label'];
+                                                        foreach ($contentArray as $key => $labels) {
+                                                            # code...
+                                                        }
+                                                        $label = $labels['label'];
                                                     }
-                                                    ?>
                                                         <option value="{{ $question->id }}"
                                                             {{ in_array($question->id, $alreadySelectedQuestions) ? 'selected' : '' }}>
                                                             {{ $label }}
@@ -112,12 +127,13 @@
 
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-lg-6">
-                                            <a href="{{route('question.create')}}" class="btn btn-primary mb-5">{{__('Create a new Form Question')}}</a>&nbsp;
+                                        {{-- <div class="col-lg-6">
+                                            <a href="{{ route('question.create') }}"
+                                                class="btn btn-primary mb-5">{{ __('Create a new Form Question') }}</a>&nbsp;
 
-                                        </div>
+                                        </div> --}}
 
 
 
@@ -126,10 +142,10 @@
                                         <div class="col-lg-12 text-center">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                                    {{__('Submit')}}
+                                                    {{ __('Submit') }}
                                                 </button>
                                                 <button type="reset" class="btn btn-secondary waves-effect m-l-5">
-                                                    {{__('Cancel')}}
+                                                    {{ __('Cancel') }}
                                                 </button>
                                             </div>
                                         </div>
