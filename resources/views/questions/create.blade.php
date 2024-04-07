@@ -6,7 +6,7 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">{{ __('Add a form question') }}</h4>
+                            <h4 class="mt-0 header-title">{{ __('Add a form') }}</h4>
                             <p class="text-muted m-b-30 font-14"></p>
                             @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
@@ -29,27 +29,36 @@
                                         </div>
                                     </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-lg-12">
+                                            <label for="name">{{__('Form Name')}}</label>
+                                            <input type="text" name="form_name" class="form-control" id="form_name" required>
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="language">{{ __('Select Question for translation If Available') }}</label>
+                                                <label for="language">{{ __('Select Company') }}</label>
+                                                <select class="form-control" id="company" name="company">
+                                                  @foreach ($companies as $company)
+                                                    <option selected value="{{$company->id}}">{{$company->name}}</option>
+                                                  @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="language">{{ __('Select Form If you want to add translation') }}</label>
                                                 <select class="form-control" id="question_available" name="question_available">
                                                     <option value="" selected>Not Available</option>
                                                     @if(!empty($questions) && count($questions))
                                                         @foreach ($questions as $question)
-                                                            <?php
-                                                            // Decode English content
-                                                            if($question && $question->content)
-                                                               { 
-                                                                    $contentArray = json_decode(($question->content), true);
-                                                                    $label = 'N/A';
-                                                                    if (!empty($contentArray) && is_array($contentArray)) {
-                                                                        $label = $contentArray[0]['label'];
-                                                                    }
-                                                                }
-                                                            ?>
-
-                                                            <option value="{{ $question->id }}">{{ $label }}</option>
+                                                            <option value="{{ $question->id }}">{{ $question->question }}</option>
                                                         @endforeach
                                                     @endif
 
@@ -58,6 +67,7 @@
                                             </div>
                                         </div>
                                     </div>
+
 
 
                                     <div class="row">
@@ -119,6 +129,10 @@
             }
 
             function saveForm(form) {
+                if ($('#form_name').val().trim() === '') {
+        alert('Please enter form name');
+       return;
+    }
                 $.ajax({
                     type: 'post',
                     url: '{{ route('question.store') }}',
@@ -127,6 +141,8 @@
                         'language': $('#language').val(),
                         'question_available': $('#question_available').val(),
                         "_token": "{{ csrf_token() }}",
+                        "company":$('#company').val(),
+                        "form_name":$('#form_name').val(),
                     },
                     success: function(data) {
                         // Redirect or show success message
