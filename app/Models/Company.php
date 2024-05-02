@@ -14,4 +14,8 @@ class Company extends Model
     public function preventionalAdvisors(){
         return $this->hasMany(PreventionAdvisor::class);
     }
+
+    public function question(){
+        return $this->belongsTo(Question::class, 'questions');
+    }
 }

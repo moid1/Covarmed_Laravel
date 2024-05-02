@@ -124,7 +124,7 @@ class CompanyController extends Controller
                 $company->logo = $folder . '/' . $fileName;
             }
             $company->name = $request->name;
-            $company->questions = implode(',', $request->questions);
+            $company->questions = $request->questions;
             $company->location = $request->location;
             $company->is_name_required = $request->is_name_required ? true : false;
             if ($request->password) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -13,8 +14,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::all();
-        return view('questions.index', compact('questions'));
+        $companies = Company::with('question')->get();
+        return view('questions.index', compact('companies'));
     }
 
     /**
@@ -22,7 +23,10 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        $questions = Question::all();
+        $companies = Company::all();
+
+        return view('questions.create', compact('questions', 'companies'));
     }
 
     /**
@@ -30,33 +34,53 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // check if question already available just entering the translations
+        if ($request->question_available) {
+            $question = Question::findOrFail($request->question_available);
+            if ($question) {
+                $language = $request->language;
+                switch ($language) {
+                    case 'en':
+                        $question->content = $request->form;
+                        break;
+                    case 'fr':
+                        $question->content_fr = $request->form;
+                        break;
+                    case 'nl':
+                        $question->content_nl = $request->form;
+                        break;
+                    default:
+                        $question->content = $request->form;
+                }
+                $question->update();
+                return back()->with('success', trans('Question added successfully'));
+            }
+        }
         $item = new Question();
-        $item->question = $request->question;
-        $item->content = $request->form;
+        $item->question = $request->form_name;
+        $company = Company::findOrFail($request->company);
+
+        // Determine which content column to use based on language
+        $language = $request->language;
+        switch ($language) {
+            case 'en':
+                $item->content = $request->form;
+                break;
+            case 'fr':
+                $item->content_fr = $request->form;
+                break;
+            case 'nl':
+                $item->content_nl = $request->form;
+                break;
+            default:
+                $item->content = $request->form;
+        }
+
         $item->save();
+        $company->questions = $item->id;
+        $company->update();
 
-        $de_value = $request->input('de_value');
-        $fr_value = $request->input('fr_value');
-
-        $contentArray = json_decode($item->content, true);
-        if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-            $label = $contentArray[0]['label'];
-        }
-
-
-        if (!empty($de_value) && !empty($label)) {
-            $filePath = resource_path("lang/de.json");
-            $translations = json_decode(File::get($filePath), true);
-            $translations[$label] = $de_value;
-            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
-        }
-        if (!empty($fr_value) && !empty($label)) {
-            $filePath = resource_path("lang/fr.json");
-            $translations = json_decode(File::get($filePath), true);
-            $translations[$label] = $fr_value;
-            File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
-        }
-        return back()->with('success', trans('Question added succesfully, please edit the correct company to the question'));
+        return back()->with('success', trans('Question added successfully, please edit the correct company to the question'));
     }
 
     /**
@@ -98,27 +122,13 @@ class QuestionController extends Controller
         if ($question) {
             $contentArray = json_decode($question->content, true);
             if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-                $label = $contentArray[0]['label'];
+                return view('questions.show', compact('contentArray'));
             }
-            $filePath = resource_path("lang/de.json");
-            $translations = json_decode(File::get($filePath), true);
-            $deValue = null;
-
-            if (array_key_exists($label, $translations)) {
-                $deValue = $translations[$label];
-            }
-            $frValue = null;
-            $filePath = resource_path("lang/fr.json");
-            $translations = json_decode(File::get($filePath), true);
-
-            if (array_key_exists($label, $translations)) {
-                $frValue = $translations[$label];
-            }
-            return view('questions.show', compact('question', 'label', 'deValue', 'frValue'));
         }
     }
 
-    public function updateQuestionTranslation(Request $request){
+    public function updateQuestionTranslation(Request $request)
+    {
         $question = Question::find($request->question_id);
         if ($question) {
             $contentArray = json_decode($question->content, true);
@@ -139,7 +149,6 @@ class QuestionController extends Controller
             File::put($filePath, json_encode($translations, JSON_PRETTY_PRINT));
 
             return redirect('/questions');
-          
         }
     }
 }

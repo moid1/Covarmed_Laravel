@@ -101,4 +101,20 @@
         this.form.submit();
     });
 </script>
+<script>
+document.getElementById('downloadButton').addEventListener('click', function() {
+    // Create an anchor element
+    var link = document.createElement('a');
+    // Set the href attribute to the URL of your sample Excel file
+    link.href = '{{asset('kits.xlsx')}}';
+    // Set the download attribute to prompt the browser to download the file instead of navigating to it
+    link.download = 'kits.xlsx';
+    // Append the anchor element to the document body
+    document.body.appendChild(link);
+    // Trigger a click event on the anchor element to start the download
+    link.click();
+    // Clean up by removing the anchor element from the document body
+    document.body.removeChild(link);
+});
+</script>
 @endsection

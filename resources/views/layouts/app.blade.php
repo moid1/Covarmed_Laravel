@@ -22,7 +22,7 @@
     <link href="{{ asset('dashboard/assets/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
     <!--Morris Chart CSS -->
-    <link rel="stylesheet" href="{{ asset('dashboard/assets/plugins/morris/morris.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('dashboard/assets/plugins/morris/morris.css') }}"> --}}
 
     <link href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('dashboard/assets/css/icons.css') }}" rel="stylesheet" type="text/css">
@@ -315,12 +315,12 @@
     <script src="{{ asset('dashboard/assets/js/fastclick.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.blockUI.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/waves.js') }}"></script>
+    <!-- <script src="{{ asset('dashboard/assets/js/waves.js') }}"></script> -->
     <script src="{{ asset('dashboard/assets/js/jquery.nicescroll.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/jquery.scrollTo.min.js') }}"></script>
 
     <!--Morris Chart-->
-    <script src="{{ asset('dashboard/assets/plugins/morris/morris.min.js') }}"></script>
+    {{-- <script src="{{ asset('dashboard/assets/plugins/morris/morris.min.js') }}"></script> --}}
     <script src="{{ asset('dashboard/assets/plugins/raphael/raphael-min.js') }}"></script>
 
     <script src="{{ asset('dashboard/assets/pages/dashborad.js') }}"></script>
@@ -334,7 +334,7 @@
     <!-- Buttons examples -->
     <script src="{{ asset('dashboard/assets/plugins/datatables/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('dashboard/assets/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/plugins/datatables/jszip.min.js') }}"></script>
+    {{-- <script src="{{ asset('dashboard/assets/plugins/datatables/jszip.min.js') }}"></script> --}}
     <script src="{{ asset('dashboard/assets/plugins/datatables/pdfmake.min.js') }}"></script>
     <script src="{{ asset('dashboard/assets/plugins/datatables/vfs_fonts.js') }}"></script>
     <script src="{{ asset('dashboard/assets/plugins/datatables/buttons.html5.min.js') }}"></script>

@@ -97,23 +97,38 @@
 
                                         </div>
 
-                                        @php
-                                            $alreadySelectedQuestions = explode(',', $company->questions);
-                                        @endphp
-
                                         <div class="col-lg-12 mt-5">
                                             <div class="form-group">
                                                 <label>{{ __('Form Questions') }}</label>
+                                                <select name="question" class="form-control">
+                                                    @foreach ($questions as $question)
+                                                    <option value="{{ $question->id }}">
+                                                        {{ $question->question }}
+                                                    </option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {{-- @php
+                                            $alreadySelectedQuestions = explode(',', $company->questions);
+                                        @endphp --}}
+
+                                        {{-- <div class="col-lg-12 mt-5">
+                                            <div class="form-group">
+                                                <label>{{__('Form Questions')}}</label>
                                                 <select multiple="multiple" id="mySelect2" name="questions[]"
                                                     class="js-example-basic-multiple form-control form-select form-select-lg mb-3"
                                                     aria-label=".form-select-lg example">
                                                     @foreach ($questions as $question)
-                                                        <?php
-                                                        $contentArray = json_decode($question->content, true);
-                                                        if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
-                                                            $label = $contentArray[0]['label'];
+                                                    $contentArray = json_decode($question->content, true);
+                                                    if ($contentArray && is_array($contentArray) && !empty($contentArray)) {
+                                                        foreach ($contentArray as $key => $labels) {
+                                                            # code...
                                                         }
-                                                        ?>
+                                                        $label = $labels['label'];
+                                                    }
                                                         <option value="{{ $question->id }}"
                                                             {{ in_array($question->id, $alreadySelectedQuestions) ? 'selected' : '' }}>
                                                             {{ $label }}
@@ -122,13 +137,13 @@
 
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-lg-6">
+                                        {{-- <div class="col-lg-6">
                                             <a href="{{ route('question.create') }}"
                                                 class="btn btn-primary mb-5">{{ __('Create a new Form Question') }}</a>&nbsp;
 
-                                        </div>
+                                        </div> --}}
 
 
 
