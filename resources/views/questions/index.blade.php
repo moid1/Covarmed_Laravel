@@ -25,9 +25,7 @@
                             <h4 class="mt-0 header-title">@lang('All forms')</h4>
                             <div class="d-flex justify-content-end">
                                 <a href="{{ route('question.create') }}"
-                                    class="btn btn-primary mb-5">@lang('Create a new Form Question')</a>&nbsp;
-                                <a href="{{ route('translations.create') }}"
-                                    class="btn btn-primary mb-5">@lang('Add Translation')</a>
+                                    class="btn btn-primary mb-5">@lang('Create a new Form')</a>
                             </div>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" cellspacing="0"
                                 width="100%">

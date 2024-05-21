@@ -190,7 +190,7 @@ class KitsController extends Controller
 
     public function getPreventionalAdvisorsForCompany($companyId)
     {
-        $preventionalAdvisors = PreventionAdvisor::where([['company_id', $companyId], ['is_verified', true]])->with('user')->get();
+        $preventionalAdvisors = PreventionAdvisor::where([['company_id', $companyId]])->with('user')->get();
         return $preventionalAdvisors;
     }
 

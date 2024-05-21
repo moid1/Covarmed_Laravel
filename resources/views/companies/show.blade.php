@@ -102,9 +102,11 @@
                                                 <label>{{ __('Form Questions') }}</label>
                                                 <select name="question" class="form-control">
                                                     @foreach ($questions as $question)
-                                                    <option value="{{ $question->id }}">
-                                                        {{ $question->question }}
-                                                    </option>
+                                                    @if(!empty($question->question))
+                                                        <option value="{{ $question->id }}">
+                                                            {{ $question->question }}
+                                                        </option>
+                                                    @endif
                                                     @endforeach
 
                                                 </select>
