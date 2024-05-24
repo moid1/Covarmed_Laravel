@@ -79,8 +79,10 @@ class KitsController extends Controller
             // Generate the QR code
             $qrCode = QrCode::format('png')
                 ->size(400)
+                ->merge(public_path('logo.jpg'), 0.8, true)
                 ->errorCorrection('H')
                 ->generate($absoluteUrl);
+
 
             // Save the QR code to a temporary file
             $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
