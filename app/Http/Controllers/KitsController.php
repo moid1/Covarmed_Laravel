@@ -89,7 +89,7 @@ class KitsController extends Controller
             file_put_contents($tempQrCodePath, $qrCode);
 
             $textImage = Image::canvas(200, 30, '#FFFFFF');
-            $textImage->text($request->name, 120, 15, function ($font) {
+            $textImage->text('Test KIT', 120, 15, function ($font) {
                 $font->size(40);
                 $font->align('center');
                 $font->valign('middle');
