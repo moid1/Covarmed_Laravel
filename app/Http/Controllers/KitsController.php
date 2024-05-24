@@ -96,8 +96,10 @@ class KitsController extends Controller
             });
             $qrCodeImage = Image::make($tempQrCodePath);
             $qrCodeImage->insert($textImage, 'top-center', 0, 10);
-            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCode, 'public');
+            Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
             unlink($tempQrCodePath);
+
+            
 
 
             $kit = Kits::create([
