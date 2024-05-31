@@ -89,7 +89,12 @@ class KitsController extends Controller
             file_put_contents($tempQrCodePath, $qrCode);
 
             $textImage = Image::canvas(400, 30, '#FFFFFF');
-            $textImage->text($request->name, 120, 15)->fontSize(140);
+            $textImage->text($request->name, 120, 15, function ($font) {
+                $font->size(35);
+                $font->align('center');
+                $font->valign('bottom');
+                $font->angle(90);
+            });
             $qrCodeImage = Image::make($tempQrCodePath);
 
             // Get the width of the base image
