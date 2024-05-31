@@ -88,7 +88,7 @@ class KitsController extends Controller
             $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
             file_put_contents($tempQrCodePath, $qrCode);
 
-            $textImage = Image::canvas(200, 30, '#FFFFFF');
+            $textImage = Image::canvas(400, 30, '#FFFFFF');
             $textImage->text($request->name, 120, 15);
             $qrCodeImage = Image::make($tempQrCodePath);
 
