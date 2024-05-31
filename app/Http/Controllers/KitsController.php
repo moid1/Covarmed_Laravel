@@ -95,7 +95,16 @@ class KitsController extends Controller
                 $font->valign('middle');
             });
             $qrCodeImage = Image::make($tempQrCodePath);
-            $qrCodeImage->insert($textImage, 'top-center', 0, 10);
+
+            // Get the width of the base image
+$qrCodeWidth = $qrCodeImage->getWidth();
+
+// Get the width of the text image
+$textImageWidth = $textImage->getWidth();
+
+$xCoordinate = ($qrCodeWidth - $textImageWidth) / 2;
+
+$qrCodeImage->insert($textImage, 'top-left', $xCoordinate, 10);
             Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
             unlink($tempQrCodePath);
 
