@@ -90,7 +90,7 @@ class KitsController extends Controller
 
             $textImage = Image::canvas(400, 30, '#FFFFFF');
             $textImage->text($request->name, 120, 15, function ($font) {
-                $font->size(35);
+                $font->size(55);
                 $font->align('center');
                 $font->valign('bottom');
                 $font->angle(90);
