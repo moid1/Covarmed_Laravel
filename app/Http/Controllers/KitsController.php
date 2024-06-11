@@ -89,7 +89,7 @@ class KitsController extends Controller
             file_put_contents($tempQrCodePath, $qrCode);
 
             $textImage = Image::canvas(400, 50, '#FFFFFF');
-            $textImage->text($request->name, 120, 25, function ($font) {
+            $textImage->text($request->name, 120, 33, function ($font) {
                 $font->file(public_path('dashboard/assets/fonts/MavenPro-ExtraBold.ttf')); // Set the path to your font file
                 $font->size(35);
             });
