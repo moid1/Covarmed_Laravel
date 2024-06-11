@@ -93,7 +93,7 @@ class KitsController extends Controller
                 $font->file(public_path('dashboard/assets/fonts/MavenPro-ExtraBold.ttf')); // Set the path to your font file
                 $font->size(40);
                 $font->align('center');
-                $font->valign('bottom')
+                $font->valign('bottom');
                
             });
             $qrCodeImage = Image::make($tempQrCodePath);
