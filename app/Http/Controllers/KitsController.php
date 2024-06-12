@@ -91,7 +91,7 @@ class KitsController extends Controller
             $textImage = Image::canvas(400, 50, '#FFFFFF');
             $textImage->text($request->name, 0, 33, function ($font) {
                 $font->file(public_path('dashboard/assets/fonts/MavenPro-Regular.ttf')); // Set the path to your font file
-                $font->size(35);
+                $font->size(25);
             });
             $qrCodeImage = Image::make($tempQrCodePath);
 
