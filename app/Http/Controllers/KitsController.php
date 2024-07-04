@@ -88,10 +88,8 @@ class KitsController extends Controller
             $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
             file_put_contents($tempQrCodePath, $qrCode);
 
-            $textImage = Image::canvas(400, 50, function ($img) {
-                $img->background('#FFFFFF', 0.5); // Set background color with 50% opacity
-            });
-                        $textImage->text($request->name, 0, 33, function ($font) {
+            $textImage = Image::canvas(270, 50, '#FFFFFF');
+            $textImage->text($request->name, 0, 33, function ($font) {
                 $font->file(public_path('dashboard/assets/fonts/MavenPro-Regular.ttf')); // Set the path to your font file
                 $font->size(25);
             });
