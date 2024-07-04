@@ -103,7 +103,7 @@ $textImageWidth = $textImage->getWidth();
 
 $xCoordinate = ($qrCodeWidth - $textImageWidth) / 2;
 
-$qrCodeImage->insert($textImage, 'top-left', $xCoordinate, 50);
+$qrCodeImage->insert($textImage, 'top-left', $xCoordinate, 80);
             Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
             unlink($tempQrCodePath);
 
