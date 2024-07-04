@@ -88,10 +88,10 @@ class KitsController extends Controller
             $tempQrCodePath = tempnam(sys_get_temp_dir(), 'qr_code');
             file_put_contents($tempQrCodePath, $qrCode);
 
-            $textImage = Image::canvas(270, 50, '#FFFFFF');
+            $textImage = Image::canvas(250, 50, '#FFFFFF');
             $textImage->text($request->name, 0, 33, function ($font) {
                 $font->file(public_path('dashboard/assets/fonts/MavenPro-Regular.ttf')); // Set the path to your font file
-                $font->size(25);
+                $font->size(18);
             });
             $qrCodeImage = Image::make($tempQrCodePath);
 
@@ -103,7 +103,7 @@ $textImageWidth = $textImage->getWidth();
 
 $xCoordinate = ($qrCodeWidth - $textImageWidth) / 2;
 
-$qrCodeImage->insert($textImage, 'top-left', $xCoordinate, 100);
+$qrCodeImage->insert($textImage, 'top-left', $xCoordinate, 10);
             Storage::disk('do')->put("{$folder}/{$fileName}", $qrCodeImage->encode(), 'public');
             unlink($tempQrCodePath);
 
