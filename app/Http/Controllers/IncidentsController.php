@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IncidentsExport;
+use PhpParser\Node\Stmt\TryCatch;
 
 class IncidentsController extends Controller
 {
@@ -117,63 +118,39 @@ class IncidentsController extends Controller
 
     public function submitIncident(Request $request)
     {
-
-        // $this->validate($request, [
-        //     'employee_name' => ['required', 'string', 'max:255'],
-        // ]);
-        // Extracting the employee name from the request
-        $employeeName = $request->has('employee_name') ? $request->input('employee_name') : '';
-
-        // Creating the incident record with the employee name if available
-        $incident = Incidents::create([
-            'employee_name' => $employeeName,
-            'prevention_advisor_id' => $request->input('prevention_advisor_id'),
-            'kit_id' => $request->input('kit_id'),
-        ]);
-
-        $kit = Kits::whereId($request->kit_id)->with('preventionAdvisor')->first();
-        if ($kit) {
-            $questionsString = $kit->preventionAdvisor->company->questions;
-            $form = Question::findOrFail($questionsString);
-            if ($form) {
-                QuestionsAnswers::create([
-                    'incident_id' => $incident->id,
-                    'question_id' => $form->id,
-                    'answers' => json_encode($request->except(['_token', 'prevention_advisor_id', 'kit_id', 'language-picker-select', 'employee_name']))
-                ]);
+      
+        try {
+            $employeeName = $request->has('employee_name') ? $request->input('employee_name') : '';
+    
+            // Creating the incident record with the employee name if available
+            $incident = Incidents::create([
+                'employee_name' => $employeeName,
+                'prevention_advisor_id' => $request->input('prevention_advisor_id'),
+                'kit_id' => $request->input('kit_id'),
+            ]);
+    
+            $kit = Kits::whereId($request->kit_id)->with('preventionAdvisor')->first();
+            if ($kit) {
+                $questionsString = $kit->preventionAdvisor->company->questions;
+                $form = Question::findOrFail($questionsString);
+                if ($form) {
+                    QuestionsAnswers::create([
+                        'incident_id' => $incident->id,
+                        'question_id' => $form->id,
+                        'answers' => json_encode($request->except(['_token', 'prevention_advisor_id', 'kit_id', 'language-picker-select', 'employee_name']))
+                    ]);
+                }
+    
+                $details = [
+                    'link' => route('incident.show', $incident->id)
+                ];
+                Mail::to($kit->preventionAdvisor->user->email)->send(new IncidentFilledForm($details));
             }
-            // if ($questionsString) {
-            //     $questionValues = explode(',', $questionsString);
-            //     foreach ($questionValues as $key => $questionID) {
-            //         // Check if the question exists
-            //         $question = Question::find($questionID);
-            
-            //         // Proceed only if the question exists
-            //         if ($question) {
-            //             $questionId = $request->input('question_' . $questionID);
-            //             if (is_array($questionId)) {
-            //                 $questionId = implode(',', $questionId);
-            //             }
-            
-            //             QuestionsAnswers::create([
-            //                 'incident_id' => $incident->id,
-            //                 'question_id' => $questionID,
-            //                 'answers' => $questionId 
-            //             ]);
-            //         } else {
-            //             // Handle case where question does not exist
-            //             // This could be logging an error, skipping this question, or any other appropriate action
-            //         }
-            //     }
-            // }
-
-            $details = [
-                'link' => route('incident.show', $incident->id)
-            ];
-            Mail::to($kit->preventionAdvisor->user->email)->send(new IncidentFilledForm($details));
+    
+            return back()->with('success', 'Your Incident is reported to prevention advisor');
+        } catch (\Exception $e) {
+            return back()->with('success', 'Your Incident is reported to prevention advisor');
         }
-
-        return back()->with('success', 'Your Incident is reported to preventional advisor');
     }
 
     public function exportIncidentReport($id)
